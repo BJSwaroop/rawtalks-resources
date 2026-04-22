@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EAMCET 6464 Rank Story | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root { --bg:#0a0a0f; --card:#12121a; --card-hover:#1a1a28; --accent:#e94560; --accent-glow:rgba(233,69,96,0.25); --accent2:#6c5ce7; --green:#00b894; --yellow:#fdcb6e; --blue:#74b9ff; --orange:#e17055; --text:#e8e8e8; --text-dim:#8a8a9a; --border:#2a2a3a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; user-select:none; -webkit-user-select:none; }
+  .app { height:100%; display:flex; flex-direction:column; max-width:520px; margin:0 auto; position:relative; overflow:hidden; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); z-index:100; flex-shrink:0; }
+  .topbar-brand { font-size:13px; font-weight:700; color:var(--text-dim); }
+  .topbar-brand span { color:var(--accent); }
+  .progress-wrap { display:flex; align-items:center; gap:8px; }
+  .progress-bar { width:80px; height:4px; background:var(--border); border-radius:4px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); border-radius:4px; transition:width 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .progress-text { font-size:11px; color:var(--text-dim); font-weight:600; min-width:32px; text-align:right; }
+  .pages { flex:1; position:relative; overflow:hidden; }
+  .page { position:absolute; top:0; left:0; width:100%; height:100%; overflow-y:auto; overflow-x:hidden; padding:24px 20px 100px; opacity:0; transform:translateX(60px); transition:all 0.45s cubic-bezier(0.4,0,0.2,1); pointer-events:none; -webkit-overflow-scrolling:touch; }
+  .page.active { opacity:1; transform:translateX(0); pointer-events:auto; }
+  .page.exit-left { opacity:0; transform:translateX(-60px); }
+  .page.exit-right { opacity:0; transform:translateX(60px); }
+  .bottombar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; padding-bottom:max(12px,env(safe-area-inset-bottom)); background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); border-top:1px solid var(--border); z-index:100; flex-shrink:0; }
+  .btn { padding:10px 22px; border-radius:50px; font-family:'Inter',sans-serif; font-size:14px; font-weight:700; border:none; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+  .btn-back { background:transparent; color:var(--text-dim); border:1px solid var(--border); }
+  .btn-back.hidden { opacity:0; pointer-events:none; }
+  .btn-next { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
+
+  .hero-page { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:calc(100% - 100px); }
+  .hero-emoji { font-size:56px; margin-bottom:16px; animation:float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  .hero-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:4px 14px; border-radius:20px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+  .hero-title { font-size:32px; font-weight:900; line-height:1.15; margin-bottom:12px; background:linear-gradient(135deg,#fff 0%,var(--blue) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { font-size:15px; color:var(--text-dim); line-height:1.5; max-width:340px; }
+  .hero-stats { display:flex; gap:28px; margin-top:32px; }
+  .stat-num { font-size:26px; font-weight:900; color:var(--accent); }
+  .stat-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1.2px; margin-top:2px; }
+
+  .section-label { font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2.5px; margin-bottom:8px; }
+  .section-title { font-size:24px; font-weight:900; line-height:1.2; margin-bottom:6px; }
+  .section-desc { font-size:14px; color:var(--text-dim); line-height:1.5; margin-bottom:24px; }
+
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:12px; }
+  .card-head { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .card-ico { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .card-ico.r { background:rgba(233,69,96,0.12); }
+  .card-ico.b { background:rgba(116,185,255,0.12); }
+  .card-ico.g { background:rgba(0,184,148,0.12); }
+  .card-ico.p { background:rgba(108,92,231,0.12); }
+  .card-ico.y { background:rgba(253,203,110,0.12); }
+  .card-name { font-size:15px; font-weight:700; }
+  .card-sub { font-size:12px; color:var(--text-dim); }
+  .card p { font-size:13px; color:var(--text-dim); line-height:1.55; margin-bottom:6px; }
+
+  .tip { background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06)); border:1px solid rgba(233,69,96,0.15); border-radius:14px; padding:16px; margin:16px 0; }
+  .tip-label { font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
+  .tip p { font-size:13px; line-height:1.55; color:var(--text); }
+
+  .steps { list-style:none; counter-reset:s; }
+  .steps li { counter-increment:s; position:relative; padding:14px 14px 14px 50px; margin-bottom:8px; background:var(--card); border-radius:12px; font-size:13px; line-height:1.5; }
+  .steps li::before { content:counter(s); position:absolute; left:12px; top:13px; width:28px; height:28px; background:var(--accent); color:#fff; font-weight:800; font-size:12px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .steps li strong { color:var(--text); display:block; margin-bottom:2px; font-size:14px; }
+  .steps li span { color:var(--text-dim); }
+
+  .reveal-btn { width:100%; background:var(--card); border:1px dashed var(--border); border-radius:12px; padding:14px; color:var(--accent); font-family:'Inter',sans-serif; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
+  .reveal-btn:hover { background:var(--card-hover); border-color:var(--accent); }
+  .reveal-btn .arrow { transition:transform 0.3s; font-size:16px; }
+  .reveal-btn.open .arrow { transform:rotate(180deg); }
+  .reveal-content { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+  .reveal-content.open { max-height:3000px; }
+
+  .community-btn { display:flex; align-items:center; gap:12px; width:100%; padding:16px 18px; border-radius:14px; text-decoration:none; font-size:15px; font-weight:700; color:#fff; margin-bottom:10px; transition:transform 0.2s; border:none; cursor:pointer; }
+  .community-btn:hover { transform:translateY(-2px); }
+  .community-btn.whatsapp { background:linear-gradient(135deg,#25d366,#128c7e); box-shadow:0 4px 20px rgba(37,211,102,0.25); }
+  .community-btn.telegram { background:linear-gradient(135deg,#2aabee,#229ed9); box-shadow:0 4px 20px rgba(42,171,238,0.25); }
+  .community-btn .cb-icon { width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .community-btn .cb-text { text-align:left; }
+  .community-btn .cb-sub { font-size:12px; font-weight:500; opacity:0.85; margin-top:2px; }
+
+  .cta-page { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:calc(100% - 100px); }
+  .cta-footer { font-size:11px; color:var(--text-dim); margin-top:24px; line-height:1.6; }
+  .cta-footer a { color:var(--accent); text-decoration:none; }
+
+  .swipe-hint { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); font-size:11px; color:var(--text-dim); opacity:0.6; display:flex; align-items:center; gap:4px; animation:hintPulse 2s ease-in-out infinite; }
+  @keyframes hintPulse { 0%,100%{opacity:0.4;} 50%{opacity:0.8;} }
+
+  /* Story timeline */
+  .timeline { position:relative; padding-left:24px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:0; bottom:0; width:2px; background:var(--border); }
+  .timeline-item { position:relative; margin-bottom:20px; }
+  .timeline-item::before { content:''; position:absolute; left:-20px; top:6px; width:12px; height:12px; border-radius:50%; background:var(--accent); border:2px solid var(--bg); }
+  .timeline-item.green::before { background:var(--green); }
+  .timeline-item.blue::before { background:var(--blue); }
+  .timeline-item.yellow::before { background:var(--yellow); }
+  .timeline-item h4 { font-size:14px; font-weight:800; margin-bottom:4px; }
+  .timeline-item p { font-size:13px; color:var(--text-dim); line-height:1.5; }
+
+  /* Quote block */
+  .quote { background:var(--card); border-left:4px solid var(--accent); border-radius:0 14px 14px 0; padding:18px; margin:16px 0; }
+  .quote p { font-size:14px; font-style:italic; line-height:1.6; color:var(--text); }
+  .quote .author { font-size:12px; color:var(--accent); font-weight:700; margin-top:8px; font-style:normal; }
+
+  /* Big number highlight */
+  .big-highlight { text-align:center; margin:20px 0; }
+  .big-highlight .number { font-size:72px; font-weight:900; color:var(--accent); line-height:1; }
+  .big-highlight .label { font-size:14px; color:var(--text-dim); margin-top:8px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/8</div>
+    </div>
+  </div>
+
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">🎯</div>
+        <div class="hero-badge">Real Story</div>
+        <div class="hero-title">EAMCET 6464<br>Rank Story</div>
+        <div class="hero-sub">2 days prep. Rank 6464. CSE raledu. But that "failure" became the foundation of everything I built. Idi naa story — unfiltered.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">6464</div><div class="stat-label">EAMCET<br>Rank</div></div>
+          <div><div class="stat-num">2</div><div class="stat-label">Days<br>Prep</div></div>
+          <div><div class="stat-num">553K</div><div class="stat-label">Views on<br>EAMCET Video</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">💪</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:24px;">Join the EAMCET Community</div>
+        <div class="hero-sub" style="margin-bottom:28px;">This story changed my life. And I want it to change yours. Join the community where I share EAMCET strategies, motivation, and counselling tips daily.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">EAMCET strategies + counselling help</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Daily resources + exam tips</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: THE BACKSTORY -->
+    <div class="page" data-page="2">
+      <div class="section-label">The Backstory</div>
+      <div class="section-title">How I Ended Up Here</div>
+      <div class="section-desc">I wasn't always a "mentor" or "creator." I was a scared engineering aspirant — just like you.</div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>Low-Income Family Background</h4>
+          <p>"I came from a low-income stage bro. Even if you want to buy anything, we don't have that. We want iPhone, iPad, this and that. I came from a stage of a family who even thought about paying college fees."</p>
+        </div>
+        <div class="timeline-item blue">
+          <h4>JEE Prep Period</h4>
+          <p>Like lakhs of students, I prepared for JEE. The pressure was immense — coaching, expectations, competition. But JEE wasn't my strongest result.</p>
+        </div>
+        <div class="timeline-item yellow">
+          <h4>EAMCET — The Backup Plan</h4>
+          <p>Most Telugu students see EAMCET as the "backup." I was the same. Focused so much on JEE that I only had 2 days for EAMCET prep. Yes — just 2 days.</p>
+        </div>
+        <div class="timeline-item green">
+          <h4>Result Day — Rank 6464</h4>
+          <p>When results came: 6464. Not terrible, not great. Definitely not enough for CSE at a good college. That's when the real story begins.</p>
+        </div>
+      </div>
+
+      <div class="quote">
+        <p>"Nanna kanneellu chusinappudu decide ayyanu — I will make something of myself no matter what rank I get."</p>
+        <div class="author">— Swaroop</div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: THE 2-DAY STRATEGY -->
+    <div class="page" data-page="3">
+      <div class="section-label">The Strategy</div>
+      <div class="section-title">My 2-Day EAMCET Prep</div>
+      <div class="section-desc">I'm not recommending 2 days. But here's EXACTLY what I did — and it worked for rank 6464.</div>
+
+      <div class="big-highlight">
+        <div class="number">48</div>
+        <div class="label">HOURS. That's all I had.</div>
+      </div>
+
+      <ol class="steps">
+        <li>
+          <strong>Day 1: High-Weightage Chapters Only</strong>
+          <span>I picked ONLY the chapters that appear every year — Thermodynamics, Electrostatics, Organic Reactions (Maths: Integration, Matrices). Ignored everything else. Idi strategy kaadu, survival.</span>
+        </li>
+        <li>
+          <strong>Day 1 Evening: Previous Year Papers</strong>
+          <span>Solved last 3 years EAMCET papers. Identified the pattern — which questions repeat, which concepts are always tested. EAMCET is predictable if you study past papers.</span>
+        </li>
+        <li>
+          <strong>Day 2: Formula Sheets + Quick Revision</strong>
+          <span>Made 1-page formula sheets for each subject. Revised only those sheets repeatedly. No new concepts — only reinforcement of what I already knew from JEE prep.</span>
+        </li>
+        <li>
+          <strong>Day 2 Night: Sleep.</strong>
+          <span>Yep. I slept. Most students pull all-nighters before exams. I didn't. A rested brain performs 20-30% better than a sleep-deprived one. This was my smartest decision.</span>
+        </li>
+      </ol>
+
+      <div class="tip">
+        <div class="tip-label">Key Insight</div>
+        <p>JEE prep = 80% EAMCET syllabus. If you've studied for JEE seriously, EAMCET is easier. The problem is most students panic and try to "start fresh" for EAMCET instead of leveraging what they already know.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: RANK 6464 REALITY -->
+    <div class="page" data-page="4">
+      <div class="section-label">The Reality</div>
+      <div class="section-title">What Rank 6464 Actually Gets You</div>
+      <div class="section-desc">People hear "6464" and assume it's bad. Let me tell you what actually happened during counselling.</div>
+
+      <div class="card" style="border-left:4px solid var(--accent);">
+        <div class="card-head">
+          <div class="card-ico r">❌</div>
+          <div><div class="card-name">What I Didn't Get</div></div>
+        </div>
+        <p>CSE at top colleges like JNTU Kakinada, Andhra University, or SVU Tirupati. With 6464, CSE at top government colleges was out of reach.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--green);">
+        <div class="card-head">
+          <div class="card-ico g">✅</div>
+          <div><div class="card-name">What I Could Get</div></div>
+        </div>
+        <p>ECE at decent colleges. Some CSE seats at lower-ranked government colleges. Good branches at private colleges like VITB, KLU, etc.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <div class="card-head">
+          <div class="card-ico b">🎯</div>
+          <div><div class="card-name">What I Chose</div></div>
+        </div>
+        <p><strong>Vishnu Institute of Technology (VITB), Bhimavaram — ECE branch.</strong> Not CSE. Not a top-ranked college. But it was a place where I could learn, build, and grow.</p>
+      </div>
+
+      <div class="quote">
+        <p>"Rank 6464 CSE ivvaledu. But that rank gave me something bigger — the hunger to prove that college name doesn't define you."</p>
+        <div class="author">— Swaroop</div>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>📊 What Ranks Get What Colleges? (General Reference)</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--green);">Top 1,000:</strong> CSE at JNTU Kakinada, AU Vizag, SVU Tirupati</p>
+          <p><strong style="color:var(--blue);">1,000 - 5,000:</strong> CSE at 2nd tier govt colleges, ECE at top govt colleges</p>
+          <p><strong style="color:var(--yellow);">5,000 - 15,000:</strong> ECE/EEE at govt colleges, CSE at good private colleges</p>
+          <p><strong style="color:var(--orange);">15,000 - 50,000:</strong> CSE at decent private colleges, most branches at govt colleges</p>
+          <p style="margin-top:8px; font-size:12px; color:var(--text-dim);">Note: These are approximate ranges for AP EAMCET. Exact cutoffs vary by year, category, and counselling round.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: WHAT I DID DIFFERENTLY -->
+    <div class="page" data-page="5">
+      <div class="section-label">The Pivot</div>
+      <div class="section-title">What I Did Differently in College</div>
+      <div class="section-desc">ECE branch, not-famous college. But I didn't let that define me. Here's exactly what I did.</div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico p">💻</div>
+          <div><div class="card-name">Self-Taught Programming</div><div class="card-sub">ECE student learning CSE skills</div></div>
+        </div>
+        <p>My branch was ECE — circuits, signals, electronics. But I taught myself coding, web development, DSA on the side. YouTube, free resources, online courses. Branch kaadu — skills matter.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico r">📹</div>
+          <div><div class="card-name">Started YouTube in College</div><div class="card-sub">First EAMCET video went viral</div></div>
+        </div>
+        <p>Started sharing my experience — EAMCET preparation, college life, honest reviews. My EAMCET counselling video (showing rank 6464) got 330K views. EAMCET motivation video: 553K views. People connected because I was REAL.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico g">🏗️</div>
+          <div><div class="card-name">Built Projects, Not Just Resume</div><div class="card-sub">Hackathons, internships, portfolio</div></div>
+        </div>
+        <p>Smart India Hackathon participant. Built web development projects. Created a portfolio that spoke louder than my college name. Started looking for internships from 2nd year.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico y">💰</div>
+          <div><div class="card-name">YouTube Became My "Highest Package"</div><div class="card-sub">Content creation as a career</div></div>
+        </div>
+        <p>"I didn't know that the reason behind my highest package would be YouTube. Even until my fourth year." — What started as sharing my 6464 story became a full career.</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">The Lesson</div>
+        <p><strong>College name is temporary. Skills are permanent.</strong> I was an ECE student at VITB who out-earned CSE students from bigger colleges — because I focused on building skills, not crying about my rank.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: YOUR EAMCET STRATEGY -->
+    <div class="page" data-page="6">
+      <div class="section-label">Your Strategy</div>
+      <div class="section-title">EAMCET Strategy (If You Have More Than 2 Days!)</div>
+      <div class="section-desc">I had 2 days. You probably have more. Here's the optimized strategy I wish I'd had.</div>
+
+      <ol class="steps">
+        <li>
+          <strong>Use Your JEE Prep — Don't Start Over</strong>
+          <span>EAMCET syllabus overlaps 80% with JEE. Your JEE preparation IS your EAMCET preparation. Just adapt to the paper pattern — more NCERT-based, more direct questions.</span>
+        </li>
+        <li>
+          <strong>Focus on Category 1 Chapters</strong>
+          <span>High-weightage, easy-to-score chapters: Thermodynamics, Electrostatics, Chemical Bonding, Trigonometry, Integration. These chapters alone can give you 30-40 marks.</span>
+        </li>
+        <li>
+          <strong>Solve 5 Years of PYQs</strong>
+          <span>EAMCET repeats concepts predictably. After solving 5 years of papers, you'll see the patterns. 60-70% of questions come from the same concept pool.</span>
+        </li>
+        <li>
+          <strong>100-Mark Target: 50M + 25P + 25C</strong>
+          <span>Maths is scoring in EAMCET. Target 50 marks in Maths (achievable with practice), 25 in Physics, 25 in Chemistry. 100 marks = under 5,000 rank typically.</span>
+        </li>
+        <li>
+          <strong>Exam Day: Attempt Order Matters</strong>
+          <span>Start with your strongest subject. Skip difficult questions immediately (come back later). In EAMCET, there's no negative marking — attempt EVERYTHING.</span>
+        </li>
+      </ol>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>🎯 My 5 Cheat Codes for EAMCET</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--accent);">1. Unit Analysis:</strong> Check if the units in answer options match the expected unit. Eliminates 1-2 wrong options instantly.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--blue);">2. Trig Substitution:</strong> In integration problems, try standard trig values (0, π/2, π) in the options. Fastest way to solve.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--green);">3. Strategic Guessing:</strong> No negative marking means NEVER leave blank. Even educated guessing gives you 25% chance per question.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--yellow);">4. Elimination:</strong> If 2 options are very similar (differ by a sign or constant), one of them is usually correct. Eliminate the outliers.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--accent2);">5. "All of the Above":</strong> If you can verify 2 out of 3 statements in an "All of the above" question, choose it. Don't waste time verifying the 3rd.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 7: CTA -->
+    <div class="page" data-page="7">
+      <div class="cta-page">
+        <div style="font-size:48px; margin-bottom:16px;">🔥</div>
+        <div style="font-size:24px; font-weight:900; margin-bottom:8px;">Your Rank is a Number.<br>Your Future is a Choice.</div>
+        <div style="font-size:14px; color:var(--text-dim); max-width:320px; margin-bottom:24px; line-height:1.5;">I got 6464. I didn't let it define me. Whether you get 500 or 50,000 — what you DO after that is what matters. Join the community for daily motivation and strategy.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">EAMCET prep + counselling support</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Resources + motivation daily</div></div>
+        </a>
+
+        <div style="margin-top:16px;">
+          <a href="https://www.youtube.com/watch?v=EAMCET-6464" target="_blank" style="display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#fff; font-size:15px; font-weight:700; padding:14px 32px; border-radius:50px; text-decoration:none; box-shadow:0 8px 32px var(--accent-glow);">
+            Watch Full EAMCET Story on YouTube ▶
+          </a>
+        </div>
+
+        <div class="cta-footer">
+          <strong style="color:var(--text); font-size:14px;">Raw Talks with Swaroop</strong><br>
+          Made with ❤️ for Telugu students • April 2026<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> •
+          <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br><br>
+          <a href="../">← Back to All Resources</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  const totalPages = pages.length;
+  let current = 0;
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+
+  function updateUI() {
+    pages.forEach((p, i) => {
+      p.classList.remove('active','exit-left','exit-right');
+      if (i === current) p.classList.add('active');
+      else if (i < current) p.classList.add('exit-left');
+      else p.classList.add('exit-right');
+    });
+    progressFill.style.width = ((current+1)/totalPages*100)+'%';
+    progressText.textContent = (current+1)+'/'+totalPages;
+    btnBack.classList.toggle('hidden', current===0);
+    if (current===0) { btnNext.innerHTML="Let's Go →"; btnNext.onclick=goNext; }
+    else if (current===1) { btnNext.innerHTML="Continue to Story →"; btnNext.onclick=goNext; }
+    else if (current===totalPages-1) { btnNext.innerHTML="Join WhatsApp 💬"; btnNext.onclick=function(){ window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank'); }; }
+    else { btnNext.innerHTML="Next →"; btnNext.onclick=goNext; }
+    pages[current].scrollTop=0;
+  }
+  function goNext() { if(current<totalPages-1){current++;updateUI();} }
+  function goBack() { if(current>0){current--;updateUI();} }
+  function toggleReveal(btn) { btn.classList.toggle('open'); btn.nextElementSibling.classList.toggle('open'); }
+
+  let touchStartX=0;
+  const container=document.getElementById('pagesContainer');
+  container.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
+  container.addEventListener('touchend',e=>{const diff=touchStartX-e.changedTouches[0].screenX;if(Math.abs(diff)>60){if(diff>0)goNext();else goBack();}},{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();goNext();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}});
+  updateUI();
+</script>
+</body>
+</html>
