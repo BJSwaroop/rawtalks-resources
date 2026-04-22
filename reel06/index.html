@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Scholarships for Engineering | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root { --bg:#0a0a0f; --card:#12121a; --card-hover:#1a1a28; --accent:#e94560; --accent-glow:rgba(233,69,96,0.25); --green:#00b894; --yellow:#fdcb6e; --blue:#74b9ff; --orange:#e17055; --text:#e8e8e8; --text-dim:#8a8a9a; --border:#2a2a3a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; user-select:none; -webkit-user-select:none; }
+  .app { height:100%; display:flex; flex-direction:column; max-width:520px; margin:0 auto; position:relative; overflow:hidden; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); z-index:100; flex-shrink:0; }
+  .topbar-brand { font-size:13px; font-weight:700; color:var(--text-dim); } .topbar-brand span { color:var(--accent); }
+  .progress-wrap { display:flex; align-items:center; gap:8px; }
+  .progress-bar { width:80px; height:4px; background:var(--border); border-radius:4px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); border-radius:4px; transition:width 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .progress-text { font-size:11px; color:var(--text-dim); font-weight:600; min-width:32px; text-align:right; }
+  .pages { flex:1; position:relative; overflow:hidden; }
+  .page { position:absolute; top:0; left:0; width:100%; height:100%; overflow-y:auto; overflow-x:hidden; padding:24px 20px 100px; opacity:0; transform:translateX(60px); transition:all 0.45s cubic-bezier(0.4,0,0.2,1); pointer-events:none; -webkit-overflow-scrolling:touch; }
+  .page.active { opacity:1; transform:translateX(0); pointer-events:auto; }
+  .page.exit-left { opacity:0; transform:translateX(-60px); }
+  .page.exit-right { opacity:0; transform:translateX(60px); }
+  .bottombar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; padding-bottom:max(12px,env(safe-area-inset-bottom)); background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); border-top:1px solid var(--border); z-index:100; flex-shrink:0; }
+  .btn { padding:10px 22px; border-radius:50px; font-family:'Inter',sans-serif; font-size:14px; font-weight:700; border:none; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+  .btn-back { background:transparent; color:var(--text-dim); border:1px solid var(--border); } .btn-back.hidden { opacity:0; pointer-events:none; }
+  .btn-next { background:var(--accent); color:#fff; box-shadow:0 4px 16px var(--accent-glow); }
+  .hero-page { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:calc(100% - 100px); }
+  .hero-emoji { font-size:56px; margin-bottom:16px; animation:float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-8px);} }
+  .hero-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:4px 14px; border-radius:20px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+  .hero-title { font-size:32px; font-weight:900; line-height:1.15; margin-bottom:12px; background:linear-gradient(135deg,#fff 0%,var(--blue) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { font-size:15px; color:var(--text-dim); line-height:1.5; max-width:340px; }
+  .hero-stats { display:flex; gap:28px; margin-top:32px; }
+  .stat-num { font-size:26px; font-weight:900; color:var(--accent); }
+  .stat-label { font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1.2px; margin-top:2px; }
+  .section-label { font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2.5px; margin-bottom:8px; }
+  .section-title { font-size:24px; font-weight:900; line-height:1.2; margin-bottom:6px; }
+  .section-desc { font-size:14px; color:var(--text-dim); line-height:1.5; margin-bottom:24px; }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:12px; }
+  .card-head { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+  .card-ico { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .card-ico.r { background:rgba(233,69,96,0.12); } .card-ico.b { background:rgba(116,185,255,0.12); } .card-ico.g { background:rgba(0,184,148,0.12); } .card-ico.p { background:rgba(108,92,231,0.12); } .card-ico.y { background:rgba(253,203,110,0.12); }
+  .card-name { font-size:15px; font-weight:700; } .card-sub { font-size:12px; color:var(--text-dim); }
+  .card p { font-size:13px; color:var(--text-dim); line-height:1.55; margin-bottom:6px; }
+  .tip { background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06)); border:1px solid rgba(233,69,96,0.15); border-radius:14px; padding:16px; margin:16px 0; }
+  .tip-label { font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:6px; }
+  .tip p { font-size:13px; line-height:1.55; color:var(--text); }
+  .dtable { width:100%; border-collapse:collapse; margin:12px 0; font-size:12px; }
+  .dtable th { background:rgba(233,69,96,0.1); color:var(--accent); font-weight:700; text-align:left; padding:8px 6px; font-size:10px; text-transform:uppercase; letter-spacing:0.8px; border-bottom:2px solid rgba(233,69,96,0.3); }
+  .dtable td { padding:8px 6px; border-bottom:1px solid var(--border); }
+  .dtable tr:last-child td { border-bottom:none; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:700; } .tag.g { background:rgba(0,184,148,0.15); color:var(--green); } .tag.r { background:rgba(233,69,96,0.15); color:var(--accent); } .tag.y { background:rgba(253,203,110,0.15); color:var(--yellow); } .tag.b { background:rgba(116,185,255,0.15); color:var(--blue); }
+  .reveal-btn { width:100%; background:var(--card); border:1px dashed var(--border); border-radius:12px; padding:14px; color:var(--accent); font-family:'Inter',sans-serif; font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; }
+  .reveal-btn:hover { background:var(--card-hover); border-color:var(--accent); }
+  .reveal-btn .arrow { transition:transform 0.3s; font-size:16px; } .reveal-btn.open .arrow { transform:rotate(180deg); }
+  .reveal-content { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); } .reveal-content.open { max-height:3000px; }
+  .community-btn { display:flex; align-items:center; gap:12px; width:100%; padding:16px 18px; border-radius:14px; text-decoration:none; font-size:15px; font-weight:700; color:#fff; margin-bottom:10px; transition:transform 0.2s; border:none; cursor:pointer; }
+  .community-btn:hover { transform:translateY(-2px); }
+  .community-btn.whatsapp { background:linear-gradient(135deg,#25d366,#128c7e); box-shadow:0 4px 20px rgba(37,211,102,0.25); }
+  .community-btn.telegram { background:linear-gradient(135deg,#2aabee,#229ed9); box-shadow:0 4px 20px rgba(42,171,238,0.25); }
+  .community-btn .cb-icon { width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+  .community-btn .cb-text { text-align:left; } .community-btn .cb-sub { font-size:12px; font-weight:500; opacity:0.85; margin-top:2px; }
+  .cta-page { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:calc(100% - 100px); }
+  .cta-footer { font-size:11px; color:var(--text-dim); margin-top:24px; line-height:1.6; } .cta-footer a { color:var(--accent); text-decoration:none; }
+  .swipe-hint { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); font-size:11px; color:var(--text-dim); opacity:0.6; display:flex; align-items:center; gap:4px; animation:hintPulse 2s ease-in-out infinite; }
+  @keyframes hintPulse { 0%,100%{opacity:0.4;} 50%{opacity:0.8;} }
+  .scholarship-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px; margin-bottom:12px; border-left:4px solid var(--green); }
+  .scholarship-card.govt { border-left-color:var(--blue); }
+  .scholarship-card.private { border-left-color:var(--yellow); }
+  .scholarship-card.state { border-left-color:var(--green); }
+  .scholarship-card h4 { font-size:15px; font-weight:800; margin-bottom:4px; }
+  .scholarship-card .amount { font-size:18px; font-weight:900; color:var(--green); margin-bottom:6px; }
+  .scholarship-card p { font-size:13px; color:var(--text-dim); line-height:1.55; }
+  .steps { list-style:none; counter-reset:s; }
+  .steps li { counter-increment:s; position:relative; padding:14px 14px 14px 50px; margin-bottom:8px; background:var(--card); border-radius:12px; font-size:13px; line-height:1.5; }
+  .steps li::before { content:counter(s); position:absolute; left:12px; top:13px; width:28px; height:28px; background:var(--accent); color:#fff; font-weight:800; font-size:12px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .steps li strong { color:var(--text); display:block; margin-bottom:2px; font-size:14px; } .steps li span { color:var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/8</div>
+    </div>
+  </div>
+
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">💰</div>
+        <div class="hero-badge">Money Guide</div>
+        <div class="hero-title">Scholarships for<br>Engineering</div>
+        <div class="hero-sub">College fees burden undha? Government + college scholarships tho engineering almost FREE lo cheyyochu. Ivanni miss avthunnaaru most students.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">100%</div><div class="stat-label">Fee Waiver<br>Possible</div></div>
+          <div><div class="stat-num">₹12K</div><div class="stat-label">CSSS Per<br>Year</div></div>
+          <div><div class="stat-num">₹4.5L</div><div class="stat-label">Income Cap<br>Most Schemes</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">📢</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:24px;">Never Miss a Deadline</div>
+        <div class="hero-sub" style="margin-bottom:28px;">Scholarship deadlines miss cheste — money gone. Community lo we share every new scholarship notification, NSP updates, and application links.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Scholarship alerts + application help</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">NSP updates + deadline reminders</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: IIT/NIT FEE WAIVERS -->
+    <div class="page" data-page="2">
+      <div class="section-label">Government Institutes</div>
+      <div class="section-title">IIT & NIT Fee Waivers</div>
+      <div class="section-desc">IITs and NITs have built-in fee waiver systems. Most students don't even know about these!</div>
+
+      <div class="scholarship-card govt">
+        <h4>🏛️ IIT Tuition Fee Waiver</h4>
+        <div class="amount">Up to 100% Fee Waiver</div>
+        <p><strong style="color:var(--text);">Family income &lt; ₹1 lakh/year:</strong> 100% tuition fee waiver — you pay ZERO tuition.</p>
+        <p><strong style="color:var(--text);">Family income ₹1L – ₹5L/year:</strong> 66.67% tuition fee waiver — you pay only 1/3 of fees.</p>
+        <p><strong style="color:var(--text);">SC/ST students:</strong> Full tuition fee waiver + additional benefits (free mess, hostel rent waiver, pocket allowance at many IITs).</p>
+        <p style="margin-top:8px;"><span class="tag b">AUTO APPLIED</span> — just submit income certificate during admission.</p>
+      </div>
+
+      <div class="scholarship-card govt">
+        <h4>🎓 Merit-cum-Means (MCM) Scholarship</h4>
+        <div class="amount">₹1,000/month + Fee Waiver</div>
+        <p><strong style="color:var(--text);">Eligibility:</strong> Family income &lt; ₹4.5L/year + minimum 6.0 CGPA</p>
+        <p><strong style="color:var(--text);">Coverage:</strong> 25% of all UG students at each IIT receive this every year.</p>
+        <p><strong style="color:var(--text);">How:</strong> Apply through your IIT's Academic Section after first semester results.</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Mind = Blown Fact</div>
+        <p>At IITs, if your family income is under ₹1 lakh — you study for <strong>FREE</strong>. Between ₹1-5 lakh — you pay less than ₹1 lakh/year. Engineering at an IIT can cost less than a private coaching class!</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>📋 NIT & IIIT Fee Structure Quick View</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--text);">NIT Tuition:</strong> ₹63,500 – ₹1.5L per semester (varies by NIT). SC/ST: Often fully waived.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">IIITs:</strong> ₹1.5L – 2L per year tuition. Some IIITs have industry-funded scholarships.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Post-Matric Scholarship:</strong> SC/ST/OBC students at NITs can apply through state post-matric scholarship portals for additional fee reimbursement.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: CENTRAL GOVT SCHOLARSHIPS -->
+    <div class="page" data-page="3">
+      <div class="section-label">Central Government</div>
+      <div class="section-title">Government Scholarship Schemes</div>
+      <div class="section-desc">Central government ki separate scholarship schemes unnayi — ivanni NSP (National Scholarship Portal) through apply cheyyaali.</div>
+
+      <div class="scholarship-card govt">
+        <h4>📘 CSSS — Central Sector Scheme of Scholarship</h4>
+        <div class="amount">₹12,000/year (1st-3rd year) → ₹20,000 (4th year)</div>
+        <p><strong style="color:var(--text);">Eligibility:</strong></p>
+        <p>• Above 80th percentile in Class 12 board exam</p>
+        <p>• Family income ≤ ₹4.5 lakh/year</p>
+        <p>• Pursuing regular degree (not distance/correspondence)</p>
+        <p>• Not receiving any other central/state scholarship</p>
+        <p style="margin-top:8px;"><strong style="color:var(--text);">Apply:</strong> <a href="https://scholarships.gov.in" target="_blank" style="color:var(--accent);">scholarships.gov.in</a> (NSP Portal)</p>
+      </div>
+
+      <div class="scholarship-card govt">
+        <h4>🏦 Interest Subsidy on Education Loans</h4>
+        <div class="amount">0% Interest During Study Period</div>
+        <p><strong style="color:var(--text);">How it works:</strong> Government pays the interest on your education loan during your course + 1 year after (moratorium period).</p>
+        <p><strong style="color:var(--text);">Eligibility:</strong> EWS families, loans up to ₹7.5L from nationalized banks.</p>
+        <p><strong style="color:var(--text);">Impact:</strong> On a ₹5L loan at 8.5% interest, this saves you ₹1.7L+ in interest!</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">⚠️ Common Mistake</div>
+        <p><strong>INSPIRE Scholarship is NOT for engineering!</strong> Many websites list INSPIRE (₹80K/year) but it's only for Basic/Natural Sciences (Physics, Chemistry, Math, Biology) — NOT for B.Tech/B.E. students. Don't waste time applying for it.</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>🔗 SC/ST/OBC Specific Scholarships</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="scholarship-card state">
+          <h4>Post-Matric Scholarship (SC/ST)</h4>
+          <p>Covers: full tuition + maintenance allowance (₹3K-15K/month depending on course). Apply through state social welfare department. Available in all states.</p>
+        </div>
+        <div class="scholarship-card state">
+          <h4>OBC Post-Matric Scholarship</h4>
+          <p>For OBC-NCL students with family income &lt; ₹2.5L. Covers partial tuition. Apply via NSP or state backward class department.</p>
+        </div>
+        <div class="scholarship-card state">
+          <h4>Minority Scholarships</h4>
+          <p>Pre-matric and post-matric scholarships for minority community students. Apply through NSP. Income limit varies by scheme.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: PRIVATE COLLEGE SCHOLARSHIPS -->
+    <div class="page" data-page="4">
+      <div class="section-label">Private Colleges</div>
+      <div class="section-title">College-Specific Scholarships</div>
+      <div class="section-desc">Top private colleges offer massive merit scholarships. Some cover 100% fees — based on entrance exam rank.</div>
+
+      <div class="scholarship-card private">
+        <h4>🅱️ BITS Pilani</h4>
+        <div class="amount">Up to 100% Tuition Waiver</div>
+        <p><strong style="color:var(--text);">Top 500 BITSAT rankers:</strong> Full 4-year tuition scholarship (family income &lt; ₹20L/year + min 7.5 CGPA).</p>
+        <p><strong style="color:var(--text);">25% of all admitted students:</strong> Get 10-100% semester fee waiver based on merit and need.</p>
+      </div>
+
+      <div class="scholarship-card private">
+        <h4>🎯 VIT Vellore</h4>
+        <div class="amount">Up to 100% Fee Waiver</div>
+        <p><strong style="color:var(--text);">VITEEE Rank 1-10:</strong> 100% tuition fee waiver for all 4 years.</p>
+        <p><strong style="color:var(--text);">Rank 11-50:</strong> 75% fee reimbursement.</p>
+        <p>Also has GVDSP scholarships for state/central board toppers.</p>
+      </div>
+
+      <div class="scholarship-card private">
+        <h4>🏫 SRM University</h4>
+        <div class="amount">Up to 75-100% Scholarship</div>
+        <p>SRMJEEE toppers get up to 100% tuition waiver. Board exam toppers also eligible. Scholarship renewed yearly based on CGPA.</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>📊 More Private College Scholarships</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--text);">Manipal (MIT):</strong> Merit scholarships based on MET rank. Top rankers get significant fee reductions. Also offers need-based financial aid.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">LPU:</strong> NEST scholarship exam — up to 100% fee waiver for toppers.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Amity:</strong> Merit-based scholarships for JEE qualified students. 25-100% fee waiver.</p>
+          <p style="margin-top:8px;"><strong style="color:var(--text);">Thapar:</strong> Institutional scholarships for top CGPA holders each semester.</p>
+          <p style="margin-top:10px; color:var(--accent); font-weight:700;">Pro tip: Always ask the admissions office about scholarships — many colleges have unpublicized need-based aid!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: COMPLETE SCHOLARSHIP TABLE -->
+    <div class="page" data-page="5">
+      <div class="section-label">Quick Reference</div>
+      <div class="section-title">Scholarship Cheat Sheet</div>
+      <div class="section-desc">Screenshot teesko — idi neeku complete scholarship list. One table lo everything.</div>
+
+      <table class="dtable">
+        <thead>
+          <tr><th>Scholarship</th><th>Amount</th><th>Who</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong style="color:var(--text);">IIT Fee Waiver</strong></td><td style="color:var(--green); font-weight:700;">100% tuition</td><td>Income &lt;₹1L</td></tr>
+          <tr><td><strong style="color:var(--text);">IIT Partial Waiver</strong></td><td style="color:var(--green); font-weight:700;">67% tuition</td><td>Income ₹1-5L</td></tr>
+          <tr><td><strong style="color:var(--text);">MCM (IITs)</strong></td><td>₹1K/month</td><td>Income &lt;₹4.5L + 6.0 CGPA</td></tr>
+          <tr><td><strong style="color:var(--text);">CSSS</strong></td><td>₹12K/yr (1-3yr)<br>₹20K/yr (4th yr)</td><td>80th %ile + income &lt;₹4.5L</td></tr>
+          <tr><td><strong style="color:var(--text);">Interest Subsidy</strong></td><td style="color:var(--green); font-weight:700;">0% interest</td><td>EWS, loan &lt;₹7.5L</td></tr>
+          <tr><td><strong style="color:var(--text);">SC/ST Post-Matric</strong></td><td>Full tuition + allowance</td><td>SC/ST students</td></tr>
+          <tr><td><strong style="color:var(--text);">BITS Top 500</strong></td><td style="color:var(--green); font-weight:700;">100% tuition</td><td>BITSAT top 500</td></tr>
+          <tr><td><strong style="color:var(--text);">VIT Rank 1-10</strong></td><td style="color:var(--green); font-weight:700;">100% tuition</td><td>VITEEE toppers</td></tr>
+          <tr><td><strong style="color:var(--text);">SRM Merit</strong></td><td>Up to 100%</td><td>SRMJEEE toppers</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip">
+        <div class="tip-label">Strategy</div>
+        <p>Stack multiple scholarships! You can get IIT fee waiver + MCM + CSSS simultaneously. A student from a ₹3L income family at IIT could be <strong>getting paid to study</strong> instead of paying fees.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: HOW TO APPLY -->
+    <div class="page" data-page="6">
+      <div class="section-label">Action Plan</div>
+      <div class="section-title">How to Apply — Step by Step</div>
+      <div class="section-desc">Scholarship apply cheyyakundaa money raadu. Idi exact process.</div>
+
+      <ol class="steps">
+        <li>
+          <strong>Create NSP Account NOW</strong>
+          <span>Go to <a href="https://scholarships.gov.in" target="_blank" style="color:var(--accent);">scholarships.gov.in</a>. Register with Aadhaar. This is the portal for ALL central government scholarships including CSSS.</span>
+        </li>
+        <li>
+          <strong>Get Income Certificate Ready</strong>
+          <span>From Tahsildar/MRO office. Most scholarships need family income proof. Apply early — sometimes takes 2-4 weeks to process.</span>
+        </li>
+        <li>
+          <strong>Apply to College-Level Scholarships During Admission</strong>
+          <span>IIT fee waivers are applied during admission itself — submit income certificate. MCM is applied after first semester. ASK your admission office about all available scholarships.</span>
+        </li>
+        <li>
+          <strong>Apply on NSP Within the Window</strong>
+          <span>NSP scholarship windows usually open Aug-Nov each year. CSSS deadline is typically October-November. Set reminders!</span>
+        </li>
+        <li>
+          <strong>Check State Government Portals</strong>
+          <span>AP: <a href="https://jnanabhumi.ap.gov.in" target="_blank" style="color:var(--accent);">jnanabhumi.ap.gov.in</a> | TS: <a href="https://telanganaepass.cgg.gov.in" target="_blank" style="color:var(--accent);">telanganaepass.cgg.gov.in</a>. State scholarships are SEPARATE from central. Apply to both!</span>
+        </li>
+      </ol>
+
+      <div class="tip">
+        <div class="tip-label">Documents Checklist</div>
+        <p>✅ Aadhaar Card (linked to bank account)<br>
+        ✅ Income Certificate (from Tahsildar)<br>
+        ✅ Caste Certificate (if applicable)<br>
+        ✅ 10th & 12th Marksheets<br>
+        ✅ College Admission Letter/ID<br>
+        ✅ Bank Account (in YOUR name — not parent's)<br>
+        ✅ Passport-size photo<br>
+        <strong>Get ALL of these ready BEFORE college starts!</strong></p>
+      </div>
+    </div>
+
+    <!-- PAGE 7: CTA -->
+    <div class="page" data-page="7">
+      <div class="cta-page">
+        <div style="font-size:48px; margin-bottom:16px;">🎓</div>
+        <div style="font-size:24px; font-weight:900; margin-bottom:8px;">Don't Let Money Stop<br>Your Education</div>
+        <div style="font-size:14px; color:var(--text-dim); max-width:320px; margin-bottom:24px; line-height:1.5;">Scholarships are there — you just need to APPLY. Join the community for scholarship deadline alerts, application help, and document guidance.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Scholarship alerts + application help</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">NSP updates + deadline reminders</div></div>
+        </a>
+
+        <div class="cta-footer">
+          <strong style="color:var(--text); font-size:14px;">Raw Talks with Swaroop</strong><br>
+          Made with ❤️ for Telugu students • April 2026<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> •
+          <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br><br>
+          <a href="../">← Back to All Resources</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+
+<script>
+  const pages=document.querySelectorAll('.page'); const totalPages=pages.length; let current=0;
+  const progressFill=document.getElementById('progressFill'); const progressText=document.getElementById('progressText');
+  const btnBack=document.getElementById('btnBack'); const btnNext=document.getElementById('btnNext');
+  function updateUI(){pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right');});progressFill.style.width=((current+1)/totalPages*100)+'%';progressText.textContent=(current+1)+'/'+totalPages;btnBack.classList.toggle('hidden',current===0);if(current===0){btnNext.innerHTML="Let's Go →";btnNext.onclick=goNext;}else if(current===1){btnNext.innerHTML="Continue to Guide →";btnNext.onclick=goNext;}else if(current===totalPages-1){btnNext.innerHTML="Join WhatsApp 💬";btnNext.onclick=function(){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank');};}else{btnNext.innerHTML="Next →";btnNext.onclick=goNext;}pages[current].scrollTop=0;}
+  function goNext(){if(current<totalPages-1){current++;updateUI();}}
+  function goBack(){if(current>0){current--;updateUI();}}
+  function toggleReveal(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');}
+  let touchStartX=0;const container=document.getElementById('pagesContainer');
+  container.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
+  container.addEventListener('touchend',e=>{const diff=touchStartX-e.changedTouches[0].screenX;if(Math.abs(diff)>60){if(diff>0)goNext();else goBack();}},{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();goNext();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}});
+  updateUI();
+</script>
+</body>
+</html>
