@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Important Chapters + Paper Strategy | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a28;--accent:#e94560;--accent-glow:rgba(233,69,96,0.25);--green:#00b894;--yellow:#fdcb6e;--blue:#74b9ff;--orange:#e17055;--purple:#6c5ce7;--text:#e8e8e8;--text-dim:#8a8a9a;--border:#2a2a3a;}
+  *{margin:0;padding:0;box-sizing:border-box;}html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;}
+  .app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;overflow:hidden;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0;}.topbar-brand{font-size:13px;font-weight:700;color:var(--text-dim);}.topbar-brand span{color:var(--accent);}
+  .progress-wrap{display:flex;align-items:center;gap:8px;}.progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;}.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s;}.progress-text{font-size:11px;color:var(--text-dim);font-weight:600;min-width:32px;text-align:right;}
+  .pages{flex:1;position:relative;overflow:hidden;}
+  .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;padding:24px 20px 100px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;-webkit-overflow-scrolling:touch;}.page.active{opacity:1;transform:translateX(0);pointer-events:auto;}.page.exit-left{opacity:0;transform:translateX(-60px);}.page.exit-right{opacity:0;transform:translateX(60px);}
+  .bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}.btn-back{background:transparent;color:var(--text-dim);border:1px solid var(--border);}.btn-back.hidden{opacity:0;pointer-events:none;}.btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 16px var(--accent-glow);}
+  .hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}.hero-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}.hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}.hero-title{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.hero-sub{font-size:15px;color:var(--text-dim);line-height:1.5;max-width:340px;}.hero-stats{display:flex;gap:20px;margin-top:32px;}.stat-num{font-size:26px;font-weight:900;color:var(--accent);}.stat-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;}
+  .section-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}.section-title{font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px;}.section-desc{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:24px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}.card p{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:6px;}
+  .tip{background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06));border:1px solid rgba(233,69,96,0.15);border-radius:14px;padding:16px;margin:16px 0;}.tip-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}.tip p{font-size:13px;line-height:1.55;color:var(--text);}
+  .reveal-btn{width:100%;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:14px;color:var(--accent);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}.reveal-btn:hover{background:var(--card-hover);border-color:var(--accent);}.reveal-btn .arrow{transition:transform 0.3s;font-size:16px;}.reveal-btn.open .arrow{transform:rotate(180deg);}.reveal-content{max-height:0;overflow:hidden;transition:max-height 0.4s;}.reveal-content.open{max-height:4000px;}
+  .community-btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;transition:transform 0.2s;border:none;cursor:pointer;}.community-btn:hover{transform:translateY(-2px);}.community-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);}.community-btn.telegram{background:linear-gradient(135deg,#2aabee,#229ed9);}.community-btn .cb-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}.community-btn .cb-text{text-align:left;}.community-btn .cb-sub{font-size:12px;font-weight:500;opacity:0.85;margin-top:2px;}
+  .cta-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}.cta-footer{font-size:11px;color:var(--text-dim);margin-top:24px;line-height:1.6;}.cta-footer a{color:var(--accent);text-decoration:none;}
+  .swipe-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);opacity:0.6;animation:hintPulse 2s ease-in-out infinite;}@keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
+
+  /* Category system */
+  .cat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start;}
+  .cat-badge{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0;color:#fff;}
+  .cat-badge.c1{background:var(--green);} .cat-badge.c2{background:var(--blue);} .cat-badge.c3{background:var(--orange);}
+  .cat-info{flex:1;}.cat-info h4{font-size:14px;font-weight:800;margin-bottom:2px;}.cat-info .cat-desc{font-size:12px;color:var(--text-dim);line-height:1.4;}
+  .cat-info .chapters{font-size:12px;color:var(--text-dim);margin-top:6px;line-height:1.5;}.cat-info .chapters strong{color:var(--text);}
+
+  .dtable{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px;}.dtable th{background:rgba(233,69,96,0.1);color:var(--accent);font-weight:700;text-align:left;padding:8px 6px;font-size:10px;text-transform:uppercase;letter-spacing:0.8px;border-bottom:2px solid rgba(233,69,96,0.3);}.dtable td{padding:8px 6px;border-bottom:1px solid var(--border);}.dtable tr:last-child td{border-bottom:none;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}.tag.g{background:rgba(0,184,148,0.15);color:var(--green);}.tag.b{background:rgba(116,185,255,0.15);color:var(--blue);}.tag.o{background:rgba(225,112,85,0.15);color:var(--orange);}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText">1/7</div></div>
+  </div>
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">📚</div>
+        <div class="hero-badge">Chapter Strategy</div>
+        <div class="hero-title">Important Chapters<br>+ Paper Strategy</div>
+        <div class="hero-sub">EAMCET lo all chapters equal kaadu. Category 1, 2, 3 system tho prioritize cheyyi — maximum marks minimum effort tho.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">Cat 1</div><div class="stat-label">Must<br>Score</div></div>
+          <div><div class="stat-num">Cat 2</div><div class="stat-label">Should<br>Score</div></div>
+          <div><div class="stat-num">Cat 3</div><div class="stat-label">Skip or<br>Guess</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">📋</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:24px;">Get Chapter-wise PYQs</div>
+        <div class="hero-sub" style="margin-bottom:28px;">Community lo chapter-wise previous year questions sorted ga share chestham. Category system tho practice cheyyi — marks automatic ga perugustayi.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp"><div class="cb-icon">💬</div><div class="cb-text">Join WhatsApp Community<div class="cb-sub">Chapter-wise PYQs + strategies</div></div></a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram"><div class="cb-icon">✈️</div><div class="cb-text">Join Telegram Group<div class="cb-sub">Weightage analysis + daily practice</div></div></a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: THE CATEGORY SYSTEM -->
+    <div class="page" data-page="2">
+      <div class="section-label">The System</div>
+      <div class="section-title">Swaroop's Category System</div>
+      <div class="section-desc">All 80 questions are NOT equal. Some chapters give 3-4 questions (8 marks), some give just 1 (2 marks). Idi naa categorization:</div>
+
+      <div class="cat-card">
+        <div class="cat-badge c1">C1</div>
+        <div class="cat-info">
+          <h4 style="color:var(--green);">Category 1: MUST Score</h4>
+          <div class="cat-desc">High weightage + easy to score. 60-70% of your marks come from here. Prepare these FIRST and THOROUGHLY.</div>
+        </div>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-badge c2">C2</div>
+        <div class="cat-info">
+          <h4 style="color:var(--blue);">Category 2: SHOULD Score</h4>
+          <div class="cat-desc">Medium weightage. Worth studying if time permits. 20-25% of marks. Study after completing all C1 chapters.</div>
+        </div>
+      </div>
+
+      <div class="cat-card">
+        <div class="cat-badge c3">C3</div>
+        <div class="cat-info">
+          <h4 style="color:var(--orange);">Category 3: SKIP or Guess</h4>
+          <div class="cat-desc">Low weightage, high effort. Only 1 question max. Use cheat codes (elimination, guessing) for these. Don't waste study time here.</div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">The Rule</div>
+        <p><strong>Never study a C3 chapter before completing ALL C1 chapters.</strong> If you have 10 days left — spend 7 days on C1, 2 days on C2, and 1 day for revision. C3 = exam day guessing only.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 3: PHYSICS CATEGORIES -->
+    <div class="page" data-page="3">
+      <div class="section-label">Physics — 40 Questions</div>
+      <div class="section-title">Physics Chapter Categories</div>
+      <div class="section-desc">Based on AP EAMCET previous year analysis. Numbers show expected questions per chapter.</div>
+
+      <table class="dtable">
+        <thead><tr><th>Chapter</th><th>Qs</th><th>Cat</th></tr></thead>
+        <tbody>
+          <tr><td><strong style="color:var(--text);">Laws of Motion</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Work, Power, Energy</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Current Electricity</strong></td><td>2</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Ray Optics</strong></td><td>2</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Thermodynamics</strong></td><td>2</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Rotational Motion</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Kinematics (1D & 2D)</strong></td><td>3-4</td><td><span class="tag g">C1</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Electrostatics</strong></td><td>2-3</td><td><span class="tag b">C2</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Magnetism</strong></td><td>2</td><td><span class="tag b">C2</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Semiconductors</strong></td><td>2</td><td><span class="tag b">C2</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Fluids</strong></td><td>2-3</td><td><span class="tag b">C2</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Dual Nature/Nuclei</strong></td><td>2-3</td><td><span class="tag b">C2</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Wave Optics</strong></td><td>1</td><td><span class="tag o">C3</span></td></tr>
+          <tr><td><strong style="color:var(--text);">EM Waves</strong></td><td>1</td><td><span class="tag o">C3</span></td></tr>
+          <tr><td><strong style="color:var(--text);">Communication</strong></td><td>1</td><td><span class="tag o">C3</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip">
+        <div class="tip-label">Physics C1 = 15-18 Questions = 30-36 Marks</div>
+        <p>Just the green C1 chapters cover 15-18 out of 40 Physics questions. If you nail these chapters, you're already at 25+ marks in Physics — your target!</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: CHEMISTRY + MATHS CATEGORIES -->
+    <div class="page" data-page="4">
+      <div class="section-label">Chemistry + Maths</div>
+      <div class="section-title">Category Breakdown</div>
+      <div class="section-desc">Chemistry and Mathematics ki kuda same system. Ivi C1 chapters — focus ivve.</div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)"><span>🧪 Chemistry C1 Chapters (40 Questions)</span><span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <table class="dtable">
+          <thead><tr><th>Chapter</th><th>Qs</th><th>Cat</th></tr></thead>
+          <tbody>
+            <tr><td><strong style="color:var(--text);">P-Block Elements</strong></td><td>3-4</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Chemical Bonding</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Atomic Structure</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Organic Basics</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Hydrocarbons</strong></td><td>2-3</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Electrochemistry</strong></td><td>2</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Periodicity</strong></td><td>2</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Organic-O Compounds</strong></td><td>1-2</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Organic-N Compounds</strong></td><td>1-2</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Solutions</strong></td><td>1-2</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Polymers/Biomolecules</strong></td><td>2</td><td><span class="tag o">C3</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Environmental Chem</strong></td><td>1</td><td><span class="tag o">C3</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)"><span>📐 Mathematics C1 Chapters (80 Questions)</span><span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <table class="dtable">
+          <thead><tr><th>Chapter</th><th>Qs</th><th>Cat</th></tr></thead>
+          <tbody>
+            <tr><td><strong style="color:var(--text);">Integration & DEs</strong></td><td>6-8</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Probability</strong></td><td>4-6</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Matrices & Determinants</strong></td><td>3-4</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Vectors</strong></td><td>4-6</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Trigonometry</strong></td><td>4-5</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Complex Numbers</strong></td><td>3-4</td><td><span class="tag g">C1</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Coordinate Geometry</strong></td><td>6-8</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Limits & Continuity</strong></td><td>3-4</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Applications of Derivatives</strong></td><td>4-6</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Permutations & Combinations</strong></td><td>2-3</td><td><span class="tag b">C2</span></td></tr>
+            <tr><td><strong style="color:var(--text);">Mathematical Induction</strong></td><td>1</td><td><span class="tag o">C3</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Maths C1 alone = 24-33 questions = 48-66 marks</div>
+        <p>Maths is your gold mine. C1 chapters lo 80 questions lo 24-33 untayi. If you master JUST the green chapters, your 50-mark Maths target is very achievable!</p>
+      </div>
+    </div>
+
+    <!-- PAGE 5: PAPER ATTEMPT ORDER -->
+    <div class="page" data-page="5">
+      <div class="section-label">Exam Strategy</div>
+      <div class="section-title">Paper Attempt Order</div>
+      <div class="section-desc">Which subject first? Which questions first? Idi follow cheyyi — time waste avoid cheyyi.</div>
+
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <p><strong style="color:var(--blue);font-size:15px;">Phase 1: Maths First (90 min)</strong></p>
+        <p>Start with Maths — it's your highest-target subject. Scan ALL 80 questions. Do C1 chapters first, then C2. Mark C3 for later guessing.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--green);">
+        <p><strong style="color:var(--green);font-size:15px;">Phase 2: Physics (45 min)</strong></p>
+        <p>Switch to Physics. C1 chapters first — Laws of Motion, Current Electricity, Kinematics. Skip any question taking >2 min.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <p><strong style="color:var(--yellow);font-size:15px;">Phase 3: Chemistry (30 min)</strong></p>
+        <p>Chemistry theory questions = fastest to answer. Read and mark. Named reactions, periodic trends, bonding — these are memory-based = quick.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--accent);">
+        <p><strong style="color:var(--accent);font-size:15px;">Phase 4: Mop-up (15 min)</strong></p>
+        <p>Go back to ALL skipped questions. Apply cheat codes. GUESS everything remaining. No question should be blank!</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">The 2-Minute Rule</div>
+        <p>If a question takes more than 2 minutes and you're stuck — <strong>SKIP IT IMMEDIATELY</strong>. Mark it and move on. Come back in Phase 4. Spending 5 minutes on 1 tough question = losing 2 easy questions elsewhere. Time management > knowledge.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: CTA -->
+    <div class="page" data-page="6">
+      <div class="cta-page">
+        <div style="font-size:48px;margin-bottom:16px;">📊</div>
+        <div style="font-size:24px;font-weight:900;margin-bottom:8px;">Smart Study ><br>Hard Study</div>
+        <div style="font-size:14px;color:var(--text-dim);max-width:320px;margin-bottom:24px;line-height:1.5;">Category system follow cheyyi. C1 chapters master cheyyi. Paper lo attempt order follow cheyyi. Join community for chapter-wise practice.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp"><div class="cb-icon">💬</div><div class="cb-text">Join WhatsApp Community<div class="cb-sub">Chapter-wise practice + PYQs</div></div></a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram"><div class="cb-icon">✈️</div><div class="cb-text">Join Telegram Group<div class="cb-sub">Weightage sheets + formula cards</div></div></a>
+        <div class="cta-footer"><strong style="color:var(--text);font-size:14px;">Raw Talks with Swaroop</strong><br>Made with ❤️ for Telugu students • April 2026<br><a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> • <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br><br><a href="../">← Back to All Resources</a></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+<script>
+  const pages=document.querySelectorAll('.page');const totalPages=pages.length;let current=0;const progressFill=document.getElementById('progressFill');const progressText=document.getElementById('progressText');const btnBack=document.getElementById('btnBack');const btnNext=document.getElementById('btnNext');
+  function updateUI(){pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right');});progressFill.style.width=((current+1)/totalPages*100)+'%';progressText.textContent=(current+1)+'/'+totalPages;btnBack.classList.toggle('hidden',current===0);if(current===0){btnNext.innerHTML="Let's Go →";btnNext.onclick=goNext;}else if(current===1){btnNext.innerHTML="Continue →";btnNext.onclick=goNext;}else if(current===totalPages-1){btnNext.innerHTML="Join WhatsApp 💬";btnNext.onclick=function(){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank');};}else{btnNext.innerHTML="Next →";btnNext.onclick=goNext;}pages[current].scrollTop=0;}
+  function goNext(){if(current<totalPages-1){current++;updateUI();}}function goBack(){if(current>0){current--;updateUI();}}
+  function toggleReveal(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');}
+  let touchStartX=0;const container=document.getElementById('pagesContainer');container.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});container.addEventListener('touchend',e=>{const diff=touchStartX-e.changedTouches[0].screenX;if(Math.abs(diff)>60){if(diff>0)goNext();else goBack();}},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();goNext();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}});updateUI();
+</script>
+</body>
+</html>
