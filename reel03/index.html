@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Drop or Not? Decision Framework | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --card-hover: #1a1a28;
+    --accent: #e94560;
+    --accent-glow: rgba(233, 69, 96, 0.25);
+    --accent2: #6c5ce7;
+    --green: #00b894;
+    --yellow: #fdcb6e;
+    --blue: #74b9ff;
+    --orange: #e17055;
+    --text: #e8e8e8;
+    --text-dim: #8a8a9a;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    flex-shrink: 0;
+  }
+  .topbar-brand { font-size: 13px; font-weight: 700; color: var(--text-dim); }
+  .topbar-brand span { color: var(--accent); }
+  .progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-bar { width: 80px; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+  .progress-text { font-size: 11px; color: var(--text-dim); font-weight: 600; min-width: 32px; text-align: right; }
+
+  .pages { flex: 1; position: relative; overflow: hidden; }
+
+  .page {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px 20px 100px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+  .page.exit-left { opacity: 0; transform: translateX(-60px); }
+  .page.exit-right { opacity: 0; transform: translateX(60px); }
+
+  .bottombar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    z-index: 100;
+    flex-shrink: 0;
+  }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-back { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+  .btn-back:hover { border-color: var(--text-dim); }
+  .btn-back.hidden { opacity: 0; pointer-events: none; }
+  .btn-next { background: var(--accent); color: #fff; box-shadow: 0 4px 16px var(--accent-glow); }
+  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 24px var(--accent-glow); }
+  .btn-next:active { transform: scale(0.97); }
+
+  /* Hero */
+  .hero-page {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; min-height: calc(100% - 100px); padding-bottom: 0 !important;
+  }
+  .hero-emoji { font-size: 56px; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .hero-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+  .hero-title { font-size: 32px; font-weight: 900; line-height: 1.15; margin-bottom: 12px; background: linear-gradient(135deg, #fff 0%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 15px; color: var(--text-dim); line-height: 1.5; max-width: 340px; }
+  .hero-stats { display: flex; gap: 28px; margin-top: 32px; }
+  .stat-num { font-size: 26px; font-weight: 900; color: var(--accent); }
+  .stat-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 2px; }
+
+  /* Sections */
+  .section-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2.5px; margin-bottom: 8px; }
+  .section-title { font-size: 24px; font-weight: 900; line-height: 1.2; margin-bottom: 6px; }
+  .section-desc { font-size: 14px; color: var(--text-dim); line-height: 1.5; margin-bottom: 24px; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 12px; }
+  .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .card-ico { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .card-ico.r { background: rgba(233,69,96,0.12); }
+  .card-ico.b { background: rgba(116,185,255,0.12); }
+  .card-ico.g { background: rgba(0,184,148,0.12); }
+  .card-ico.p { background: rgba(108,92,231,0.12); }
+  .card-ico.y { background: rgba(253,203,110,0.12); }
+  .card-ico.o { background: rgba(225,112,85,0.12); }
+  .card-name { font-size: 15px; font-weight: 700; }
+  .card-sub { font-size: 12px; color: var(--text-dim); }
+  .card p { font-size: 13px; color: var(--text-dim); line-height: 1.55; margin-bottom: 6px; }
+
+  /* Decision cards */
+  .decision-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--accent);
+  }
+  .decision-card.yes { border-left-color: var(--green); }
+  .decision-card.no { border-left-color: var(--accent); }
+  .decision-card.maybe { border-left-color: var(--yellow); }
+  .decision-card h4 { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .decision-card p { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+
+  /* Stat boxes */
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .stat-box .big-num { font-size: 36px; font-weight: 900; margin-bottom: 4px; }
+  .stat-box .big-num.green { color: var(--green); }
+  .stat-box .big-num.red { color: var(--accent); }
+  .stat-box .big-num.yellow { color: var(--yellow); }
+  .stat-box .big-num.blue { color: var(--blue); }
+  .stat-box label { font-size: 12px; color: var(--text-dim); display: block; }
+
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+  /* Tier bars */
+  .tier {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--accent);
+    opacity: 0;
+    transform: translateY(16px);
+    animation: slideUp 0.4s ease forwards;
+  }
+  .tier:nth-child(2) { animation-delay: 0.08s; }
+  .tier:nth-child(3) { animation-delay: 0.16s; }
+  .tier:nth-child(4) { animation-delay: 0.24s; }
+  .tier:nth-child(5) { animation-delay: 0.32s; }
+  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+  .tier.green { border-left-color: var(--green); }
+  .tier.blue { border-left-color: var(--blue); }
+  .tier.yellow { border-left-color: var(--yellow); }
+  .tier.red { border-left-color: var(--accent); }
+
+  /* Table */
+  .dtable { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .dtable th { background: rgba(233,69,96,0.1); color: var(--accent); font-weight: 700; text-align: left; padding: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 2px solid rgba(233,69,96,0.3); }
+  .dtable td { padding: 10px; border-bottom: 1px solid var(--border); }
+  .dtable tr:last-child td { border-bottom: none; }
+  .hi { color: var(--green); font-weight: 700; }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+  .tag.g { background: rgba(0,184,148,0.15); color: var(--green); }
+  .tag.r { background: rgba(233,69,96,0.15); color: var(--accent); }
+  .tag.y { background: rgba(253,203,110,0.15); color: var(--yellow); }
+  .tag.b { background: rgba(116,185,255,0.15); color: var(--blue); }
+
+  /* Tip box */
+  .tip { background: linear-gradient(135deg, rgba(233,69,96,0.06) 0%, rgba(108,92,231,0.06) 100%); border: 1px solid rgba(233,69,96,0.15); border-radius: 14px; padding: 16px; margin: 16px 0; }
+  .tip-label { font-size: 10px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+  .tip p { font-size: 13px; line-height: 1.55; color: var(--text); }
+
+  /* Steps */
+  .steps { list-style: none; counter-reset: s; }
+  .steps li { counter-increment: s; position: relative; padding: 14px 14px 14px 50px; margin-bottom: 8px; background: var(--card); border-radius: 12px; font-size: 13px; line-height: 1.5; }
+  .steps li::before { content: counter(s); position: absolute; left: 12px; top: 13px; width: 28px; height: 28px; background: var(--accent); color: #fff; font-weight: 800; font-size: 12px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .steps li strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 14px; }
+  .steps li span { color: var(--text-dim); }
+
+  /* Checklist */
+  .checklist { list-style: none; }
+  .checklist li { padding: 12px 14px 12px 44px; margin-bottom: 6px; background: var(--card); border-radius: 12px; font-size: 13px; line-height: 1.5; position: relative; color: var(--text-dim); }
+  .checklist li::before { content: '☐'; position: absolute; left: 14px; top: 12px; font-size: 16px; color: var(--accent); }
+  .checklist li strong { color: var(--text); }
+
+  /* Flowchart */
+  .flow-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .flow-arrow { text-align: center; font-size: 20px; color: var(--accent); margin: 4px 0; }
+  .flow-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .flow-yes {
+    background: rgba(0,184,148,0.08);
+    border: 1px solid rgba(0,184,148,0.3);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .flow-no {
+    background: rgba(233,69,96,0.08);
+    border: 1px solid rgba(233,69,96,0.3);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .flow-yes h4 { color: var(--green); font-size: 13px; margin-bottom: 4px; }
+  .flow-no h4 { color: var(--accent); font-size: 13px; margin-bottom: 4px; }
+  .flow-yes p, .flow-no p { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
+
+  /* CTA page */
+  .cta-page { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: calc(100% - 100px); }
+  .cta-emoji { font-size: 48px; margin-bottom: 16px; }
+  .cta-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
+  .cta-desc { font-size: 14px; color: var(--text-dim); max-width: 320px; margin-bottom: 24px; line-height: 1.5; }
+  .community-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px 18px; border-radius: 14px; text-decoration: none; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 10px; transition: transform 0.2s; border: none; cursor: pointer; }
+  .community-btn:hover { transform: translateY(-2px); }
+  .community-btn.whatsapp { background: linear-gradient(135deg, #25d366, #128c7e); box-shadow: 0 4px 20px rgba(37,211,102,0.25); }
+  .community-btn.telegram { background: linear-gradient(135deg, #2aabee, #229ed9); box-shadow: 0 4px 20px rgba(42,171,238,0.25); }
+  .community-btn .cb-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .community-btn .cb-text { text-align: left; }
+  .community-btn .cb-sub { font-size: 12px; font-weight: 500; opacity: 0.85; margin-top: 2px; }
+  .cta-footer { font-size: 11px; color: var(--text-dim); margin-top: 24px; line-height: 1.6; }
+  .cta-footer a { color: var(--accent); text-decoration: none; }
+
+  /* Accordion */
+  .reveal-btn { width: 100%; background: var(--card); border: 1px dashed var(--border); border-radius: 12px; padding: 14px; color: var(--accent); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+  .reveal-btn:hover { background: var(--card-hover); border-color: var(--accent); }
+  .reveal-btn .arrow { transition: transform 0.3s; font-size: 16px; }
+  .reveal-btn.open .arrow { transform: rotate(180deg); }
+  .reveal-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+  .reveal-content.open { max-height: 3000px; }
+
+  .swipe-hint { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--text-dim); opacity: 0.6; display: flex; align-items: center; gap: 4px; animation: hintPulse 2s ease-in-out infinite; }
+  @keyframes hintPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+
+  /* Verdict bar */
+  .verdict { background: linear-gradient(135deg, rgba(233,69,96,0.1), rgba(108,92,231,0.1)); border: 1px solid rgba(233,69,96,0.2); border-radius: 14px; padding: 18px; margin: 12px 0; text-align: center; }
+  .verdict h3 { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
+  .verdict p { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/8</div>
+    </div>
+  </div>
+
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">🤔</div>
+        <div class="hero-badge">Decision Framework</div>
+        <div class="hero-title">Drop or Not?<br>Data-Backed Guide</div>
+        <div class="hero-sub">JEE rank expected kanna takkuva ochindha? Drop teeskovaalaa, college join avaalaa? Let data decide — not emotions.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">40-45%</div><div class="stat-label">IIT Seats by<br>Droppers</div></div>
+          <div><div class="stat-num">15.4L</div><div class="stat-label">JEE Main<br>Candidates</div></div>
+          <div><div class="stat-num">2</div><div class="stat-label">JEE Adv<br>Attempts Max</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">🧠</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:24px;">Join the Community First</div>
+        <div class="hero-sub" style="margin-bottom:28px;">Drop decision oka complex call — alone ga decide cheyaku. Community lo actual droppers and seniors unnaaru. Ask them directly.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Talk to seniors who took drops & succeeded</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Daily resources + career guidance</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: REAL NUMBERS -->
+    <div class="page" data-page="2">
+      <div class="section-label">The Data</div>
+      <div class="section-title">Real Numbers Behind Drop Year</div>
+      <div class="section-desc">Emotion kaadu — ivi facts. JEE 2025 official statistics based on NTA data.</div>
+
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="big-num blue">15.4L</div>
+          <label>JEE Main 2025 Registrations</label>
+        </div>
+        <div class="stat-box">
+          <div class="big-num yellow">2.5L</div>
+          <label>Qualified for JEE Advanced</label>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="big-num green">1.8L</div>
+          <label>Appeared JEE Advanced</label>
+        </div>
+        <div class="stat-box">
+          <div class="big-num red">54,378</div>
+          <label>Qualified JEE Advanced</label>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Key Insight</div>
+        <p>JEE Advanced lo only ~30% qualify — and IIT seats are just ~17,000. That means <strong>out of 15.4 lakh students, only ~1.1% get IIT seats</strong>. Drop teeskunna ani guaranteed kaadu.</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>📊 Dropper vs Fresher Split</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--text);">40-45% of IIT seats</strong> go to droppers/repeaters. This means droppers ARE competitive — but remember, they make up 20-30% of total candidates.</p>
+          <p style="margin-top:8px;">Average percentile jump for serious droppers: <strong style="color:var(--green);">25-40 percentile</strong> improvement.</p>
+          <p style="margin-top:8px;">But CUET droppers only improve by 12-15%. <strong style="color:var(--text);">JEE droppers benefit more</strong> because the exam rewards deep practice over memory.</p>
+        </div>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>🧠 Mental Health Warning</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--accent);">40% higher anxiety risk</strong> — droppers face significantly more stress than freshers.</p>
+          <p style="margin-top:8px;">Peak burnout: November–December. By this time the initial motivation fades, and self-doubt peaks.</p>
+          <p style="margin-top:8px;">Students using structured test series show <strong style="color:var(--green);">22% higher success rate</strong> than isolated self-study.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: DECISION FLOWCHART -->
+    <div class="page" data-page="3">
+      <div class="section-label">Framework</div>
+      <div class="section-title">Should YOU Take a Drop?</div>
+      <div class="section-desc">Answer these 4 questions honestly. No emotional answers — only facts about YOUR situation.</div>
+
+      <div class="flow-box" style="background: linear-gradient(135deg, rgba(233,69,96,0.08), rgba(108,92,231,0.08)); border-color: rgba(233,69,96,0.3);">
+        <div style="font-size:12px; color:var(--accent); font-weight:700; margin-bottom:4px;">QUESTION 1</div>
+        Nee score target cutoff ki 15-20% within lo undha?
+      </div>
+      <div class="flow-split">
+        <div class="flow-yes"><h4>✅ Yes</h4><p>Drop makes sense — you're close. Focused prep can bridge the gap.</p></div>
+        <div class="flow-no"><h4>❌ No, far away</h4><p>Drop risky — you need fundamental work, not just revision. Consider alternatives.</p></div>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="flow-box" style="background: linear-gradient(135deg, rgba(116,185,255,0.08), rgba(108,92,231,0.08)); border-color: rgba(116,185,255,0.3);">
+        <div style="font-size:12px; color:var(--blue); font-weight:700; margin-bottom:4px;">QUESTION 2</div>
+        Nee weak areas clearly identify chesukogalvaa?
+      </div>
+      <div class="flow-split">
+        <div class="flow-yes"><h4>✅ Yes — Specific</h4><p>"Rotation + Electro weak" — this is fixable. Drop works when you know WHAT failed.</p></div>
+        <div class="flow-no"><h4>❌ No — "Everything"</h4><p>"Complete syllabus weak" = you'll repeat same mistakes. College join better.</p></div>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="flow-box" style="background: linear-gradient(135deg, rgba(0,184,148,0.08), rgba(108,92,231,0.08)); border-color: rgba(0,184,148,0.3);">
+        <div style="font-size:12px; color:var(--green); font-weight:700; margin-bottom:4px;">QUESTION 3</div>
+        Self-discipline undha — 8-10 hours daily consistently?
+      </div>
+      <div class="flow-split">
+        <div class="flow-yes"><h4>✅ Yes — Proven</h4><p>If you studied 6+ hrs in 11th-12th consistently, you can sustain a drop year.</p></div>
+        <div class="flow-no"><h4>❌ No — Honestly</h4><p>Drop year lo discipline magically raadu. Join college + prepare casually.</p></div>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="flow-box" style="background: linear-gradient(135deg, rgba(253,203,110,0.08), rgba(108,92,231,0.08)); border-color: rgba(253,203,110,0.3);">
+        <div style="font-size:12px; color:var(--yellow); font-weight:700; margin-bottom:4px;">QUESTION 4</div>
+        Family financial pressure handle cheyagalara?
+      </div>
+      <div class="flow-split">
+        <div class="flow-yes"><h4>✅ Yes — Supported</h4><p>Family is supportive + can handle ₹1.5-4L coaching + 1 year living cost.</p></div>
+        <div class="flow-no"><h4>❌ No — Tight</h4><p>Financial stress + exam stress = disaster combo. Consider PW/free resources.</p></div>
+      </div>
+
+      <div class="verdict" style="margin-top:20px;">
+        <h3>4/4 YES = Drop makes sense</h3>
+        <p>2-3 YES = Think carefully, consider partial drop (college + prep)<br>0-1 YES = Join the best college you can get RIGHT NOW</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: COST OF DROP -->
+    <div class="page" data-page="4">
+      <div class="section-label">Cost Analysis</div>
+      <div class="section-title">What a Drop Year Actually Costs</div>
+      <div class="section-desc">Coaching fees ke kaadu — opportunity cost, mental cost, everything counted.</div>
+
+      <table class="dtable">
+        <thead>
+          <tr><th>Expense</th><th>Range (₹)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong style="color:var(--text);">Coaching (Offline/Kota)</strong></td><td>₹1.5L – 2.5L</td></tr>
+          <tr><td><strong style="color:var(--text);">Coaching (Online — PW/Unacademy)</strong></td><td>₹5K – 30K</td></tr>
+          <tr><td><strong style="color:var(--text);">Hostel + Food (Kota)</strong></td><td>₹60K – 1.2L</td></tr>
+          <tr><td><strong style="color:var(--text);">Test Series + Books</strong></td><td>₹5K – 15K</td></tr>
+          <tr><td style="color:var(--accent); font-weight:700;">Total (Kota Full)</td><td style="color:var(--accent); font-weight:700;">₹2.5L – 4L</td></tr>
+          <tr><td style="color:var(--green); font-weight:700;">Total (Online Budget)</td><td style="color:var(--green); font-weight:700;">₹10K – 50K</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip">
+        <div class="tip-label">Hidden Costs Nobody Tells You</div>
+        <p><strong>1 year of earning delayed</strong> — if you'd joined NIT CSE now, you'd graduate 1 year earlier. That's ₹8-15L in starting salary you miss.</p>
+        <p style="margin-top:8px;"><strong>Mental health cost</strong> — isolation, pressure from peers in college, family stress. This is real and underestimated.</p>
+        <p style="margin-top:8px;"><strong>Social cost</strong> — your batchmates will be in college, making friends, doing projects. You'll be alone with books.</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>💰 Budget vs Premium Drop — What's Worth It?</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="decision-card yes">
+          <h4>✅ Premium worth it IF:</h4>
+          <p>You scored 85-95 percentile, need structured push to 99+, and can afford Kota/Allen/FIITJEE comfortably.</p>
+        </div>
+        <div class="decision-card no">
+          <h4>❌ Budget is smarter IF:</h4>
+          <p>You're a self-learner, scored 70-85 percentile, and need more concept clarity. PW + free YouTube + test series is enough.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: ALTERNATIVES TO DROP -->
+    <div class="page" data-page="5">
+      <div class="section-label">Alternatives</div>
+      <div class="section-title">5 Smart Moves Instead of Full Drop</div>
+      <div class="section-desc">Drop alone option kaadu. Some of these paths lead to SAME outcome — or even better.</div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico g">🎓</div>
+          <div><div class="card-name">Join NIT/IIIT + Prepare for GATE</div><div class="card-sub">Best of both worlds</div></div>
+        </div>
+        <p>Get NIT degree. During B.Tech, prepare for GATE. Get IIT for M.Tech. Same "IIT" tag, zero drop risk. Many NIT graduates crack GATE for IIT Bombay, Delhi, Madras.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico b">🔀</div>
+          <div><div class="card-name">Partial Drop — College + JEE Prep</div><div class="card-sub">Safety net approach</div></div>
+        </div>
+        <p>Join a decent college NOW. Continue JEE prep on the side with online resources. If JEE goes well next year — switch. If not — you're already in college, no year wasted.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico p">💻</div>
+          <div><div class="card-name">Skill-First Approach</div><div class="card-sub">College name < Skills in 2026</div></div>
+        </div>
+        <p>Join any decent engineering college. Focus on coding, DSA, projects. Companies like Google, Microsoft hire from Tier-2/3 colleges based on skills. College is just a platform.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico y">📝</div>
+          <div><div class="card-name">Other Entrance Exams</div><div class="card-sub">BITSAT, VITEEE, COMEDK, State CETs</div></div>
+        </div>
+        <p>BITS Pilani (BITSAT), VIT (VITEEE), Manipal (MET) — these colleges have excellent placements. Don't ignore them because "IIT kaadu" ani.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico o">🔧</div>
+          <div><div class="card-name">Diploma → Lateral Entry</div><div class="card-sub">3-year diploma → Direct 2nd year B.Tech</div></div>
+        </div>
+        <p>3-year polytechnic diploma → join B.Tech directly in 2nd year via lateral entry (LEET/state exams). No JEE needed. Saves ego, still gets degree.</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Swaroop's Take</div>
+        <p>I got EAMCET rank 6464 with just 2 days prep. I didn't take a drop for IIT. I chose Scaler School of Technology instead. <strong>The college you go to matters less than what you DO in that college.</strong> Skills > Tag.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: IF YOU DECIDE TO DROP -->
+    <div class="page" data-page="6">
+      <div class="section-label">If You Drop</div>
+      <div class="section-title">Drop Year Success Playbook</div>
+      <div class="section-desc">Okay, so you've decided to drop. Here's the exact framework that successful droppers follow.</div>
+
+      <ol class="steps">
+        <li>
+          <strong>First 2 Weeks: Diagnose, Don't Study</strong>
+          <span>Take 3-4 full mocks. Analyze every wrong answer. Make a list of EXACTLY which chapters and concept types you're weak in. This is your roadmap.</span>
+        </li>
+        <li>
+          <strong>Month 1-3: Foundation Rebuild</strong>
+          <span>Don't jump to new books. Go back to NCERT + your class notes. Fix fundamentals. Most droppers fail because they skip this and start with advanced problems.</span>
+        </li>
+        <li>
+          <strong>Month 4-8: Problem Solving Machine</strong>
+          <span>500+ problems/week. Target: previous year papers of JEE Main + Advanced. Join a structured test series (Allen/FIITJEE/PW). Weekly mocks are NON-NEGOTIABLE.</span>
+        </li>
+        <li>
+          <strong>Month 9-12: Mock Test + Revision Only</strong>
+          <span>No new chapters. Only revision + mock analysis. Target: 2 full mocks per week. Analyze for 3 hours after each mock. This is where most jumps happen.</span>
+        </li>
+      </ol>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>⚠️ 5 Mistakes That Kill Drop Year</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="decision-card no">
+          <h4>❌ Buying too many books</h4>
+          <p>1 good book per subject is enough. Cengage/DC Pandey + NCERT = sufficient. Don't buy 5 books and read none.</p>
+        </div>
+        <div class="decision-card no">
+          <h4>❌ Skipping weak chapters</h4>
+          <p>"Organic Chemistry chhod deta hoon" — BAD idea. Weak chapters are WHY you're dropping. Face them.</p>
+        </div>
+        <div class="decision-card no">
+          <h4>❌ No mock test schedule</h4>
+          <p>Studying without mocks = playing cricket without matches. You'll never learn time management or pressure handling.</p>
+        </div>
+        <div class="decision-card no">
+          <h4>❌ Comparing with friends</h4>
+          <p>Your batchmates are posting college photos. Ignore. Your timeline is different. Comparison kills motivation.</p>
+        </div>
+        <div class="decision-card no">
+          <h4>❌ Leaving revision for last 2 months</h4>
+          <p>Revision needs to start from month 3. By month 10, you should've revised the full syllabus at least 2x.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Daily Schedule Template</div>
+        <p><strong>6 AM</strong> — Wake up, 30 min revision of yesterday's formulas<br>
+        <strong>6:30 - 10:30</strong> — Subject 1 (deep study + problems)<br>
+        <strong>11 - 1 PM</strong> — Subject 2<br>
+        <strong>2 - 5 PM</strong> — Subject 3 + PYQs<br>
+        <strong>5 - 6 PM</strong> — Break (exercise/walk — NON-NEGOTIABLE)<br>
+        <strong>6 - 9 PM</strong> — Mock/revision + doubt clearing<br>
+        <strong>9 - 10 PM</strong> — Quick recap + next day plan<br>
+        <strong>= 8-10 focused hours</strong></p>
+      </div>
+    </div>
+
+    <!-- PAGE 7: JEE ADVANCED ELIGIBILITY -->
+    <div class="page" data-page="7">
+      <div class="section-label">Important Rules</div>
+      <div class="section-title">JEE Advanced 2026 Eligibility</div>
+      <div class="section-desc">Drop leni mundhu ivi thelsukovaali — otherwise surprise ochestundhi.</div>
+
+      <div class="decision-card" style="border-left-color: var(--blue);">
+        <h4>📋 Maximum 2 Attempts</h4>
+        <p>JEE Advanced ki maximum <strong>2 attempts in 2 consecutive years</strong>. If you appeared in 2025, you have 1 more attempt in 2026. That's it — no 3rd chance. (2025 lo briefly 3 attempts announce chesaaru but later rolled back.)</p>
+      </div>
+
+      <div class="decision-card" style="border-left-color: var(--yellow);">
+        <h4>📅 12th Pass Year Requirement</h4>
+        <p>You must have passed 12th <strong>for the first time in 2025 or 2026</strong>. If you passed in 2024 or before — you're generally <strong>NOT eligible</strong> for JEE Advanced 2026.</p>
+      </div>
+
+      <div class="decision-card" style="border-left-color: var(--green);">
+        <h4>🎂 Age Limit</h4>
+        <p>General: Born on or after <strong>Oct 1, 2001</strong>. SC/ST/PwD get 5 years relaxation (born on or after Oct 1, 1996).</p>
+      </div>
+
+      <div class="decision-card" style="border-left-color: var(--accent);">
+        <h4>⚠️ Must Qualify JEE Main First</h4>
+        <p>JEE Advanced ke directly register cheyyaleru. First you need to be in <strong>top 2,50,000 in JEE Main 2026</strong> (category-wise cutoff applies).</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Critical Warning</div>
+        <p>If you're dropping for JEE Advanced specifically — make sure you haven't already used both attempts! Many students forget this and waste a year preparing for an exam they're not eligible for. <strong>Check jeeadv.ac.in for latest eligibility rules.</strong></p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>🔗 Official Links for Verification</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--text);">JEE Advanced 2026 Eligibility:</strong><br>
+          <a href="https://jeeadv.ac.in/eligibility.html" target="_blank" style="color:var(--accent); text-decoration:none;">jeeadv.ac.in/eligibility.html →</a></p>
+          <p style="margin-top:10px;"><strong style="color:var(--text);">NTA JEE Main 2026:</strong><br>
+          <a href="https://jeemain.nta.nic.in" target="_blank" style="color:var(--accent); text-decoration:none;">jeemain.nta.nic.in →</a></p>
+          <p style="margin-top:10px;"><strong style="color:var(--text);">JoSAA Counselling 2026:</strong><br>
+          <a href="https://josaa.nic.in" target="_blank" style="color:var(--accent); text-decoration:none;">josaa.nic.in →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 8: CTA -->
+    <div class="page" data-page="8">
+      <div class="cta-page">
+        <div class="cta-emoji">💪</div>
+        <div class="cta-title">Your Decision. Your Life.</div>
+        <div class="cta-desc">Whether you drop or not — work hard and be honest with yourself. College name is temporary. Skills are permanent. Join the community for personalized guidance.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Ask seniors who dropped & succeeded</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Resources + career guidance daily</div></div>
+        </a>
+
+        <div class="cta-footer">
+          <strong style="color:var(--text); font-size:14px;">Raw Talks with Swaroop</strong><br>
+          Made with ❤️ for Telugu students • April 2026<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> •
+          <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br><br>
+          <a href="../">← Back to All Resources</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  const totalPages = pages.length;
+  let current = 0;
+
+  const progressFill = document.getElementById('progressFill');
+  const progressText = document.getElementById('progressText');
+  const btnBack = document.getElementById('btnBack');
+  const btnNext = document.getElementById('btnNext');
+
+  function updateUI() {
+    pages.forEach((p, i) => {
+      p.classList.remove('active', 'exit-left', 'exit-right');
+      if (i === current) p.classList.add('active');
+      else if (i < current) p.classList.add('exit-left');
+      else p.classList.add('exit-right');
+    });
+
+    const pct = ((current + 1) / totalPages) * 100;
+    progressFill.style.width = pct + '%';
+    progressText.textContent = (current + 1) + '/' + totalPages;
+
+    btnBack.classList.toggle('hidden', current === 0);
+
+    if (current === 0) {
+      btnNext.innerHTML = "Let's Go →";
+      btnNext.onclick = goNext;
+    } else if (current === 1) {
+      btnNext.innerHTML = "Continue to Guide →";
+      btnNext.onclick = goNext;
+    } else if (current === totalPages - 1) {
+      btnNext.innerHTML = "Join WhatsApp 💬";
+      btnNext.onclick = function() {
+        window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD', '_blank');
+      };
+    } else {
+      btnNext.innerHTML = "Next →";
+      btnNext.onclick = goNext;
+    }
+
+    pages[current].scrollTop = 0;
+  }
+
+  function goNext() {
+    if (current < totalPages - 1) { current++; updateUI(); }
+  }
+
+  function goBack() {
+    if (current > 0) { current--; updateUI(); }
+  }
+
+  function toggleReveal(btn) {
+    btn.classList.toggle('open');
+    btn.nextElementSibling.classList.toggle('open');
+  }
+
+  // Swipe
+  let touchStartX = 0;
+  const container = document.getElementById('pagesContainer');
+  container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  container.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].screenX;
+    if (Math.abs(diff) > 60) { if (diff > 0) goNext(); else goBack(); }
+  }, { passive: true });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goBack(); }
+  });
+
+  updateUI();
+</script>
+
+</body>
+</html>
