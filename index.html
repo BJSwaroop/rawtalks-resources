@@ -2,1072 +2,131 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>JEE Rank → College Guide | Raw Talks with Swaroop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Resources | Raw Talks with Swaroop</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
-  :root {
-    --bg: #0a0a0f;
-    --card: #12121a;
-    --card-hover: #1a1a28;
-    --accent: #e94560;
-    --accent-glow: rgba(233, 69, 96, 0.25);
-    --accent2: #6c5ce7;
-    --green: #00b894;
-    --yellow: #fdcb6e;
-    --blue: #74b9ff;
-    --text: #e8e8e8;
-    --text-dim: #8a8a9a;
-    --border: #2a2a3a;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html, body {
-    height: 100%;
-    overflow: hidden;
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    -webkit-font-smoothing: antialiased;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  /* ─── APP SHELL ─── */
-  .app {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    max-width: 520px;
-    margin: 0 auto;
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* ─── TOP BAR ─── */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    z-index: 100;
-    flex-shrink: 0;
-  }
-  .topbar-brand {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--text-dim);
-  }
-  .topbar-brand span { color: var(--accent); }
-  .progress-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .progress-bar {
-    width: 80px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 4px;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .progress-text {
-    font-size: 11px;
-    color: var(--text-dim);
-    font-weight: 600;
-    min-width: 32px;
-    text-align: right;
-  }
-
-  /* ─── PAGES CONTAINER ─── */
-  .pages {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .page {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 24px 20px 100px;
-    opacity: 0;
-    transform: translateX(60px);
-    transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  .page.active {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-  }
-  .page.exit-left {
-    opacity: 0;
-    transform: translateX(-60px);
-  }
-  .page.exit-right {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-
-  /* ─── BOTTOM NAV ─── */
-  .bottombar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid var(--border);
-    z-index: 100;
-    flex-shrink: 0;
-  }
-  .btn {
-    padding: 10px 22px;
-    border-radius: 50px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+  :root { --bg:#0a0a0f; --card:#12121a; --accent:#e94560; --text:#e8e8e8; --dim:#8a8a9a; --border:#2a2a3a; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:480px; margin:0 auto; padding:24px 16px 60px; }
+  .hero { text-align:center; padding:40px 0 32px; }
+  .hero h1 { font-size:28px; font-weight:900; background:linear-gradient(135deg,#fff,#74b9ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:8px; }
+  .hero p { font-size:14px; color:var(--dim); }
+  .badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:4px 14px; border-radius:20px; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; }
+  .grid { display:flex; flex-direction:column; gap:10px; }
+  .res-card {
+    display:flex; align-items:center; gap:14px;
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:16px; text-decoration:none; color:var(--text);
     transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
-  .btn-back {
-    background: transparent;
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-  }
-  .btn-back:hover { border-color: var(--text-dim); }
-  .btn-back.hidden { opacity: 0; pointer-events: none; }
-  .btn-next {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 4px 16px var(--accent-glow);
-  }
-  .btn-next:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 24px var(--accent-glow);
-  }
-  .btn-next:active { transform: scale(0.97); }
-
-  /* ─── PAGE STYLES ─── */
-
-  /* Hero Page */
-  .hero-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: calc(100% - 100px);
-    padding-bottom: 0 !important;
-  }
-  .hero-emoji {
-    font-size: 56px;
-    margin-bottom: 16px;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-  .hero-badge {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 800;
-    padding: 4px 14px;
-    border-radius: 20px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .hero-title {
-    font-size: 32px;
-    font-weight: 900;
-    line-height: 1.15;
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #fff 0%, var(--blue) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .hero-sub {
-    font-size: 15px;
-    color: var(--text-dim);
-    line-height: 1.5;
-    max-width: 340px;
-  }
-  .hero-stats {
-    display: flex;
-    gap: 28px;
-    margin-top: 32px;
-  }
-  .stat-num {
-    font-size: 26px;
-    font-weight: 900;
-    color: var(--accent);
-  }
-  .stat-label {
-    font-size: 10px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1.2px;
-    margin-top: 2px;
-  }
-
-  /* Section label + title */
-  .section-label {
-    font-size: 10px;
-    font-weight: 800;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    margin-bottom: 8px;
-  }
-  .section-title {
-    font-size: 24px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 6px;
-  }
-  .section-desc {
-    font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.5;
-    margin-bottom: 24px;
-  }
-
-  /* Cards */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 18px;
-    margin-bottom: 12px;
-  }
-  .card-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-  .card-ico {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .card-ico.r { background: rgba(233,69,96,0.12); }
-  .card-ico.b { background: rgba(116,185,255,0.12); }
-  .card-ico.g { background: rgba(0,184,148,0.12); }
-  .card-ico.p { background: rgba(108,92,231,0.12); }
-  .card-ico.y { background: rgba(253,203,110,0.12); }
-  .card-name { font-size: 15px; font-weight: 700; }
-  .card-sub { font-size: 12px; color: var(--text-dim); }
-  .card p {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.55;
-    margin-bottom: 6px;
-  }
-  .card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    margin-top: 6px;
-    transition: gap 0.2s;
-  }
-  .card-link:hover { gap: 9px; }
-
-  /* Tiers */
-  .tier {
-    background: var(--card);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 10px;
-    border-left: 4px solid var(--accent);
-    opacity: 0;
-    transform: translateY(16px);
-    animation: slideUp 0.4s ease forwards;
-  }
-  .tier:nth-child(2) { animation-delay: 0.08s; }
-  .tier:nth-child(3) { animation-delay: 0.16s; }
-  .tier:nth-child(4) { animation-delay: 0.24s; }
-  .tier:nth-child(5) { animation-delay: 0.32s; }
-  .tier:nth-child(6) { animation-delay: 0.40s; }
-  @keyframes slideUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .tier.gold { border-left-color: #fdcb6e; }
-  .tier.silver { border-left-color: #74b9ff; }
-  .tier.bronze { border-left-color: #00b894; }
-  .tier.copper { border-left-color: #e17055; }
-  .tier.iron { border-left-color: #636e72; }
-  .tier-rank { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
-  .tier-colleges { font-size: 13px; color: var(--text-dim); line-height: 1.4; }
-  .tier-branch { font-size: 12px; color: var(--yellow); margin-top: 6px; font-weight: 600; }
-
-  /* Table */
-  .dtable {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0;
-    font-size: 13px;
-  }
-  .dtable th {
-    background: rgba(233,69,96,0.1);
-    color: var(--accent);
-    font-weight: 700;
-    text-align: left;
-    padding: 10px 10px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    border-bottom: 2px solid rgba(233,69,96,0.3);
-  }
-  .dtable td {
-    padding: 10px;
-    border-bottom: 1px solid var(--border);
-  }
-  .dtable tr:last-child td { border-bottom: none; }
-  .hi { color: var(--green); font-weight: 700; }
-  .dim { color: var(--text-dim); }
-
-  /* Tags */
-  .tag {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-  }
-  .tag.g { background: rgba(0,184,148,0.15); color: var(--green); }
-  .tag.r { background: rgba(233,69,96,0.15); color: var(--accent); }
-  .tag.y { background: rgba(253,203,110,0.15); color: var(--yellow); }
-  .tag.b { background: rgba(116,185,255,0.15); color: var(--blue); }
-
-  /* Tip box */
-  .tip {
-    background: linear-gradient(135deg, rgba(233,69,96,0.06) 0%, rgba(108,92,231,0.06) 100%);
-    border: 1px solid rgba(233,69,96,0.15);
-    border-radius: 14px;
-    padding: 16px;
-    margin: 16px 0;
-  }
-  .tip-label {
-    font-size: 10px;
-    font-weight: 800;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-  }
-  .tip p { font-size: 13px; line-height: 1.55; color: var(--text); }
-
-  /* Steps */
-  .steps { list-style: none; counter-reset: s; }
-  .steps li {
-    counter-increment: s;
-    position: relative;
-    padding: 14px 14px 14px 50px;
-    margin-bottom: 8px;
-    background: var(--card);
-    border-radius: 12px;
-    font-size: 13px;
-    line-height: 1.5;
-  }
-  .steps li::before {
-    content: counter(s);
-    position: absolute;
-    left: 12px; top: 13px;
-    width: 28px; height: 28px;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 800;
-    font-size: 12px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .steps li strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 14px; }
-  .steps li span { color: var(--text-dim); }
-
-  /* CTA page */
-  .cta-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: calc(100% - 100px);
-  }
-  .cta-emoji { font-size: 48px; margin-bottom: 16px; }
-  .cta-title { font-size: 24px; font-weight: 900; margin-bottom: 8px; }
-  .cta-desc { font-size: 14px; color: var(--text-dim); max-width: 320px; margin-bottom: 24px; line-height: 1.5; }
-  .cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 14px 32px;
-    border-radius: 50px;
-    text-decoration: none;
-    box-shadow: 0 8px 32px var(--accent-glow);
-    transition: transform 0.2s;
-    margin-bottom: 16px;
-  }
-  .cta-link:hover { transform: scale(1.03); }
-  .community-btn {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    padding: 16px 18px;
-    border-radius: 14px;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: none;
-    cursor: pointer;
-  }
-  .community-btn:hover { transform: translateY(-2px); }
-  .community-btn.whatsapp {
-    background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
-    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.25);
-  }
-  .community-btn.telegram {
-    background: linear-gradient(135deg, #2aabee 0%, #229ed9 100%);
-    box-shadow: 0 4px 20px rgba(42, 171, 238, 0.25);
-  }
-  .community-btn .cb-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .community-btn .cb-text { text-align: left; }
-  .community-btn .cb-sub {
-    font-size: 12px;
-    font-weight: 500;
-    opacity: 0.85;
-    margin-top: 2px;
-  }
-  .cta-footer {
-    font-size: 11px;
-    color: var(--text-dim);
-    margin-top: 24px;
-    line-height: 1.6;
-  }
-  .cta-footer a { color: var(--accent); text-decoration: none; }
-
-  /* Accordion reveal */
-  .reveal-btn {
-    width: 100%;
-    background: var(--card);
-    border: 1px dashed var(--border);
-    border-radius: 12px;
-    padding: 14px;
-    color: var(--accent);
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .reveal-btn:hover { background: var(--card-hover); border-color: var(--accent); }
-  .reveal-btn .arrow {
-    transition: transform 0.3s;
-    font-size: 16px;
-  }
-  .reveal-btn.open .arrow { transform: rotate(180deg); }
-  .reveal-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .reveal-content.open {
-    max-height: 2000px;
-  }
-
-  /* Swipe hint */
-  .swipe-hint {
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
-    color: var(--text-dim);
-    opacity: 0.6;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    animation: hintPulse 2s ease-in-out infinite;
-  }
-  @keyframes hintPulse {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.8; }
-  }
+  .res-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .res-num { width:36px; height:36px; border-radius:10px; background:rgba(233,69,96,0.12); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:900; color:var(--accent); flex-shrink:0; }
+  .res-info { flex:1; }
+  .res-title { font-size:14px; font-weight:700; margin-bottom:2px; }
+  .res-sub { font-size:12px; color:var(--dim); }
+  .res-arrow { color:var(--accent); font-size:18px; }
+  .coming { opacity:0.4; pointer-events:none; }
+  .coming .res-arrow { display:none; }
+  .coming::after { content:'Coming Soon'; font-size:10px; color:var(--dim); font-weight:600; white-space:nowrap; padding-left:4px; }
+  .comm { margin-top:24px; }
+  .comm-btn { display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border-radius:14px; text-decoration:none; font-size:14px; font-weight:700; color:#fff; margin-bottom:8px; }
+  .comm-btn.wa { background:linear-gradient(135deg,#25d366,#128c7e); }
+  .comm-btn.tg { background:linear-gradient(135deg,#2aabee,#229ed9); }
+  .comm-btn .ci { width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .comm-btn .ct { font-size:12px; font-weight:500; opacity:0.85; }
+  .foot { text-align:center; margin-top:32px; font-size:11px; color:var(--dim); line-height:1.6; }
+  .foot a { color:var(--accent); text-decoration:none; }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="hero">
+    <div class="badge">Free Resources</div>
+    <h1>Raw Talks with Swaroop</h1>
+    <p>JEE + EAMCET complete guides — data-backed, free, interactive.</p>
+  </div>
 
-<div class="app">
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
-    <div class="progress-wrap">
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-text" id="progressText">1/7</div>
+  <div class="comm">
+    <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="comm-btn wa">
+      <div class="ci">💬</div>
+      <div>Join WhatsApp Community<br><span class="ct">Rank doubts, counselling help, daily updates</span></div>
+    </a>
+    <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="comm-btn tg">
+      <div class="ci">✈️</div>
+      <div>Join Telegram Group<br><span class="ct">Resources, PYQs, exam alerts</span></div>
+    </a>
+  </div>
+
+  <div style="margin-top:28px;">
+    <div style="font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">All Guides</div>
+    <div class="grid">
+      <a href="reel01/" class="res-card">
+        <div class="res-num">01</div>
+        <div class="res-info"><div class="res-title">JEE Rank → College Guide</div><div class="res-sub">Free predictors, NIT cutoffs, JoSAA counselling</div></div>
+        <div class="res-arrow">→</div>
+      </a>
+      <a href="reel02/" class="res-card coming">
+        <div class="res-num">02</div>
+        <div class="res-info"><div class="res-title">Govt & Private Colleges You're Missing</div><div class="res-sub">113 JoSAA institutes + hidden gems</div></div>
+      </a>
+      <a href="reel03/" class="res-card coming">
+        <div class="res-num">03</div>
+        <div class="res-info"><div class="res-title">Drop or Not? Decision Framework</div><div class="res-sub">Data-backed analysis + alternative paths</div></div>
+      </a>
+      <a href="reel04/" class="res-card coming">
+        <div class="res-num">04</div>
+        <div class="res-info"><div class="res-title">Other Options After JEE</div><div class="res-sub">10+ exams still open with dates</div></div>
+      </a>
+      <a href="reel05/" class="res-card coming">
+        <div class="res-num">05</div>
+        <div class="res-info"><div class="res-title">EAMCET 6464 Rank Story & Strategy</div><div class="res-sub">Swaroop's 2-day prep plan</div></div>
+      </a>
+      <a href="reel06/" class="res-card coming">
+        <div class="res-num">06</div>
+        <div class="res-info"><div class="res-title">Scholarships for Engineering</div><div class="res-sub">IIT waivers, CSSS, private college schemes</div></div>
+      </a>
+      <a href="reel07/" class="res-card coming">
+        <div class="res-num">07</div>
+        <div class="res-info"><div class="res-title">100-Mark Target Strategy</div><div class="res-sub">50M + 25P + 25C = Under 5K rank</div></div>
+      </a>
+      <a href="reel08/" class="res-card coming">
+        <div class="res-num">08</div>
+        <div class="res-info"><div class="res-title">EAMCET Cheat Codes</div><div class="res-sub">5 tricks for 10-15 extra marks</div></div>
+      </a>
+      <a href="reel09/" class="res-card coming">
+        <div class="res-num">09</div>
+        <div class="res-info"><div class="res-title">Important Chapters + Paper Strategy</div><div class="res-sub">Category 1/2/3 + attempt order</div></div>
+      </a>
+      <a href="reel10/" class="res-card coming">
+        <div class="res-num">10</div>
+        <div class="res-info"><div class="res-title">Easy & High Weightage Chapters</div><div class="res-sub">Maximum marks per hour studied</div></div>
+      </a>
+      <a href="reel11/" class="res-card coming">
+        <div class="res-num">11</div>
+        <div class="res-info"><div class="res-title">EAMCET Motivation</div><div class="res-sub">Your JEE prep is not wasted</div></div>
+      </a>
+      <a href="reel12/" class="res-card coming">
+        <div class="res-num">12</div>
+        <div class="res-info"><div class="res-title">Best Entrance Exams After JEE</div><div class="res-sub">Full exam calendar + registration links</div></div>
+      </a>
+      <a href="reel13/" class="res-card coming">
+        <div class="res-num">13</div>
+        <div class="res-info"><div class="res-title">Chapter-wise Weightage Breakdown</div><div class="res-sub">Complete data for all 3 subjects</div></div>
+      </a>
+      <a href="reel14/" class="res-card coming">
+        <div class="res-num">14</div>
+        <div class="res-info"><div class="res-title">Last 10 Days — Boost Your Marks</div><div class="res-sub">PYQs, mocks, formula sheets</div></div>
+      </a>
     </div>
   </div>
 
-  <!-- PAGES -->
-  <div class="pages" id="pagesContainer">
-
-    <!-- PAGE 0: HERO -->
-    <div class="page active" data-page="0">
-      <div class="hero-page">
-        <div class="hero-emoji">🎯</div>
-        <div class="hero-badge">Free Resource</div>
-        <div class="hero-title">JEE Rank →<br>College Guide</div>
-        <div class="hero-sub">Nee rank ki em college vasthundi? Data-backed complete guide with free tools, cutoffs, and counselling strategy.</div>
-        <div class="hero-stats">
-          <div>
-            <div class="stat-num">113</div>
-            <div class="stat-label">Institutes</div>
-          </div>
-          <div>
-            <div class="stat-num">15.38L</div>
-            <div class="stat-label">Appeared</div>
-          </div>
-          <div>
-            <div class="stat-num">3</div>
-            <div class="stat-label">Free Tools</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 1: JOIN COMMUNITY -->
-    <div class="page" data-page="1">
-      <div class="section-label">First Things First</div>
-      <div class="section-title">Join the Community 🤝</div>
-      <div class="section-desc">Bayya... ee guide lo chala information undi. Kani doubts vasthay kadha? Community lo direct ga adugu — seniors, toppers, and Swaroop's team help chestharu.</div>
-
-      <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
-        <div class="cb-icon">💬</div>
-        <div class="cb-text">
-          Join WhatsApp Community
-          <div class="cb-sub">Rank doubts, counselling help, daily updates</div>
-        </div>
-      </a>
-
-      <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
-        <div class="cb-icon">✈️</div>
-        <div class="cb-text">
-          Join Telegram Group
-          <div class="cb-sub">Resources, PYQs, exam alerts, strategy tips</div>
-        </div>
-      </a>
-
-      <div class="tip">
-        <div class="tip-label">Why Join?</div>
-        <p>Community lo nee rank share cheyi — similar rank unna students tho connect avvu. Counselling time lo choice filling help, seat allotment updates, and last-minute tips direct ga vasthundi.</p>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-ico r">🔔</div>
-          <div>
-            <div class="card-name">What You'll Get</div>
-          </div>
-        </div>
-        <p>✅ JoSAA counselling step-by-step alerts<br>
-        ✅ Rank-wise college suggestions from seniors<br>
-        ✅ EAMCET preparation tips & PYQs<br>
-        ✅ Scholarship & fee reimbursement updates<br>
-        ✅ Direct access to Swaroop's team</p>
-      </div>
-    </div>
-
-    <!-- PAGE 2: FREE TOOLS -->
-    <div class="page" data-page="2">
-      <div class="section-label">Step 1</div>
-      <div class="section-title">Free College Predictors</div>
-      <div class="section-desc">Rank enter cheyi → colleges list vasthundi. No login. No payment.</div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-ico r">🎯</div>
-          <div>
-            <div class="card-name">Careers360 Predictor</div>
-            <div class="card-sub">Most trusted • 5-year JoSAA data</div>
-          </div>
-        </div>
-        <p>Rank, category, home state select cheyi. NIT, IIIT, GFTI — branch-wise chances chupisthadhi.</p>
-        <a href="https://engineering.careers360.com/jee-main-college-predictor" target="_blank" class="card-link">Open Predictor →</a>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-ico b">⚡</div>
-          <div>
-            <div class="card-name">JEEPredictor.in</div>
-            <div class="card-sub">97.55% accuracy • No registration</div>
-          </div>
-        </div>
-        <p>2025 lo 90 predictions test chesaru — anni ±10 marks accuracy. Marks enter chesthe rank + colleges vasthundi.</p>
-        <a href="https://jeepredictor.in/" target="_blank" class="card-link">Try It Free →</a>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-ico g">📊</div>
-          <div>
-            <div class="card-name">CollegeDekho Predictor</div>
-            <div class="card-sub">Branch-wise filtering</div>
-          </div>
-        </div>
-        <p>Category-wise, branch-wise filter cheyyochu. State quota vs All India comparison kuda vasthundi.</p>
-        <a href="https://www.collegedekho.com/exam/jee-main/college-predictor" target="_blank" class="card-link">Check Colleges →</a>
-      </div>
-
-      <div class="tip">
-        <div class="tip-label">Pro Tip</div>
-        <p>2-3 tools lo check cheyi. Average theeskondi realistic picture vasthundi. Home state quota option select cheyyadam marakaku!</p>
-      </div>
-    </div>
-
-    <!-- PAGE 3: RANK-WISE REALITY -->
-    <div class="page" data-page="3">
-      <div class="section-label">Step 2</div>
-      <div class="section-title">Rank-wise College Reality</div>
-      <div class="section-desc">JoSAA 2025 Round 6 data. 2026 ki ±500-2000 variation vasthundi.</div>
-
-      <div class="tier gold">
-        <div class="tier-rank">🏆 Rank 1 – 1,500</div>
-        <div class="tier-colleges">NIT Trichy CSE (1,449) • NIT Surathkal CSE • IIIT Hyderabad</div>
-        <div class="tier-branch">CSE, IT, ECE at Tier-1 NITs</div>
-      </div>
-      <div class="tier silver">
-        <div class="tier-rank">🥈 Rank 1,500 – 5,000</div>
-        <div class="tier-colleges">NIT Warangal CSE (~3,500) • NIT Calicut • NIT Allahabad • IIIT Delhi</div>
-        <div class="tier-branch">CSE, IT at mid-tier NITs | ECE at Tier-1</div>
-      </div>
-      <div class="tier bronze">
-        <div class="tier-rank">🥉 Rank 5,000 – 15,000</div>
-        <div class="tier-colleges">NIT Durgapur • NIT Jaipur • IIIT Gwalior • IIIT Jabalpur</div>
-        <div class="tier-branch">CSE at lower NITs | ECE, EEE at mid-tier</div>
-      </div>
-
-      <button class="reveal-btn" onclick="toggleReveal(this)">
-        Show more rank tiers (15K – 1L+)
-        <span class="arrow">▼</span>
-      </button>
-      <div class="reveal-content">
-        <div class="tier copper">
-          <div class="tier-rank">📌 Rank 15,000 – 50,000</div>
-          <div class="tier-colleges">NIT Raipur • NIT Silchar • NIT Jalandhar • IIIT Kottayam • IIIT Kalyani</div>
-          <div class="tier-branch">Core (Mech, Civil, EEE) at NITs | CSE at newer IIITs</div>
-        </div>
-        <div class="tier iron">
-          <div class="tier-rank">📎 Rank 50,000 – 1,00,000</div>
-          <div class="tier-colleges">NIT Puducherry • NIT Mizoram • IIIT Vadodara • Assam University</div>
-          <div class="tier-branch">Core at newer NITs | CSE at GFTIs</div>
-        </div>
-        <div class="tier iron">
-          <div class="tier-rank">📋 Rank 1,00,000+</div>
-          <div class="tier-colleges">NIT Meghalaya • NIT Sikkim • NIT Arunachal • GFTIs</div>
-          <div class="tier-branch">Limited NIT options | Private colleges stronger here</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 4: HOME STATE QUOTA -->
-    <div class="page" data-page="4">
-      <div class="section-label">Game Changer</div>
-      <div class="section-title">Home State Quota 🏠</div>
-      <div class="section-desc">50% NIT seats nee state students ke reserved. Chaala mandhi ki teleedhu.</div>
-
-      <div class="card">
-        <div class="card-head">
-          <div class="card-ico p">🔑</div>
-          <div>
-            <div class="card-name">How It Works</div>
-            <div class="card-sub">50% HS quota + 50% Other State quota</div>
-          </div>
-        </div>
-        <table class="dtable">
-          <thead>
-            <tr>
-              <th>NIT</th>
-              <th>Other State</th>
-              <th>Home State</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>NIT Warangal CSE</strong></td>
-              <td>~3,500</td>
-              <td class="hi">~6,000+</td>
-            </tr>
-            <tr>
-              <td><strong>NIT Warangal ECE</strong></td>
-              <td>~5,500</td>
-              <td class="hi">~10,000+</td>
-            </tr>
-          </tbody>
-        </table>
-        <p>Closing rank significantly higher (easier) for home state students!</p>
-      </div>
-
-      <button class="reveal-btn" onclick="toggleReveal(this)">
-        AP & TS specific advantages
-        <span class="arrow">▼</span>
-      </button>
-      <div class="reveal-content">
-        <div class="card">
-          <div class="card-head">
-            <div class="card-ico y">🌶️</div>
-            <div>
-              <div class="card-name">AP Students</div>
-            </div>
-          </div>
-          <p><strong style="color:var(--yellow)">NIT Tadepalligudem</strong> — pure home state advantage. Lower competition vs OS.<br><strong style="color:var(--yellow)">IIIT Sri City</strong> — AP location, HS quota applies.<br>AP EAPCET lo JNTU, AU colleges — JEE rank avasaram ledu.</p>
-        </div>
-        <div class="card">
-          <div class="card-head">
-            <div class="card-ico b">🏛️</div>
-            <div>
-              <div class="card-name">TS Students</div>
-            </div>
-          </div>
-          <p><strong style="color:var(--blue)">NIT Warangal</strong> — significantly lower HS closing ranks.<br>TS EAPCET lo JNTUH, OU colleges — state rank tho vasthundi.<br>Both states ki 50% NIT seats = golden opportunity.</p>
-        </div>
-      </div>
-
-      <div class="tip">
-        <div class="tip-label">Important</div>
-        <p>Home State quota: NITs only. IITs are purely All India rank (JEE Advanced). Always compare HS and OS closing ranks in JoSAA choice filling.</p>
-      </div>
-    </div>
-
-    <!-- PAGE 5: FULL INSTITUTE LIST -->
-    <div class="page" data-page="5">
-      <div class="section-label">Complete List</div>
-      <div class="section-title">113 JoSAA Institutes</div>
-      <div class="section-desc">Chaala mandhi NITs, IIITs daggare aagutharu. GFTIs kuda check cheyi.</div>
-
-      <table class="dtable">
-        <thead>
-          <tr><th>Type</th><th>Count</th><th>CSE Rank Range</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>IITs</strong> <span class="tag r">Elite</span></td>
-            <td>23</td>
-            <td class="dim">JEE Advanced only</td>
-          </tr>
-          <tr>
-            <td><strong>NITs</strong> <span class="tag b">Premier</span></td>
-            <td>31</td>
-            <td>1,449 – 39,594</td>
-          </tr>
-          <tr>
-            <td><strong>IIITs</strong> <span class="tag g">Tech</span></td>
-            <td>26</td>
-            <td>1,000 – 60,000+</td>
-          </tr>
-          <tr>
-            <td><strong>GFTIs</strong> <span class="tag y">Govt</span></td>
-            <td>33</td>
-            <td>5,000 – 1,00,000+</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <button class="reveal-btn" onclick="toggleReveal(this)">
-        Hidden Gem GFTIs most students miss
-        <span class="arrow">▼</span>
-      </button>
-      <div class="reveal-content">
-        <div class="card">
-          <div class="card-head">
-            <div class="card-ico y">💎</div>
-            <div><div class="card-name">Hidden Gems</div></div>
-          </div>
-          <p><strong style="color:var(--yellow)">IIEST Shibpur</strong> — NIT-level placements, NIRF top 30.<br>
-          <strong style="color:var(--yellow)">PEC Chandigarh</strong> — Punjab's best engineering. Strong alumni.<br>
-          <strong style="color:var(--yellow)">IIITDM Kancheepuram</strong> — IIT Madras campus access.<br>
-          <strong style="color:var(--yellow)">IIITDM Jabalpur</strong> — Design + tech. Growing placements.</p>
-        </div>
-      </div>
-
-      <button class="reveal-btn" onclick="toggleReveal(this)">
-        Private college options (BITS, VIT, SRM)
-        <span class="arrow">▼</span>
-      </button>
-      <div class="reveal-content">
-        <div class="card">
-          <div class="card-head">
-            <div class="card-ico p">🏢</div>
-            <div><div class="card-name">Top Private Options</div></div>
-          </div>
-          <p><strong>BITS Pilani/Goa/Hyd</strong> — BITSAT Session 2: May 24-26<br>
-          <strong>VIT Vellore</strong> — VITEEE result wait cheyi<br>
-          <strong>SRM Chennai/AP</strong> — SRMJEEE Phase 2: Jun 10-16 (reg till Jun 4)<br>
-          <strong>Manipal</strong> — MET basis<br>
-          <strong>Amrita</strong> — AEEE basis</p>
-          <p style="color:var(--yellow); font-weight:600; margin-top:8px;">Management quota ki jump avvaku — mundhu JoSAA complete cheyi!</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 6: JOSAA GUIDE -->
-    <div class="page" data-page="6">
-      <div class="section-label">Action Plan</div>
-      <div class="section-title">JoSAA Counselling Guide</div>
-      <div class="section-desc">Step-by-step process. Ee 6 steps follow cheyi.</div>
-
-      <ol class="steps">
-        <li>
-          <strong>Register on JoSAA Portal</strong>
-          <span>josaa.admissions.nic.in — June lo opens. JEE Main score tho NITs/IIITs/GFTIs ki apply cheyyochu.</span>
-        </li>
-        <li>
-          <strong>Fill 50-80 Choices</strong>
-          <span>Dream + safe options mix cheyi. Order matters — preferred first! HS and OS options rendu add cheyi.</span>
-        </li>
-        <li>
-          <strong>Lock Before Deadline</strong>
-          <span>Last date ki 1 hour mundhu lock cheyi — server crash risk. "Float" use cheyi for upgrades.</span>
-        </li>
-        <li>
-          <strong>Document Verification</strong>
-          <span>Class 10/12 marks, category cert, rank card, Aadhaar, photos. Physically go to reporting center.</span>
-        </li>
-      </ol>
-
-      <button class="reveal-btn" onclick="toggleReveal(this)">
-        Float vs Slide vs Freeze — what to pick?
-        <span class="arrow">▼</span>
-      </button>
-      <div class="reveal-content">
-        <div class="card">
-          <div class="card-head">
-            <div class="card-ico g">🔄</div>
-            <div><div class="card-name">The 3 Options Explained</div></div>
-          </div>
-          <p><strong style="color:var(--green)">Float:</strong> Current seat keep + higher preferences lo upgrade try. Use this in Round 1-3.<br><br>
-          <strong style="color:var(--blue)">Slide:</strong> Same institute lo better branch ki upgrade. Great for branch change.<br><br>
-          <strong style="color:var(--accent)">Freeze:</strong> Final decision. Only use when 100% sure. NEVER in early rounds.</p>
-        </div>
-        <div class="tip">
-          <div class="tip-label">Strategy</div>
-          <p>Round 1-3: Always "Float." Seats open as students withdraw — later rounds lo rank shifts significantly. JoSAA has 5-6 rounds. Patience pays off.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 7: DATES + CTA -->
-    <div class="page" data-page="7">
-      <div class="section-label">Mark These Dates</div>
-      <div class="section-title">2026 Timeline</div>
-      <div class="section-desc" style="margin-bottom:16px;">Screenshot theyi. Calendar lo add cheyi.</div>
-
-      <table class="dtable">
-        <thead><tr><th>Date</th><th>Event</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Apr 20</strong></td><td>JEE Main Results</td><td><span class="tag g">Done ✓</span></td></tr>
-          <tr><td><strong>May 9-11</strong></td><td>TS EAPCET Engg</td><td><span class="tag y">16 days</span></td></tr>
-          <tr><td><strong>May 12-18</strong></td><td>AP EAPCET Engg</td><td><span class="tag y">19 days</span></td></tr>
-          <tr><td><strong>May 18</strong></td><td>JEE Advanced</td><td><span class="tag y">25 days</span></td></tr>
-          <tr><td><strong>May 24-26</strong></td><td>BITSAT Session 2</td><td><span class="tag b">Open</span></td></tr>
-          <tr><td><strong>Jun 4</strong></td><td>SRMJEEE Ph.2 Last Date</td><td><span class="tag b">Reg Open</span></td></tr>
-          <tr><td><strong>June</strong></td><td>JoSAA Counselling</td><td><span class="tag b">TBD</span></td></tr>
-        </tbody>
-      </table>
-
-      <div style="height:24px;"></div>
-
-      <div style="text-align:center; padding: 8px 0 4px;">
-        <div style="font-size:40px; margin-bottom:12px;">🚀</div>
-        <div style="font-size:20px; font-weight:900; margin-bottom:8px;">Community lo Join Avvu!</div>
-        <div style="font-size:13px; color:var(--text-dim); max-width:320px; margin:0 auto 20px; line-height:1.5;">Rank doubts, counselling help, EAMCET tips — direct ga community lo adugu.</div>
-      </div>
-
-      <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
-        <div class="cb-icon">💬</div>
-        <div class="cb-text">
-          Join WhatsApp Community
-          <div class="cb-sub">Daily updates + counselling alerts</div>
-        </div>
-      </a>
-
-      <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
-        <div class="cb-icon">✈️</div>
-        <div class="cb-text">
-          Join Telegram Group
-          <div class="cb-sub">Resources, PYQs, exam strategy</div>
-        </div>
-      </a>
-
-      <div style="text-align:center; margin-top: 16px;">
-        <a href="https://www.instagram.com/raw_talks_with_swaroop/" target="_blank" class="cta-link">Follow @Raw_talks_with_Swaroop</a>
-      </div>
-
-      <div class="cta-footer" style="text-align:center;">
-        <div style="font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px;">Raw Talks with Swaroop</div>
-        Data: JoSAA 2025 R6 • Careers360 • NTA Official<br>
-        Made with ❤️ for Telugu students • April 2026<br>
-        <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> • <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- BOTTOM NAV -->
-  <div class="bottombar">
-    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
-    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  <div class="foot">
+    <div style="font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px;">Raw Talks with Swaroop</div>
+    Made with ❤️ for Telugu students • April 2026<br>
+    <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> • <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a>
   </div>
 </div>
-
-<script>
-  const totalPages = 8;
-  let current = 0;
-
-  const pages = document.querySelectorAll('.page');
-  const progressFill = document.getElementById('progressFill');
-  const progressText = document.getElementById('progressText');
-  const btnBack = document.getElementById('btnBack');
-  const btnNext = document.getElementById('btnNext');
-
-  function updateUI() {
-    pages.forEach((p, i) => {
-      p.classList.remove('active', 'exit-left', 'exit-right');
-      if (i === current) p.classList.add('active');
-      else if (i < current) p.classList.add('exit-left');
-      else p.classList.add('exit-right');
-    });
-
-    const pct = ((current + 1) / totalPages) * 100;
-    progressFill.style.width = pct + '%';
-    progressText.textContent = (current + 1) + '/' + totalPages;
-
-    btnBack.classList.toggle('hidden', current === 0);
-
-    if (current === 0) {
-      btnNext.innerHTML = "Let's Go →";
-      btnNext.onclick = goNext;
-    } else if (current === 1) {
-      btnNext.innerHTML = "Continue to Guide →";
-      btnNext.onclick = goNext;
-    } else if (current === totalPages - 1) {
-      btnNext.innerHTML = "Join WhatsApp 💬";
-      btnNext.onclick = function() {
-        window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD', '_blank');
-      };
-    } else {
-      btnNext.innerHTML = "Next →";
-      btnNext.onclick = goNext;
-    }
-
-    // scroll to top of active page
-    pages[current].scrollTop = 0;
-  }
-
-  function goNext() {
-    if (current < totalPages - 1) {
-      current++;
-      updateUI();
-    }
-  }
-
-  function goBack() {
-    if (current > 0) {
-      current--;
-      updateUI();
-    }
-  }
-
-  function toggleReveal(btn) {
-    btn.classList.toggle('open');
-    const content = btn.nextElementSibling;
-    content.classList.toggle('open');
-  }
-
-  // Swipe support
-  let touchStartX = 0;
-  let touchEndX = 0;
-  const container = document.getElementById('pagesContainer');
-
-  container.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  container.addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    const diff = touchStartX - touchEndX;
-    if (Math.abs(diff) > 60) {
-      if (diff > 0) goNext();
-      else goBack();
-    }
-  }, { passive: true });
-
-  // Keyboard support
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goNext(); }
-    if (e.key === 'ArrowLeft') { e.preventDefault(); goBack(); }
-  });
-
-  updateUI();
-</script>
-
 </body>
 </html>
