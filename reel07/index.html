@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>100-Mark Target Strategy | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root { --bg:#0a0a0f; --card:#12121a; --card-hover:#1a1a28; --accent:#e94560; --accent-glow:rgba(233,69,96,0.25); --green:#00b894; --yellow:#fdcb6e; --blue:#74b9ff; --orange:#e17055; --purple:#6c5ce7; --text:#e8e8e8; --text-dim:#8a8a9a; --border:#2a2a3a; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;}
+  .app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;position:relative;overflow:hidden;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .topbar-brand{font-size:13px;font-weight:700;color:var(--text-dim);} .topbar-brand span{color:var(--accent);}
+  .progress-wrap{display:flex;align-items:center;gap:8px;}
+  .progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+  .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+  .progress-text{font-size:11px;color:var(--text-dim);font-weight:600;min-width:32px;text-align:right;}
+  .pages{flex:1;position:relative;overflow:hidden;}
+  .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;padding:24px 20px 100px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;-webkit-overflow-scrolling:touch;}
+  .page.active{opacity:1;transform:translateX(0);pointer-events:auto;}
+  .page.exit-left{opacity:0;transform:translateX(-60px);}
+  .page.exit-right{opacity:0;transform:translateX(60px);}
+  .bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+  .btn-back{background:transparent;color:var(--text-dim);border:1px solid var(--border);} .btn-back.hidden{opacity:0;pointer-events:none;}
+  .btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 16px var(--accent-glow);}
+  .hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}
+  .hero-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
+  .hero-title{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff 0%,var(--blue) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-sub{font-size:15px;color:var(--text-dim);line-height:1.5;max-width:340px;}
+  .hero-stats{display:flex;gap:20px;margin-top:32px;}
+  .stat-num{font-size:26px;font-weight:900;color:var(--accent);}
+  .stat-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;}
+  .section-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}
+  .section-title{font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px;}
+  .section-desc{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:24px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+  .card p{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:6px;}
+  .tip{background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06));border:1px solid rgba(233,69,96,0.15);border-radius:14px;padding:16px;margin:16px 0;}
+  .tip-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
+  .tip p{font-size:13px;line-height:1.55;color:var(--text);}
+  .reveal-btn{width:100%;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:14px;color:var(--accent);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+  .reveal-btn:hover{background:var(--card-hover);border-color:var(--accent);}
+  .reveal-btn .arrow{transition:transform 0.3s;font-size:16px;} .reveal-btn.open .arrow{transform:rotate(180deg);}
+  .reveal-content{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1);} .reveal-content.open{max-height:3000px;}
+  .community-btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;transition:transform 0.2s;border:none;cursor:pointer;}
+  .community-btn:hover{transform:translateY(-2px);}
+  .community-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);box-shadow:0 4px 20px rgba(37,211,102,0.25);}
+  .community-btn.telegram{background:linear-gradient(135deg,#2aabee,#229ed9);box-shadow:0 4px 20px rgba(42,171,238,0.25);}
+  .community-btn .cb-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .community-btn .cb-text{text-align:left;} .community-btn .cb-sub{font-size:12px;font-weight:500;opacity:0.85;margin-top:2px;}
+  .cta-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}
+  .cta-footer{font-size:11px;color:var(--text-dim);margin-top:24px;line-height:1.6;} .cta-footer a{color:var(--accent);text-decoration:none;}
+  .swipe-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);opacity:0.6;display:flex;align-items:center;gap:4px;animation:hintPulse 2s ease-in-out infinite;}
+  @keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
+
+  /* Formula display */
+  .formula-box{background:linear-gradient(135deg,rgba(233,69,96,0.08),rgba(108,92,231,0.08));border:2px solid rgba(233,69,96,0.3);border-radius:16px;padding:24px;text-align:center;margin:20px 0;}
+  .formula-box .formula{font-size:28px;font-weight:900;letter-spacing:2px;margin-bottom:8px;}
+  .formula-box .formula .m{color:var(--blue);} .formula-box .formula .p{color:var(--green);} .formula-box .formula .c{color:var(--yellow);}
+  .formula-box .result{font-size:16px;color:var(--accent);font-weight:700;}
+  .formula-box .sub{font-size:12px;color:var(--text-dim);margin-top:6px;}
+
+  /* Subject bars */
+  .subject-bar{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+  .subject-bar .bar-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .subject-bar .bar-name{font-size:16px;font-weight:800;}
+  .subject-bar .bar-target{font-size:18px;font-weight:900;padding:4px 12px;border-radius:10px;}
+  .subject-bar .bar-target.math{background:rgba(116,185,255,0.12);color:var(--blue);}
+  .subject-bar .bar-target.phy{background:rgba(0,184,148,0.12);color:var(--green);}
+  .subject-bar .bar-target.chem{background:rgba(253,203,110,0.12);color:var(--yellow);}
+  .subject-bar .bar-track{width:100%;height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:10px;}
+  .subject-bar .bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+  .subject-bar .bar-fill.math{background:var(--blue);width:62.5%;}
+  .subject-bar .bar-fill.phy{background:var(--green);width:31.25%;}
+  .subject-bar .bar-fill.chem{background:var(--yellow);width:31.25%;}
+  .subject-bar .chapters{font-size:12px;color:var(--text-dim);line-height:1.6;}
+  .subject-bar .chapters strong{color:var(--text);}
+
+  /* Chapter cards */
+  .ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+  .ch-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
+  .ch-card .ch-marks{font-size:20px;font-weight:900;margin-bottom:2px;}
+  .ch-card .ch-name{font-size:11px;color:var(--text-dim);line-height:1.3;}
+  .ch-card.cat1{border-color:rgba(0,184,148,0.3);} .ch-card.cat1 .ch-marks{color:var(--green);}
+  .ch-card.cat2{border-color:rgba(116,185,255,0.3);} .ch-card.cat2 .ch-marks{color:var(--blue);}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/7</div>
+    </div>
+  </div>
+
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">🎯</div>
+        <div class="hero-badge">Strategy</div>
+        <div class="hero-title">100-Mark Target<br>EAMCET Strategy</div>
+        <div class="hero-sub">EAMCET lo 100 marks = Under 5,000 rank. Ila split cheste achievable — 50M + 25P + 25C. Swaroop's exact framework.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">50</div><div class="stat-label">Maths<br>Target</div></div>
+          <div><div class="stat-num">25</div><div class="stat-label">Physics<br>Target</div></div>
+          <div><div class="stat-num">25</div><div class="stat-label">Chemistry<br>Target</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">📊</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:24px;">Get the Strategy Group</div>
+        <div class="hero-sub" style="margin-bottom:28px;">100-mark strategy alone cheyyadam tough. Community lo PYQ discussions, doubt clearing, and mock analysis daily jarugutundhi.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">PYQ discussions + doubt clearing</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Daily strategy + formula sheets</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: THE FORMULA -->
+    <div class="page" data-page="2">
+      <div class="section-label">The Formula</div>
+      <div class="section-title">Why 50M + 25P + 25C Works</div>
+      <div class="section-desc">Most students try equal marks in all 3 subjects. That's wrong. Here's why Maths should be your PRIMARY weapon.</div>
+
+      <div class="formula-box">
+        <div class="formula"><span class="m">50M</span> + <span class="p">25P</span> + <span class="c">25C</span></div>
+        <div class="result">= 100 Marks = Under 5,000 Rank</div>
+        <div class="sub">EAMCET Total: 160 marks (80 questions × 2 marks each)</div>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <p><strong style="color:var(--blue);font-size:15px;">Why Maths gets 50?</strong></p>
+        <p>EAMCET Maths is the MOST scoring subject. Questions are formula-based and direct. If you know the formula — you can solve in 30 seconds. No lengthy derivations like JEE. 80 marks total in Maths (40Q) — targeting 50 means getting 25/40 correct.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--green);">
+        <p><strong style="color:var(--green);font-size:15px;">Why Physics gets 25?</strong></p>
+        <p>Physics is tricky in EAMCET — conceptual + numerical. Some questions take 3-4 minutes. Target the easy chapters (Units, Electrostatics, Optics) and leave the tough ones. 25/40 marks from focused chapters.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <p><strong style="color:var(--yellow);font-size:15px;">Why Chemistry gets 25?</strong></p>
+        <p>Chemistry has too much theory to memorize for EAMCET. But Organic Reactions + Periodic Table + Chemical Bonding can give you 25 marks easily with focused revision. Skip the low-yield topics.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 3: MATHS BREAKDOWN -->
+    <div class="page" data-page="3">
+      <div class="section-label">Subject 1</div>
+      <div class="section-title">Maths — Your 50-Mark Engine</div>
+      <div class="section-desc">These chapters will give you maximum marks per hour studied. Focus here FIRST.</div>
+
+      <div class="subject-bar">
+        <div class="bar-head">
+          <div class="bar-name">📐 Mathematics</div>
+          <div class="bar-target math">50/80</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill math"></div></div>
+        <div class="chapters">
+          <strong>Category 1 (Must Score — 30+ marks):</strong><br>
+          Integration, Differential Equations, Matrices & Determinants, Probability, Complex Numbers, Trigonometry<br><br>
+          <strong>Category 2 (Good to Score — 15+ marks):</strong><br>
+          Coordinate Geometry (Circles, Parabola), Limits & Continuity, Vectors, Permutations & Combinations
+        </div>
+      </div>
+
+      <div class="ch-grid">
+        <div class="ch-card cat1"><div class="ch-marks">8-10</div><div class="ch-name">Integration & DEs</div></div>
+        <div class="ch-card cat1"><div class="ch-marks">6-8</div><div class="ch-name">Matrices</div></div>
+        <div class="ch-card cat1"><div class="ch-marks">4-6</div><div class="ch-name">Probability</div></div>
+        <div class="ch-card cat1"><div class="ch-marks">4-6</div><div class="ch-name">Complex Numbers</div></div>
+        <div class="ch-card cat2"><div class="ch-marks">4-6</div><div class="ch-name">Coordinate Geo</div></div>
+        <div class="ch-card cat2"><div class="ch-marks">4-6</div><div class="ch-name">Trigonometry</div></div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Scoring Hack</div>
+        <p>EAMCET Maths lo <strong>formula-based questions dominate</strong>. Make a formula sheet (2 pages max). Revise it daily for 15 minutes. On exam day, those 15 minutes of daily revision = 10-15 extra marks guaranteed.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: PHYSICS + CHEMISTRY -->
+    <div class="page" data-page="4">
+      <div class="section-label">Subjects 2 & 3</div>
+      <div class="section-title">Physics 25 + Chemistry 25</div>
+      <div class="section-desc">These subjects ki perfect cheyyali ani try cheyyaku — targeted scoring cheyyi.</div>
+
+      <div class="subject-bar">
+        <div class="bar-head">
+          <div class="bar-name">⚡ Physics</div>
+          <div class="bar-target phy">25/40</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill phy"></div></div>
+        <div class="chapters">
+          <strong>Focus Chapters (18-20 marks easy):</strong><br>
+          Units & Dimensions, Electrostatics, Current Electricity, Ray Optics, Thermodynamics, Kinematics<br><br>
+          <strong>Skip/Low Priority:</strong><br>
+          Semiconductors (unless strong), Electromagnetic Waves (low weightage)
+        </div>
+      </div>
+
+      <div class="subject-bar">
+        <div class="bar-head">
+          <div class="bar-name">🧪 Chemistry</div>
+          <div class="bar-target chem">25/40</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill chem"></div></div>
+        <div class="chapters">
+          <strong>Focus Chapters (20-22 marks easy):</strong><br>
+          Chemical Bonding, Periodic Properties, Organic Reactions (Named Reactions), Thermodynamics, Electrochemistry, Solutions<br><br>
+          <strong>Quick Wins (5-8 marks from memory):</strong><br>
+          Polymers, Biomolecules, Chemistry in Everyday Life — pure rote, read once before exam
+        </div>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">
+        <span>🎯 Physics — Exact Question Distribution</span><span class="arrow">▼</span>
+      </button>
+      <div class="reveal-content">
+        <div class="card">
+          <p><strong style="color:var(--green);">Mechanics (8-10Q):</strong> Kinematics, Laws of Motion, Work-Energy. Formula-heavy = scoring if formulas known.</p>
+          <p style="margin-top:6px;"><strong style="color:var(--blue);">Electrodynamics (8-10Q):</strong> Electrostatics + Current Electricity + Magnetism. Highest weightage in Physics.</p>
+          <p style="margin-top:6px;"><strong style="color:var(--yellow);">Optics + Modern (5-7Q):</strong> Ray Optics is easy marks. Wave Optics can be skipped if time is short.</p>
+          <p style="margin-top:6px;"><strong style="color:var(--text-dim);">Waves + Thermo (5-7Q):</strong> Thermodynamics is scoring. Sound waves — only basic formula questions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: EXAM DAY STRATEGY -->
+    <div class="page" data-page="5">
+      <div class="section-label">Exam Day</div>
+      <div class="section-title">3-Hour Battle Plan</div>
+      <div class="section-desc">100 marks strategy paper pe hoti hai, but execution exam hall mein. Idi follow cheyyi.</div>
+
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <p><strong style="color:var(--blue);font-size:15px;">⏱️ First 90 Minutes — Maths</strong></p>
+        <p>Start with Maths. It's your highest-target subject. Do easy questions first (formula-based). Mark tough ones and come back. Target: 25+ questions attempted, 20+ correct.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--green);">
+        <p><strong style="color:var(--green);font-size:15px;">⏱️ Next 45 Minutes — Physics</strong></p>
+        <p>Physics ke switch cheyyi. Do your strong chapters first (Electrostatics, Optics, Units). Skip lengthy numerical problems for now. Target: 15+ questions attempted.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <p><strong style="color:var(--yellow);font-size:15px;">⏱️ Last 45 Minutes — Chemistry + Revision</strong></p>
+        <p>Chemistry theory questions first (fastest to answer). Then remaining Chemistry numericals. Last 10 minutes: go back to skipped questions in ALL subjects. ATTEMPT EVERYTHING — no negative marking!</p>
+      </div>
+
+      <div class="formula-box" style="background:linear-gradient(135deg,rgba(0,184,148,0.08),rgba(108,92,231,0.08));border-color:rgba(0,184,148,0.3);">
+        <div style="font-size:18px;font-weight:900;color:var(--green);margin-bottom:4px;">NO NEGATIVE MARKING</div>
+        <div style="font-size:13px;color:var(--text-dim);">EAMCET has no negative marking. Every blank answer = guaranteed 0. Every guessed answer = 25% chance of +2. <strong style="color:var(--text);">NEVER LEAVE ANY QUESTION BLANK.</strong></div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Time Allocation Rule</div>
+        <p>If a question takes more than 2 minutes — SKIP IT and move on. Come back in the last 10 minutes. 2 minutes per question = 80 questions in 160 minutes. You have 180 minutes total. Use the extra 20 minutes for review.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: CTA -->
+    <div class="page" data-page="6">
+      <div class="cta-page">
+        <div style="font-size:48px;margin-bottom:16px;">💯</div>
+        <div style="font-size:24px;font-weight:900;margin-bottom:8px;">100 Marks.<br>Under 5,000 Rank.<br>Your Best College.</div>
+        <div style="font-size:14px;color:var(--text-dim);max-width:320px;margin-bottom:24px;line-height:1.5;">This strategy works — but only if you practice. Join the community for daily PYQ practice, formula sheets, and mock test analysis.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Daily PYQ practice + mock analysis</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Formula sheets + chapter strategies</div></div>
+        </a>
+
+        <div class="cta-footer">
+          <strong style="color:var(--text);font-size:14px;">Raw Talks with Swaroop</strong><br>
+          Made with ❤️ for Telugu students • April 2026<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> •
+          <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br><br>
+          <a href="../">← Back to All Resources</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+
+<script>
+  const pages=document.querySelectorAll('.page');const totalPages=pages.length;let current=0;
+  const progressFill=document.getElementById('progressFill');const progressText=document.getElementById('progressText');
+  const btnBack=document.getElementById('btnBack');const btnNext=document.getElementById('btnNext');
+  function updateUI(){pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right');});progressFill.style.width=((current+1)/totalPages*100)+'%';progressText.textContent=(current+1)+'/'+totalPages;btnBack.classList.toggle('hidden',current===0);if(current===0){btnNext.innerHTML="Let's Go →";btnNext.onclick=goNext;}else if(current===1){btnNext.innerHTML="Continue to Strategy →";btnNext.onclick=goNext;}else if(current===totalPages-1){btnNext.innerHTML="Join WhatsApp 💬";btnNext.onclick=function(){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank');};}else{btnNext.innerHTML="Next →";btnNext.onclick=goNext;}pages[current].scrollTop=0;}
+  function goNext(){if(current<totalPages-1){current++;updateUI();}}
+  function goBack(){if(current>0){current--;updateUI();}}
+  function toggleReveal(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');}
+  let touchStartX=0;const container=document.getElementById('pagesContainer');
+  container.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
+  container.addEventListener('touchend',e=>{const diff=touchStartX-e.changedTouches[0].screenX;if(Math.abs(diff)>60){if(diff>0)goNext();else goBack();}},{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();goNext();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}});
+  updateUI();
+</script>
+</body>
+</html>

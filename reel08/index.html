@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EAMCET Cheat Codes | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a28;--accent:#e94560;--accent-glow:rgba(233,69,96,0.25);--green:#00b894;--yellow:#fdcb6e;--blue:#74b9ff;--orange:#e17055;--purple:#6c5ce7;--text:#e8e8e8;--text-dim:#8a8a9a;--border:#2a2a3a;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;}
+  .app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;position:relative;overflow:hidden;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .topbar-brand{font-size:13px;font-weight:700;color:var(--text-dim);} .topbar-brand span{color:var(--accent);}
+  .progress-wrap{display:flex;align-items:center;gap:8px;} .progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;} .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s;} .progress-text{font-size:11px;color:var(--text-dim);font-weight:600;min-width:32px;text-align:right;}
+  .pages{flex:1;position:relative;overflow:hidden;}
+  .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;padding:24px 20px 100px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;-webkit-overflow-scrolling:touch;}
+  .page.active{opacity:1;transform:translateX(0);pointer-events:auto;} .page.exit-left{opacity:0;transform:translateX(-60px);} .page.exit-right{opacity:0;transform:translateX(60px);}
+  .bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+  .btn-back{background:transparent;color:var(--text-dim);border:1px solid var(--border);} .btn-back.hidden{opacity:0;pointer-events:none;}
+  .btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 16px var(--accent-glow);}
+  .hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}
+  .hero-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
+  .hero-title{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff 0%,var(--yellow) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-sub{font-size:15px;color:var(--text-dim);line-height:1.5;max-width:340px;}
+  .hero-stats{display:flex;gap:28px;margin-top:32px;}
+  .stat-num{font-size:26px;font-weight:900;color:var(--accent);} .stat-label{font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;}
+  .section-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}
+  .section-title{font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px;}
+  .section-desc{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:24px;}
+  .tip{background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06));border:1px solid rgba(233,69,96,0.15);border-radius:14px;padding:16px;margin:16px 0;}
+  .tip-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
+  .tip p{font-size:13px;line-height:1.55;color:var(--text);}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+  .card p{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:6px;}
+  .reveal-btn{width:100%;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:14px;color:var(--accent);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}
+  .reveal-btn:hover{background:var(--card-hover);border-color:var(--accent);}
+  .reveal-btn .arrow{transition:transform 0.3s;font-size:16px;} .reveal-btn.open .arrow{transform:rotate(180deg);}
+  .reveal-content{max-height:0;overflow:hidden;transition:max-height 0.4s;} .reveal-content.open{max-height:3000px;}
+  .community-btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;transition:transform 0.2s;border:none;cursor:pointer;}
+  .community-btn:hover{transform:translateY(-2px);}
+  .community-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);} .community-btn.telegram{background:linear-gradient(135deg,#2aabee,#229ed9);}
+  .community-btn .cb-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+  .community-btn .cb-text{text-align:left;} .community-btn .cb-sub{font-size:12px;font-weight:500;opacity:0.85;margin-top:2px;}
+  .cta-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}
+  .cta-footer{font-size:11px;color:var(--text-dim);margin-top:24px;line-height:1.6;} .cta-footer a{color:var(--accent);text-decoration:none;}
+  .swipe-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);opacity:0.6;animation:hintPulse 2s ease-in-out infinite;}
+  @keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
+
+  /* Cheat code cards */
+  .cheat{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden;}
+  .cheat::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .cheat.c1::before{background:var(--accent);} .cheat.c2::before{background:var(--blue);} .cheat.c3::before{background:var(--green);} .cheat.c4::before{background:var(--yellow);} .cheat.c5::before{background:var(--purple);}
+  .cheat-num{font-size:48px;font-weight:900;opacity:0.08;position:absolute;right:12px;top:-4px;line-height:1;}
+  .cheat-title{font-size:18px;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+  .cheat-sub{font-size:12px;color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+  .cheat p{font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:0;}
+  .cheat .example{background:rgba(233,69,96,0.06);border:1px solid rgba(233,69,96,0.15);border-radius:10px;padding:12px;margin-top:12px;font-size:12px;line-height:1.5;}
+  .cheat .example strong{color:var(--accent);}
+  .cheat .marks-badge{display:inline-block;background:rgba(0,184,148,0.12);color:var(--green);padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/7</div>
+    </div>
+  </div>
+
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">🔓</div>
+        <div class="hero-badge">Exam Hacks</div>
+        <div class="hero-title">5 EAMCET<br>Cheat Codes</div>
+        <div class="hero-sub">Subject knowledge kakundaa kuda marks penchukune tricks. Ivi 10-15 extra marks ichche legitimate exam strategies.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">5</div><div class="stat-label">Cheat<br>Codes</div></div>
+          <div><div class="stat-num">10-15</div><div class="stat-label">Extra<br>Marks</div></div>
+          <div><div class="stat-num">225K</div><div class="stat-label">Views on<br>Original Video</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">🤫</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:24px;">Get More Cheat Codes</div>
+        <div class="hero-sub" style="margin-bottom:28px;">Community lo we practice these tricks on actual PYQ papers. Theory kaadu — real practice tho these tricks become muscle memory.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Practice cheat codes on real PYQs</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Daily tricks + solved examples</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: CHEAT CODE 1 & 2 -->
+    <div class="page" data-page="2">
+      <div class="section-label">Codes 1 & 2</div>
+      <div class="section-title">Unit Analysis + Trig Substitution</div>
+      <div class="section-desc">Ivi Physics and Maths lo most powerful — question solve cheyakundane answer guess cheyyochu.</div>
+
+      <div class="cheat c1">
+        <div class="cheat-num">01</div>
+        <div class="cheat-title">🔍 Unit Analysis</div>
+        <div class="cheat-sub">Works in: Physics (80% of numerical questions)</div>
+        <p>Question lo answer ki expected unit ento decide cheyyi. Then check which option has that unit. Wrong unit = wrong answer — eliminate instantly.</p>
+        <div class="example">
+          <strong>Example:</strong> "Find the force..." → Answer must be in Newtons (kg·m/s²).<br>
+          Option A: 5 kg·m/s² ✅ (correct unit)<br>
+          Option B: 5 kg·m/s ❌ (momentum, not force)<br>
+          Option C: 5 J ❌ (energy, not force)<br>
+          Option D: 5 kg/m³ ❌ (density, not force)<br>
+          <strong>Result: You eliminated 3 wrong answers without solving!</strong>
+        </div>
+        <div class="marks-badge">+2-4 marks per exam</div>
+      </div>
+
+      <div class="cheat c2">
+        <div class="cheat-num">02</div>
+        <div class="cheat-title">📐 Trig Substitution</div>
+        <div class="cheat-sub">Works in: Maths (Integration, Trig, Limits)</div>
+        <p>Integration/Trig problem lo — don't solve. Put standard values (0, π/6, π/4, π/2, π) into the options and check which one gives the right answer. Works for definite integrals and trig identities.</p>
+        <div class="example">
+          <strong>Example:</strong> "Find ∫₀^(π/2) sin²x dx"<br>
+          Instead of solving: Put x = π/2 boundary conditions into options.<br>
+          Option A: π/4 → check: does it satisfy? ✅<br>
+          <strong>Saved 3 minutes of actual integration!</strong>
+        </div>
+        <div class="marks-badge">+4-6 marks per exam</div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: CHEAT CODE 3 -->
+    <div class="page" data-page="3">
+      <div class="section-label">Code 3</div>
+      <div class="section-title">Strategic Guessing</div>
+      <div class="section-desc">EAMCET lo NO NEGATIVE MARKING. This changes EVERYTHING about how you approach the exam.</div>
+
+      <div class="cheat c3">
+        <div class="cheat-num">03</div>
+        <div class="cheat-title">🎲 Strategic Guessing</div>
+        <div class="cheat-sub">Works in: ALL subjects — every single question</div>
+        <p>Simple math: Each question has 4 options. Random guess = 25% chance of getting +2 marks. Blank answer = 0% chance.</p>
+        <p style="margin-top:8px;"><strong style="color:var(--text);">If you have 10 questions you can't solve:</strong></p>
+        <p>• Leave blank: 0 marks guaranteed</p>
+        <p>• Guess all 10: Expected value = 2.5 correct = <strong style="color:var(--green);">5 marks</strong></p>
+        <p style="margin-top:8px;">5 marks ki rank difference: <strong style="color:var(--accent);">500-1000 ranks</strong></p>
+        <div class="example">
+          <strong>The Math:</strong><br>
+          10 guesses × 25% accuracy = 2.5 correct answers<br>
+          2.5 × 2 marks each = <strong>5 marks free</strong><br>
+          0 risk (no negative marking) + 5 expected marks = <strong>NO-BRAINER</strong>
+        </div>
+        <div class="marks-badge">+4-6 marks per exam (statistically)</div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">But Smart Guessing > Random Guessing</div>
+        <p>If you can eliminate even 1 wrong option, your guess accuracy jumps from 25% to 33%. Eliminate 2 options = 50% accuracy. <strong>Always try to eliminate before guessing.</strong> Use Unit Analysis (Code 1) to eliminate options even when you can't solve.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: CHEAT CODE 4 & 5 -->
+    <div class="page" data-page="4">
+      <div class="section-label">Codes 4 & 5</div>
+      <div class="section-title">Elimination + "All of the Above"</div>
+      <div class="section-desc">Ivi theory-heavy Chemistry and Physics lo especially powerful.</div>
+
+      <div class="cheat c4">
+        <div class="cheat-num">04</div>
+        <div class="cheat-title">✂️ Option Elimination</div>
+        <div class="cheat-sub">Works in: All subjects, especially Chemistry</div>
+        <p>When 2 options are very similar (differ by just a sign, constant, or small detail) — one of them is usually correct. The question maker created the "close wrong answer" from the right answer. <strong style="color:var(--text);">Eliminate the outliers first.</strong></p>
+        <div class="example">
+          <strong>Example:</strong> "The bond angle of H₂O is..."<br>
+          A) 104.5° B) 109.5° C) 90° D) 180°<br><br>
+          C and D are outliers (90° = right angle, 180° = linear). Between A and B — these are close, so answer is likely one of them.<br>
+          <strong>A) 104.5° is correct. You narrowed it to 50-50 without knowing the theory!</strong>
+        </div>
+        <div class="marks-badge">+2-4 marks per exam</div>
+      </div>
+
+      <div class="cheat c5">
+        <div class="cheat-num">05</div>
+        <div class="cheat-title">✅ "All of the Above" Shortcut</div>
+        <div class="cheat-sub">Works in: Chemistry theory, Biology, some Physics</div>
+        <p>If the question has "All of the above" as an option and you can verify that 2 out of 3 statements are correct — <strong style="color:var(--text);">choose "All of the above"</strong>. Don't waste time verifying the 3rd statement.</p>
+        <div class="example">
+          <strong>Logic:</strong> If 2 are correct, the answer is either "All of the above" or "Both A and B" type. But if "All of the above" is an option and 2 are verified correct — it's almost always the answer. Saves 1-2 minutes per question.
+        </div>
+        <div class="marks-badge">+2-3 marks per exam</div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: PRACTICE + COMBO STRATEGY -->
+    <div class="page" data-page="5">
+      <div class="section-label">Execution</div>
+      <div class="section-title">How to Practice These Codes</div>
+      <div class="section-desc">Cheat codes knowledge kaadu — muscle memory kavali. Practice ila cheyyi.</div>
+
+      <div class="card" style="border-left:4px solid var(--accent);">
+        <p><strong style="color:var(--accent);font-size:15px;">📝 Step 1: Take a PYQ Paper</strong></p>
+        <p>Download any EAMCET previous year paper. First, try to solve normally. Mark the ones you can't solve.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <p><strong style="color:var(--blue);font-size:15px;">🔓 Step 2: Apply Cheat Codes on Unsolved</strong></p>
+        <p>Go back to every unsolved question. Try Unit Analysis first. Then Elimination. Then Trig Substitution. See how many you can crack WITHOUT actually knowing the concept.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--green);">
+        <p><strong style="color:var(--green);font-size:15px;">📊 Step 3: Track Your "Cheat Code Marks"</strong></p>
+        <p>Count how many marks these tricks gave you. After 5 papers, you'll see a consistent +10-15 marks. That's your "cheat code bonus" for the actual exam.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <p><strong style="color:var(--yellow);font-size:15px;">⚡ Step 4: Combine Codes</strong></p>
+        <p>The real power is COMBINING tricks. Example: Use Unit Analysis to eliminate 2 options → Then Strategic Guess between remaining 2 → 50% accuracy instead of 25%. <strong style="color:var(--text);">Stacking codes = maximum marks.</strong></p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Marks Breakdown with All 5 Codes</div>
+        <p>Unit Analysis: +2-4 marks<br>
+        Trig Substitution: +4-6 marks<br>
+        Strategic Guessing: +4-6 marks<br>
+        Elimination: +2-4 marks<br>
+        "All of Above": +2-3 marks<br>
+        <strong style="color:var(--green);font-size:15px;">Total: +14-23 extra marks possible!</strong></p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: CTA -->
+    <div class="page" data-page="6">
+      <div class="cta-page">
+        <div style="font-size:48px;margin-bottom:16px;">🔓</div>
+        <div style="font-size:24px;font-weight:900;margin-bottom:8px;">10-15 Extra Marks.<br>Zero Extra Study.</div>
+        <div style="font-size:14px;color:var(--text-dim);max-width:320px;margin-bottom:24px;line-height:1.5;">These 5 cheat codes work — I used them for my EAMCET. Practice them on PYQs in the community. Join now for daily practice sessions.</div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Daily cheat code practice sessions</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">PYQ solutions + trick explanations</div></div>
+        </a>
+
+        <div class="cta-footer">
+          <strong style="color:var(--text);font-size:14px;">Raw Talks with Swaroop</strong><br>
+          Made with ❤️ for Telugu students • April 2026<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> •
+          <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br><br>
+          <a href="../">← Back to All Resources</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+
+<script>
+  const pages=document.querySelectorAll('.page');const totalPages=pages.length;let current=0;
+  const progressFill=document.getElementById('progressFill');const progressText=document.getElementById('progressText');
+  const btnBack=document.getElementById('btnBack');const btnNext=document.getElementById('btnNext');
+  function updateUI(){pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right');});progressFill.style.width=((current+1)/totalPages*100)+'%';progressText.textContent=(current+1)+'/'+totalPages;btnBack.classList.toggle('hidden',current===0);if(current===0){btnNext.innerHTML="Let's Go →";btnNext.onclick=goNext;}else if(current===1){btnNext.innerHTML="Continue to Codes →";btnNext.onclick=goNext;}else if(current===totalPages-1){btnNext.innerHTML="Join WhatsApp 💬";btnNext.onclick=function(){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank');};}else{btnNext.innerHTML="Next →";btnNext.onclick=goNext;}pages[current].scrollTop=0;}
+  function goNext(){if(current<totalPages-1){current++;updateUI();}}
+  function goBack(){if(current>0){current--;updateUI();}}
+  function toggleReveal(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open');}
+  let touchStartX=0;const container=document.getElementById('pagesContainer');
+  container.addEventListener('touchstart',e=>{touchStartX=e.changedTouches[0].screenX;},{passive:true});
+  container.addEventListener('touchend',e=>{const diff=touchStartX-e.changedTouches[0].screenX;if(Math.abs(diff)>60){if(diff>0)goNext();else goBack();}},{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();goNext();}if(e.key==='ArrowLeft'){e.preventDefault();goBack();}});
+  updateUI();
+</script>
+</body>
+</html>
