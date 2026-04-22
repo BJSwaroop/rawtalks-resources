@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Colleges You're Missing | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a28;--accent:#e94560;--accent-glow:rgba(233,69,96,0.25);--green:#00b894;--yellow:#fdcb6e;--blue:#74b9ff;--purple:#6c5ce7;--text:#e8e8e8;--dim:#8a8a9a;--border:#2a2a3a}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+  .app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;position:relative;overflow:hidden}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0}
+  .topbar-brand{font-size:13px;font-weight:700;color:var(--dim)}.topbar-brand span{color:var(--accent)}
+  .progress-wrap{display:flex;align-items:center;gap:8px}
+  .progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s cubic-bezier(0.4,0,0.2,1)}
+  .progress-text{font-size:11px;color:var(--dim);font-weight:600;min-width:32px;text-align:right}
+  .pages{flex:1;position:relative;overflow:hidden}
+  .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;padding:24px 20px 100px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;-webkit-overflow-scrolling:touch}
+  .page.active{opacity:1;transform:translateX(0);pointer-events:auto}
+  .page.exit-left{opacity:0;transform:translateX(-60px)}
+  .page.exit-right{opacity:0;transform:translateX(60px)}
+  .bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0}
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+  .btn-back{background:transparent;color:var(--dim);border:1px solid var(--border)}.btn-back:hover{border-color:var(--dim)}.btn-back.hidden{opacity:0;pointer-events:none}
+  .btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 16px var(--accent-glow)}.btn-next:hover{transform:translateY(-1px)}.btn-next:active{transform:scale(0.97)}
+  .hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px)}
+  .hero-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+  .hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px}
+  .hero-title{font-size:30px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-sub{font-size:15px;color:var(--dim);line-height:1.5;max-width:340px}
+  .hero-stats{display:flex;gap:28px;margin-top:32px}
+  .stat-num{font-size:26px;font-weight:900;color:var(--accent)}
+  .stat-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px}
+  .section-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px}
+  .section-title{font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px}
+  .section-desc{font-size:14px;color:var(--dim);line-height:1.5;margin-bottom:24px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px}
+  .card-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .card-ico{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .card-ico.r{background:rgba(233,69,96,0.12)}.card-ico.b{background:rgba(116,185,255,0.12)}.card-ico.g{background:rgba(0,184,148,0.12)}.card-ico.p{background:rgba(108,92,231,0.12)}.card-ico.y{background:rgba(253,203,110,0.12)}
+  .card-name{font-size:15px;font-weight:700}.card-sub{font-size:12px;color:var(--dim)}
+  .card p{font-size:13px;color:var(--dim);line-height:1.55;margin-bottom:6px}
+  .card-link{display:inline-flex;align-items:center;gap:5px;color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;margin-top:6px;transition:gap 0.2s}.card-link:hover{gap:9px}
+  .dtable{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  .dtable th{background:rgba(233,69,96,0.1);color:var(--accent);font-weight:700;text-align:left;padding:10px;font-size:11px;text-transform:uppercase;letter-spacing:0.8px;border-bottom:2px solid rgba(233,69,96,0.3)}
+  .dtable td{padding:10px;border-bottom:1px solid var(--border)}.dtable tr:last-child td{border-bottom:none}
+  .hi{color:var(--green);font-weight:700}.dim{color:var(--dim)}
+  .tag{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:0.5px}
+  .tag.g{background:rgba(0,184,148,0.15);color:var(--green)}.tag.r{background:rgba(233,69,96,0.15);color:var(--accent)}.tag.y{background:rgba(253,203,110,0.15);color:var(--yellow)}.tag.b{background:rgba(116,185,255,0.15);color:var(--blue)}.tag.p{background:rgba(108,92,231,0.15);color:var(--purple)}
+  .tip{background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06));border:1px solid rgba(233,69,96,0.15);border-radius:14px;padding:16px;margin:16px 0}
+  .tip-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px}
+  .tip p{font-size:13px;line-height:1.55;color:var(--text)}
+  .reveal-btn{width:100%;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:14px;color:var(--accent);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+  .reveal-btn:hover{background:var(--card-hover);border-color:var(--accent)}
+  .reveal-btn .arrow{transition:transform 0.3s;font-size:16px}.reveal-btn.open .arrow{transform:rotate(180deg)}
+  .reveal-content{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1)}.reveal-content.open{max-height:3000px}
+  .community-btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;transition:transform 0.2s;border:none;cursor:pointer}
+  .community-btn:hover{transform:translateY(-2px)}
+  .community-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);box-shadow:0 4px 20px rgba(37,211,102,0.25)}
+  .community-btn.telegram{background:linear-gradient(135deg,#2aabee,#229ed9);box-shadow:0 4px 20px rgba(42,171,238,0.25)}
+  .community-btn .cb-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .community-btn .cb-sub{font-size:12px;font-weight:500;opacity:0.85;margin-top:2px}
+  .cta-link{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:700;padding:14px 32px;border-radius:50px;text-decoration:none;box-shadow:0 8px 32px var(--accent-glow);transition:transform 0.2s;margin-bottom:16px}.cta-link:hover{transform:scale(1.03)}
+  .college-row{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;padding:14px;margin-bottom:8px;border-left:3px solid var(--accent)}
+  .college-row .cr-rank{font-size:11px;color:var(--accent);font-weight:800;min-width:55px}
+  .college-row .cr-name{font-size:13px;font-weight:700;flex:1}
+  .college-row .cr-pkg{font-size:12px;color:var(--green);font-weight:600}
+  @media(max-width:400px){.hero-title{font-size:26px}.hero-stats{gap:16px}.dtable{font-size:12px}.dtable th,.dtable td{padding:8px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">1/8</div>
+    </div>
+  </div>
+
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">🏛️</div>
+        <div class="hero-badge">Free Resource</div>
+        <div class="hero-title">Colleges You're<br>Missing Out On</div>
+        <div class="hero-sub">NIT matrame kaadu bayya. 127 government institutes + top private options — complete guide with cutoffs & placements.</div>
+        <div class="hero-stats">
+          <div><div class="stat-num">127</div><div class="stat-label">JoSAA Institutes</div></div>
+          <div><div class="stat-num">47</div><div class="stat-label">Hidden GFTIs</div></div>
+          <div><div class="stat-num">6+</div><div class="stat-label">Private Exams</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="section-label">First Things First</div>
+      <div class="section-title">Join the Community 🤝</div>
+      <div class="section-desc">College selection lo doubt vasthe community lo direct ga adugu — seniors and Swaroop's team help chestharu.</div>
+
+      <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+        <div class="cb-icon">💬</div>
+        <div><div>Join WhatsApp Community</div><div class="cb-sub">College comparisons, counselling help, daily updates</div></div>
+      </a>
+      <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+        <div class="cb-icon">✈️</div>
+        <div><div>Join Telegram Group</div><div class="cb-sub">Resources, placement data, exam alerts</div></div>
+      </a>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico r">🔔</div>
+          <div><div class="card-name">What You'll Get</div></div>
+        </div>
+        <p>✅ College vs college comparison from seniors<br>
+        ✅ JoSAA choice filling strategy help<br>
+        ✅ Placement data & branch recommendations<br>
+        ✅ Scholarship & fee reimbursement updates<br>
+        ✅ Direct access to Swaroop's team</p>
+      </div>
+    </div>
+
+    <!-- PAGE 2: JOSAA OVERVIEW -->
+    <div class="page" data-page="2">
+      <div class="section-label">The Big Picture</div>
+      <div class="section-title">127 JoSAA Institutes</div>
+      <div class="section-desc">Chaala mandhi only NITs gurinchi think chestharu. Kani JoSAA lo 127 government institutes unnay.</div>
+
+      <table class="dtable">
+        <thead><tr><th>Institute Type</th><th>Count</th><th>Entry</th><th>Fee Range</th></tr></thead>
+        <tbody>
+          <tr><td><strong>IITs</strong> <span class="tag r">Elite</span></td><td>23</td><td>JEE Advanced</td><td>₹2-3L/yr</td></tr>
+          <tr><td><strong>NITs</strong> <span class="tag b">Premier</span></td><td>31</td><td>JEE Main</td><td>₹1.5-2L/yr</td></tr>
+          <tr><td><strong>IIITs</strong> <span class="tag g">Tech</span></td><td>26</td><td>JEE Main</td><td>₹1-3L/yr</td></tr>
+          <tr><td><strong>GFTIs</strong> <span class="tag y">Govt Funded</span></td><td>47</td><td>JEE Main</td><td>₹0.5-2L/yr</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip">
+        <div class="tip-label">Key Insight</div>
+        <p>JEE Main score tho 104 institutes ki apply cheyyochu (31 NITs + 26 IIITs + 47 GFTIs). IITs kosam matrame JEE Advanced kavali. Chaala mandhi GFTIs miss chestharu — 47 institutes bayya!</p>
+      </div>
+    </div>
+
+    <!-- PAGE 3: IIITs DEEP DIVE -->
+    <div class="page" data-page="3">
+      <div class="section-label">Underrated Gems</div>
+      <div class="section-title">IIITs — 26 Institutes</div>
+      <div class="section-desc">IIITs are tech-focused and often have better CSE placements than many NITs. Don't ignore them.</div>
+
+      <div class="college-row" style="border-left-color:#fdcb6e">
+        <div class="cr-rank">~866</div>
+        <div class="cr-name">IIIT Hyderabad CSE</div>
+        <div class="cr-pkg">₹30L+ avg</div>
+      </div>
+      <div class="college-row" style="border-left-color:#fdcb6e">
+        <div class="cr-rank">~9,000</div>
+        <div class="cr-name">IIIT Delhi CSE</div>
+        <div class="cr-pkg">₹20L+ avg</div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">⚠️ Note</div>
+        <p>IIIT Hyderabad has its OWN entrance (not JoSAA). IIIT Delhi also has separate admission. But 24 other IIITs are through JoSAA — don't miss them!</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">IIITs accessible at 20K-60K rank <span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <div class="college-row" style="border-left-color:var(--blue)">
+          <div class="cr-rank">~17K</div>
+          <div class="cr-name">IIITDM Kancheepuram CSE</div>
+          <div class="cr-pkg">₹32.5L highest</div>
+        </div>
+        <div class="college-row" style="border-left-color:var(--blue)">
+          <div class="cr-rank">~24K</div>
+          <div class="cr-name">IIITDM Kancheepuram CSE (AI)</div>
+          <div class="cr-pkg">71% placed</div>
+        </div>
+        <div class="college-row" style="border-left-color:var(--green)">
+          <div class="cr-rank">~30-50K</div>
+          <div class="cr-name">IIIT Kottayam</div>
+          <div class="cr-pkg">Growing</div>
+        </div>
+        <div class="college-row" style="border-left-color:var(--green)">
+          <div class="cr-rank">~40-60K</div>
+          <div class="cr-name">IIIT Vadodara / Kalyani</div>
+          <div class="cr-pkg">CSE available</div>
+        </div>
+        <div class="card" style="margin-top:8px">
+          <p><strong style="color:var(--yellow)">IIITDM Kancheepuram</strong> is next to IIT Madras campus — students get access to IIT Madras facilities, library, and networking. CSE placement: 103% (more offers than students). Hidden gem bayya.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: GFTIs DEEP DIVE -->
+    <div class="page" data-page="4">
+      <div class="section-label">Most Students Skip These</div>
+      <div class="section-title">GFTIs — 47 Hidden Gems</div>
+      <div class="section-desc">Government Funded Technical Institutes. NIT-level quality but most students don't even know they exist.</div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico y">💎</div>
+          <div><div class="card-name">IIEST Shibpur</div><div class="card-sub">Howrah, West Bengal • Est. 1856</div></div>
+        </div>
+        <p>India's oldest technical institute. NIRF top 30 engineering.</p>
+        <table class="dtable">
+          <tr><td>CSE Closing Rank</td><td class="hi">~16,576</td></tr>
+          <tr><td>Highest Package</td><td class="hi">₹60 LPA</td></tr>
+          <tr><td>Average CTC</td><td>₹11 LPA</td></tr>
+          <tr><td>Placement %</td><td>73.77%</td></tr>
+        </table>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">More top GFTIs with placement data <span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-ico b">🔵</div>
+            <div><div class="card-name">PEC Chandigarh</div><div class="card-sub">Punjab Engineering College • Deemed University</div></div>
+          </div>
+          <p>Punjab's top engineering college. Strong alumni in Fortune 500 companies. Government funded, low fees.</p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-ico g">🟢</div>
+            <div><div class="card-name">IIITDM Jabalpur</div><div class="card-sub">Design + Manufacturing + Tech focus</div></div>
+          </div>
+          <p>Unique design-tech curriculum. Growing placements year over year. Accessible at rank 25K-50K.</p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-ico p">🟣</div>
+            <div><div class="card-name">School of Planning & Architecture</div><div class="card-sub">Delhi, Bhopal, Vijayawada</div></div>
+          </div>
+          <p>Architecture aspirants ki best government option. Most students don't know this is in JoSAA.</p>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Strategy</div>
+        <p>JoSAA choice list lo 50-80 choices add cheyi — IIITs and GFTIs include cheyi. Many students leave these blank and miss government seats worth lakhs less than private colleges.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 5: PRIVATE OPTIONS -->
+    <div class="page" data-page="5">
+      <div class="section-label">Still Open for 2026</div>
+      <div class="section-title">Top Private Options</div>
+      <div class="section-desc">JoSAA tho paatu these private exams kuda consider cheyi. Some registrations are STILL OPEN.</div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico r">🔴</div>
+          <div><div class="card-name">BITS Pilani / Goa / Hyderabad</div><div class="card-sub">BITSAT Session 2 • Top 5 Private</div></div>
+        </div>
+        <table class="dtable">
+          <tr><td>Exam Date</td><td class="hi">May 24-26, 2026</td></tr>
+          <tr><td>Reg Last Date</td><td style="color:var(--accent);font-weight:700">May 2, 2026</td></tr>
+          <tr><td>Slot Booking</td><td>May 13-15</td></tr>
+          <tr><td>Fee</td><td>₹3,500 (M) / ₹3,000 (F)</td></tr>
+        </table>
+        <p style="margin-top:8px">India's top private engineering. On par with NITs in placements. 3 campuses — Pilani, Goa, Hyderabad.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="card-ico b">🔵</div>
+          <div><div class="card-name">VIT Vellore</div><div class="card-sub">VITEEE 2026 • Result May 3</div></div>
+        </div>
+        <table class="dtable">
+          <tr><td>Exam</td><td>Apr 28 - May 3 (done)</td></tr>
+          <tr><td>Result Date</td><td class="hi">May 3, 2026</td></tr>
+          <tr><td>CSE Avg Package</td><td class="hi">₹12-14 LPA</td></tr>
+          <tr><td>Highest Package</td><td class="hi">₹1.3 Cr</td></tr>
+          <tr><td>Fees (4 yrs)</td><td>~₹7-8 Lakh/yr</td></tr>
+        </table>
+        <p style="margin-top:8px">100% placement record. Category-based fee system — better rank = lower fees.</p>
+      </div>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">SRM, Manipal, COMEDK + more <span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-ico g">🟢</div>
+            <div><div class="card-name">SRM Chennai / AP</div><div class="card-sub">SRMJEEE Phase 2 — STILL OPEN</div></div>
+          </div>
+          <table class="dtable">
+            <tr><td>Phase 2 Exam</td><td class="hi">Jun 10-16, 2026</td></tr>
+            <tr><td>Reg Last Date</td><td style="color:var(--accent);font-weight:700">Jun 4, 2026</td></tr>
+            <tr><td>Highest Package</td><td>₹65 LPA</td></tr>
+            <tr><td>Avg Package</td><td>₹6.66 LPA</td></tr>
+            <tr><td>Fees (4 yrs)</td><td>₹4L - ₹19.3L total</td></tr>
+          </table>
+          <p style="margin-top:8px">Application fee ₹1,400. Registration STILL OPEN — don't miss this bayya.</p>
+          <a href="https://applications.srmist.edu.in/btech" target="_blank" class="card-link">Apply Now →</a>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-ico p">🟣</div>
+            <div><div class="card-name">Manipal (MAHE)</div><div class="card-sub">MET Phase 2 • May 23-24</div></div>
+          </div>
+          <table class="dtable">
+            <tr><td>Phase 2 Exam</td><td>May 23-24, 2026</td></tr>
+            <tr><td>Reg Last Date</td><td style="color:var(--accent);font-weight:700">Apr 26, 2026</td></tr>
+            <tr><td>CSE Avg Package</td><td>₹8-10 LPA</td></tr>
+            <tr><td>Highest Package</td><td>₹50-60 LPA</td></tr>
+            <tr><td>Fees (4 yrs)</td><td>~₹25.5L total</td></tr>
+          </table>
+          <p style="margin-top:8px">Top recruiters: Amazon, Microsoft, Google, Deloitte.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-ico y">🟡</div>
+            <div><div class="card-name">COMEDK — Karnataka Colleges</div><div class="card-sub">RV College, BMS, MSRIT</div></div>
+          </div>
+          <table class="dtable">
+            <tr><td>Exam Date</td><td>May 9, 2026</td></tr>
+            <tr><td>Registration</td><td class="dim">Closed (Mar 20)</td></tr>
+            <tr><td>CSE Top Rank</td><td>Under 500 for RVCE/BMSCE</td></tr>
+            <tr><td>Total Qs</td><td>180 MCQs (PCM 60 each)</td></tr>
+          </table>
+          <p style="margin-top:8px">Karnataka's best private engineering colleges. If registered already, focus on this exam.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 6: REGISTRATION DEADLINES -->
+    <div class="page" data-page="6">
+      <div class="section-label">Don't Miss These</div>
+      <div class="section-title">Registration Status ⏰</div>
+      <div class="section-desc">Konni exams registration inka open undi. Konni close ayyindi. Full status check cheyi.</div>
+
+      <table class="dtable">
+        <thead><tr><th>Exam</th><th>Reg Status</th><th>Exam Date</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SRMJEEE Ph.2</strong></td><td><span class="tag g">Open till Jun 4</span></td><td>Jun 10-16</td></tr>
+          <tr><td><strong>BITSAT Ses.2</strong></td><td><span class="tag y">Till May 2</span></td><td>May 24-26</td></tr>
+          <tr><td><strong>MET Phase 2</strong></td><td><span class="tag y">Till Apr 26</span></td><td>May 23-24</td></tr>
+          <tr><td><strong>AP EAPCET</strong></td><td><span class="tag r">Closed</span></td><td>May 12-18</td></tr>
+          <tr><td><strong>TS EAPCET</strong></td><td><span class="tag r">Closed</span></td><td>May 9-11</td></tr>
+          <tr><td><strong>VITEEE</strong></td><td><span class="tag r">Closed</span></td><td>Apr 28-May 3</td></tr>
+          <tr><td><strong>COMEDK</strong></td><td><span class="tag r">Closed</span></td><td>May 9</td></tr>
+          <tr><td><strong>WBJEE</strong></td><td><span class="tag r">Closed</span></td><td>May 24</td></tr>
+          <tr><td><strong>JoSAA</strong></td><td><span class="tag b">June 2 (expected)</span></td><td>6 rounds</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip">
+        <div class="tip-label">Action Items</div>
+        <p><strong>TODAY cheyyalsindhi:</strong><br>
+        1. BITSAT Session 2 register cheyi (deadline May 2)<br>
+        2. MET Phase 2 register cheyi (deadline Apr 26 — 3 days!)<br>
+        3. SRMJEEE Phase 2 note cheyi (Jun 4 varaku time undi)</p>
+      </div>
+    </div>
+
+    <!-- PAGE 7: CTA -->
+    <div class="page" data-page="7">
+      <div class="section-label">Don't Miss Any Update</div>
+      <div class="section-title">Stay Connected 🚀</div>
+      <div class="section-desc">JoSAA counselling June lo start avthundi. Registration dates, choice filling strategy, and seat allotment updates — community lo vasthundi.</div>
+
+      <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+        <div class="cb-icon">💬</div>
+        <div><div>Join WhatsApp Community</div><div class="cb-sub">Counselling alerts + college comparisons</div></div>
+      </a>
+      <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+        <div class="cb-icon">✈️</div>
+        <div><div>Join Telegram Group</div><div class="cb-sub">Placement data + exam strategy</div></div>
+      </a>
+
+      <div style="text-align:center; margin-top:20px;">
+        <a href="https://www.instagram.com/raw_talks_with_swaroop/" target="_blank" class="cta-link">Follow @Raw_talks_with_Swaroop</a>
+      </div>
+
+      <div style="text-align:center; margin-top:16px; font-size:11px; color:var(--dim); line-height:1.6;">
+        <div style="font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px;">Raw Talks with Swaroop</div>
+        Data: JoSAA 2025 R6 • Careers360 • Shiksha • Official Websites<br>
+        Made with ❤️ for Telugu students • April 2026<br>
+        <a href="https://www.instagram.com/raw_talks_with_swaroop/" style="color:var(--accent);text-decoration:none">Instagram</a> • <a href="https://www.youtube.com/@SwaroopTalks" style="color:var(--accent);text-decoration:none">YouTube</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="btnBack" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="btnNext" onclick="goNext()">Let's Go →</button>
+  </div>
+</div>
+
+<script>
+  const totalPages=8;let current=0;
+  const pages=document.querySelectorAll('.page'),pf=document.getElementById('progressFill'),pt=document.getElementById('progressText'),bb=document.getElementById('btnBack'),bn=document.getElementById('btnNext');
+  function updateUI(){
+    pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right')});
+    pf.style.width=((current+1)/totalPages*100)+'%';pt.textContent=(current+1)+'/'+totalPages;
+    bb.classList.toggle('hidden',current===0);
+    if(current===0){bn.innerHTML="Let's Go →";bn.onclick=goNext}
+    else if(current===1){bn.innerHTML="Continue to Guide →";bn.onclick=goNext}
+    else if(current===totalPages-1){bn.innerHTML="Join WhatsApp 💬";bn.onclick=function(){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank')}}
+    else{bn.innerHTML="Next →";bn.onclick=goNext}
+    pages[current].scrollTop=0;
+  }
+  function goNext(){if(current<totalPages-1){current++;updateUI()}}
+  function goBack(){if(current>0){current--;updateUI()}}
+  function toggleReveal(btn){btn.classList.toggle('open');btn.nextElementSibling.classList.toggle('open')}
+  let tsx=0;const c=document.getElementById('pagesContainer');
+  c.addEventListener('touchstart',e=>{tsx=e.changedTouches[0].screenX},{passive:true});
+  c.addEventListener('touchend',e=>{const d=tsx-e.changedTouches[0].screenX;if(Math.abs(d)>60){d>0?goNext():goBack()}},{passive:true});
+  document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();goNext()}if(e.key==='ArrowLeft'){e.preventDefault();goBack()}});
+  updateUI();
+</script>
+</body>
+</html>
