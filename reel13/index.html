@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chapter-wise Weightage Breakdown | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a28;--accent:#e94560;--accent-glow:rgba(233,69,96,0.25);--green:#00b894;--yellow:#fdcb6e;--blue:#74b9ff;--orange:#e17055;--purple:#6c5ce7;--text:#e8e8e8;--text-dim:#8a8a9a;--border:#2a2a3a;}
+  *{margin:0;padding:0;box-sizing:border-box;}html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;}
+  .app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;overflow:hidden;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0;}.topbar-brand{font-size:13px;font-weight:700;color:var(--text-dim);}.topbar-brand span{color:var(--accent);}
+  .progress-wrap{display:flex;align-items:center;gap:8px;}.progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;}.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s;}.progress-text{font-size:11px;color:var(--text-dim);font-weight:600;min-width:32px;text-align:right;}
+  .pages{flex:1;position:relative;overflow:hidden;}
+  .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;padding:24px 20px 100px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;-webkit-overflow-scrolling:touch;}.page.active{opacity:1;transform:translateX(0);pointer-events:auto;}.page.exit-left{opacity:0;transform:translateX(-60px);}.page.exit-right{opacity:0;transform:translateX(60px);}
+  .bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}.btn-back{background:transparent;color:var(--text-dim);border:1px solid var(--border);}.btn-back.hidden{opacity:0;pointer-events:none;}.btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 16px var(--accent-glow);}
+  .hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}.hero-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}.hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}.hero-title{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.hero-sub{font-size:15px;color:var(--text-dim);line-height:1.5;max-width:340px;}
+  .section-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}.section-title{font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px;}.section-desc{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:24px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}.card p{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:6px;}
+  .tip{background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06));border:1px solid rgba(233,69,96,0.15);border-radius:14px;padding:16px;margin:16px 0;}.tip-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}.tip p{font-size:13px;line-height:1.55;color:var(--text);}
+  .reveal-btn{width:100%;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:14px;color:var(--accent);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}.reveal-btn:hover{background:var(--card-hover);border-color:var(--accent);}.reveal-btn .arrow{transition:transform 0.3s;font-size:16px;}.reveal-btn.open .arrow{transform:rotate(180deg);}.reveal-content{max-height:0;overflow:hidden;transition:max-height 0.4s;}.reveal-content.open{max-height:6000px;}
+  .community-btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;transition:transform 0.2s;border:none;cursor:pointer;}.community-btn:hover{transform:translateY(-2px);}.community-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);}.community-btn.telegram{background:linear-gradient(135deg,#2aabee,#229ed9);}.community-btn .cb-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}.community-btn .cb-text{text-align:left;}.community-btn .cb-sub{font-size:12px;font-weight:500;opacity:0.85;margin-top:2px;}
+  .cta-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}.cta-footer{font-size:11px;color:var(--text-dim);margin-top:24px;line-height:1.6;}.cta-footer a{color:var(--accent);text-decoration:none;}
+  .swipe-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);opacity:0.6;animation:hintPulse 2s ease-in-out infinite;}@keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
+
+  /* Data table styles */
+  .dtable{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;}
+  .dtable th{background:rgba(233,69,96,0.1);color:var(--accent);font-weight:700;text-align:left;padding:8px 5px;font-size:10px;text-transform:uppercase;letter-spacing:0.6px;border-bottom:2px solid rgba(233,69,96,0.3);}
+  .dtable td{padding:7px 5px;border-bottom:1px solid var(--border);}
+  .dtable tr:last-child td{border-bottom:none;}
+  .dtable .hi{color:var(--green);font-weight:700;} .dtable .med{color:var(--blue);font-weight:600;} .dtable .lo{color:var(--text-dim);}
+  .wt-bar{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-left:4px;}
+  .wt-bar.g{background:var(--green);} .wt-bar.b{background:var(--blue);} .wt-bar.y{background:var(--yellow);} .wt-bar.o{background:var(--orange);}
+
+  .sub-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;border-radius:12px;background:var(--card);border:1px solid var(--border);}
+  .sub-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+  .sub-header h3{font-size:16px;font-weight:800;}.sub-header .sub-count{font-size:12px;color:var(--text-dim);}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText">1/7</div></div>
+  </div>
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">📊</div>
+        <div class="hero-badge">Complete Data</div>
+        <div class="hero-title">Chapter-wise<br>Weightage</div>
+        <div class="hero-sub">EAMCET lo every chapter ki enni questions vasthayi? Complete breakdown — Physics, Chemistry, Maths — all 160 questions mapped.</div>
+        <div style="display:flex;gap:20px;margin-top:32px;">
+          <div><div style="font-size:26px;font-weight:900;color:var(--blue);">40Q</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Physics</div></div>
+          <div><div style="font-size:26px;font-weight:900;color:var(--yellow);">40Q</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Chemistry</div></div>
+          <div><div style="font-size:26px;font-weight:900;color:var(--green);">80Q</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Maths</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">🤝</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:26px;">Join the Community</div>
+        <div class="hero-sub" style="margin-bottom:32px;">Chapter-wise PYQs, weightage updates, and study tips — free ga join avvandi.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Chapter-wise PYQs & weightage data</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Study material & exam tips</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: PHYSICS -->
+    <div class="page" data-page="2">
+      <div class="sub-header">
+        <div class="sub-icon" style="background:rgba(116,185,255,0.15);">⚡</div>
+        <div><h3>Physics</h3><div class="sub-count">40 Questions • 40 Marks</div></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--green);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🟢 High Weightage (25+ marks)</div>
+      <table class="dtable">
+        <tr><th>Chapter</th><th>Q</th><th>%</th></tr>
+        <tr><td class="hi">Mechanics (combined)</td><td class="hi">~10</td><td class="hi">25% <span class="wt-bar g" style="width:50px;"></span></td></tr>
+        <tr><td>↳ Laws of Motion</td><td>2-3</td><td>6%</td></tr>
+        <tr><td>↳ Work, Energy & Power</td><td>2-3</td><td>6%</td></tr>
+        <tr><td>↳ Rotational Motion</td><td>2-3</td><td>6%</td></tr>
+        <tr><td>↳ Motion in a Plane</td><td>2</td><td>5%</td></tr>
+        <tr><td>↳ Motion in Straight Line</td><td>1-2</td><td>3%</td></tr>
+        <tr><td class="hi">Heat & Thermodynamics</td><td class="hi">~4</td><td class="hi">10% <span class="wt-bar g" style="width:20px;"></span></td></tr>
+        <tr><td class="hi">Magnetism & EMI</td><td class="hi">~4</td><td class="hi">10% <span class="wt-bar g" style="width:20px;"></span></td></tr>
+        <tr><td class="med">Electrostatics & Current E</td><td class="med">~4</td><td class="med">9%</td></tr>
+        <tr><td class="med">Properties of Matter</td><td class="med">~4</td><td class="med">9%</td></tr>
+        <tr><td class="med">Waves & Oscillations</td><td class="med">~4</td><td class="med">9%</td></tr>
+      </table>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">Show Lower Weightage Chapters <span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <table class="dtable">
+          <tr><th>Chapter</th><th>Q</th><th>%</th></tr>
+          <tr><td>Modern Physics & Nuclear</td><td>3</td><td>8%</td></tr>
+          <tr><td>Units, Measurements & Tools</td><td>3</td><td>8%</td></tr>
+          <tr><td>EM Waves & Communication</td><td>2</td><td>5%</td></tr>
+          <tr><td>Electronics / Semiconductors</td><td>2</td><td>3%</td></tr>
+          <tr><td class="lo">Ray Optics</td><td class="lo">2</td><td class="lo">5%</td></tr>
+          <tr><td class="lo">Wave Optics</td><td class="lo">1</td><td class="lo">2.5%</td></tr>
+          <tr><td class="lo">Gravitation</td><td class="lo">1</td><td class="lo">2.5%</td></tr>
+        </table>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Physics Strategy</div>
+        <p>Mechanics alone = 10 marks (25%). But it's spread across 5 chapters. Heat + Current Electricity = easiest 6-7 marks in Physics.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 3: CHEMISTRY -->
+    <div class="page" data-page="3">
+      <div class="sub-header">
+        <div class="sub-icon" style="background:rgba(253,203,110,0.15);">🧪</div>
+        <div><h3>Chemistry</h3><div class="sub-count">40 Questions • 40 Marks</div></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--green);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🟢 High Weightage (30+ marks)</div>
+      <table class="dtable">
+        <tr><th>Chapter</th><th>Q</th><th>%</th></tr>
+        <tr><td class="hi">Organic — Hydrocarbons & Functional Groups</td><td class="hi">~8</td><td class="hi">21% <span class="wt-bar g" style="width:42px;"></span></td></tr>
+        <tr><td>↳ Hydrocarbons</td><td>2-3</td><td>6%</td></tr>
+        <tr><td>↳ Haloalkanes/Haloarenes</td><td>1-2</td><td>4%</td></tr>
+        <tr><td>↳ Oxygen Compounds (Alcohols etc.)</td><td>1-2</td><td>4%</td></tr>
+        <tr><td>↳ Nitrogen Compounds (Amines)</td><td>1-2</td><td>4%</td></tr>
+        <tr><td>↳ Organic Principles (GOC)</td><td>2-3</td><td>6%</td></tr>
+        <tr><td class="hi">Inorganic — s, p, d, f Blocks</td><td class="hi">~7</td><td class="hi">18% <span class="wt-bar g" style="width:36px;"></span></td></tr>
+        <tr><td>↳ p-Block Elements (Gr 13-18)</td><td>3-4</td><td>10%</td></tr>
+        <tr><td>↳ d & f Block Elements</td><td>2-3</td><td>7%</td></tr>
+        <tr><td class="hi">Basic Concepts of Chemistry</td><td class="hi">~5</td><td class="hi">13% <span class="wt-bar g" style="width:26px;"></span></td></tr>
+        <tr><td class="med">Physical & Chemical Equilibrium</td><td class="med">~4</td><td class="med">10%</td></tr>
+        <tr><td class="med">Organic Fundamentals</td><td class="med">~4</td><td class="med">10%</td></tr>
+      </table>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">Show Remaining Chapters <span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <table class="dtable">
+          <tr><th>Chapter</th><th>Q</th><th>%</th></tr>
+          <tr><td>States of Matter & Thermodynamics</td><td>3</td><td>8%</td></tr>
+          <tr><td>Chemical Kinetics & Electrochemistry</td><td>3</td><td>8%</td></tr>
+          <tr><td>Atomic Structure</td><td>2-3</td><td>6%</td></tr>
+          <tr><td>Chemical Bonding</td><td>2-3</td><td>6%</td></tr>
+          <tr><td>Classification & Periodicity</td><td>2</td><td>5%</td></tr>
+          <tr><td>Biomolecules, Polymers & Everyday Chem</td><td>3</td><td>7%</td></tr>
+          <tr><td>Coordination Compounds & Metallurgy</td><td>2</td><td>6%</td></tr>
+          <tr><td class="lo">Solutions</td><td class="lo">1-2</td><td class="lo">4%</td></tr>
+          <tr><td class="lo">Redox Reactions</td><td class="lo">1</td><td class="lo">2.5%</td></tr>
+          <tr><td class="lo">Surface Chemistry</td><td class="lo">1</td><td class="lo">2.5%</td></tr>
+          <tr><td class="lo">Hydrogen</td><td class="lo">1</td><td class="lo">2.5%</td></tr>
+          <tr><td class="lo">Environmental Chemistry</td><td class="lo">1</td><td class="lo">2.5%</td></tr>
+        </table>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Chemistry Strategy</div>
+        <p>Organic (21%) + Inorganic (18%) = ~16 marks — nearly 40% of Chemistry. Organic needs practice, Inorganic needs pure memorization. Focus both.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: MATHEMATICS -->
+    <div class="page" data-page="4">
+      <div class="sub-header">
+        <div class="sub-icon" style="background:rgba(0,184,148,0.15);">📐</div>
+        <div><h3>Mathematics</h3><div class="sub-count">80 Questions • 80 Marks</div></div>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--green);margin-bottom:6px;text-transform:uppercase;letter-spacing:1.5px;">🟢 Highest Weightage (55+ marks)</div>
+      <table class="dtable">
+        <tr><th>Chapter</th><th>Q</th><th>%</th></tr>
+        <tr><td class="hi">Coordinate Geometry (total)</td><td class="hi">~25</td><td class="hi">31% <span class="wt-bar g" style="width:62px;"></span></td></tr>
+        <tr><td>↳ Straight Lines & Pair of Lines</td><td>5-6</td><td>7%</td></tr>
+        <tr><td>↳ Circles</td><td>3-4</td><td>5%</td></tr>
+        <tr><td>↳ Parabola</td><td>2-3</td><td>3%</td></tr>
+        <tr><td>↳ Ellipse & Hyperbola</td><td>2-3</td><td>3%</td></tr>
+        <tr><td>↳ 3D Geometry & Direction Cosines</td><td>3-4</td><td>4%</td></tr>
+        <tr><td>↳ Plane</td><td>2-3</td><td>3%</td></tr>
+        <tr><td>↳ Locus & Transformation</td><td>2-3</td><td>3%</td></tr>
+        <tr><td class="hi">Calculus (total)</td><td class="hi">~10</td><td class="hi">13% <span class="wt-bar g" style="width:26px;"></span></td></tr>
+        <tr><td>↳ Differentiation</td><td>2-3</td><td>3%</td></tr>
+        <tr><td>↳ Applications of Derivatives</td><td>3-4</td><td>4%</td></tr>
+        <tr><td>↳ Limits & Continuity</td><td>2-3</td><td>3%</td></tr>
+        <tr><td>↳ Integration</td><td>3</td><td>4%</td></tr>
+        <tr><td class="hi">Trigonometry</td><td class="hi">~8</td><td class="hi">10% <span class="wt-bar b" style="width:20px;"></span></td></tr>
+        <tr><td class="med">Probability & Statistics</td><td class="med">~7</td><td class="med">9%</td></tr>
+      </table>
+
+      <button class="reveal-btn" onclick="toggleReveal(this)">Show All Remaining Chapters <span class="arrow">▼</span></button>
+      <div class="reveal-content">
+        <table class="dtable">
+          <tr><th>Chapter</th><th>Q</th><th>%</th></tr>
+          <tr><td>Algebra Core (Functions, etc.)</td><td>7</td><td>9%</td></tr>
+          <tr><td>Vector Algebra</td><td>6-7</td><td>8%</td></tr>
+          <tr><td>Binomial Theorem & Combinatorics</td><td>6</td><td>7.5%</td></tr>
+          <tr><td>Matrices & Determinants</td><td>4</td><td>5%</td></tr>
+          <tr><td>Complex Numbers</td><td>3</td><td>4%</td></tr>
+          <tr><td>Differential Equations</td><td>2-3</td><td>3%</td></tr>
+          <tr><td>Definite Integrals & Areas</td><td>3</td><td>4%</td></tr>
+          <tr><td>Permutations & Combinations</td><td>2-3</td><td>3%</td></tr>
+          <tr><td class="lo">Mathematical Induction</td><td class="lo">1</td><td class="lo">1.25%</td></tr>
+          <tr><td class="lo">Partial Fractions</td><td class="lo">1</td><td class="lo">1.25%</td></tr>
+          <tr><td class="lo">Theory of Equations</td><td class="lo">1-2</td><td class="lo">2%</td></tr>
+        </table>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Maths Strategy</div>
+        <p>Coordinate Geometry = 25 marks (31% of Maths!). This is the SINGLE biggest scoring opportunity in the entire EAMCET. Master Straight Lines + Circles alone = 8-10 marks guaranteed.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 5: VISUAL SUMMARY -->
+    <div class="page" data-page="5">
+      <div class="section-label">Visual Summary</div>
+      <div class="section-title">Where Your 160 Marks Come From</div>
+      <div class="section-desc">Screenshot teesko — daily reference ki use cheyyi.</div>
+
+      <div style="font-size:12px;font-weight:800;color:var(--blue);margin-bottom:6px;">⚡ PHYSICS (40Q)</div>
+      <div class="card" style="padding:12px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Mechanics</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:25%;height:100%;background:var(--blue);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--blue);min-width:28px;">25%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Heat & Thermo</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:var(--green);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--green);min-width:28px;">10%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Magnetism & EMI</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:var(--green);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--green);min-width:28px;">10%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Electrostatics+CE</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:9%;height:100%;background:var(--yellow);border-radius:4px;"></div></div>
+          <span style="font-weight:800;min-width:28px;">9%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Others (6 ch.)</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:46%;height:100%;background:var(--text-dim);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--text-dim);min-width:28px;">46%</span>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:800;color:var(--yellow);margin:12px 0 6px;">🧪 CHEMISTRY (40Q)</div>
+      <div class="card" style="padding:12px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Organic (all)</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:31%;height:100%;background:var(--yellow);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--yellow);min-width:28px;">31%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Inorganic (all)</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:18%;height:100%;background:var(--green);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--green);min-width:28px;">18%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Basic Concepts</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:var(--blue);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--blue);min-width:28px;">13%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Physical Chem</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:var(--text-dim);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--text-dim);min-width:28px;">38%</span>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:800;color:var(--green);margin:12px 0 6px;">📐 MATHS (80Q)</div>
+      <div class="card" style="padding:12px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Coord. Geometry</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:31%;height:100%;background:var(--green);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--green);min-width:28px;">31%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Calculus</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:var(--blue);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--blue);min-width:28px;">13%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Trigonometry</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:var(--yellow);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--yellow);min-width:28px;">10%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Prob & Stats</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:9%;height:100%;background:var(--yellow);border-radius:4px;"></div></div>
+          <span style="font-weight:800;min-width:28px;">9%</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+          <span style="font-weight:700;min-width:120px;">Others (8 ch.)</span>
+          <div style="flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden;"><div style="width:37%;height:100%;background:var(--text-dim);border-radius:4px;"></div></div>
+          <span style="font-weight:800;color:var(--text-dim);min-width:28px;">37%</span>
+        </div>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Key Takeaway</div>
+        <p>Top 3 areas: Coordinate Geometry (31% of Maths), Organic Chemistry (31% of Chem), Mechanics (25% of Physics). Master these 3 = 50+ marks locked.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: CTA -->
+    <div class="page" data-page="6">
+      <div class="cta-page">
+        <div class="hero-emoji">🎯</div>
+        <div class="hero-badge">Study Smart</div>
+        <div class="hero-title" style="font-size:26px;">Data-Backed<br>Preparation</div>
+        <div class="hero-sub" style="margin-bottom:28px;">Weightage data tho study chesthey — same time lo ekkuva marks score avvochu. Blindly chadhavaku — strategically prepare avvu.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Chapter-wise PYQs & analysis</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Weightage charts & study plans</div></div>
+        </a>
+        <div class="cta-footer">
+          <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px;">Raw Talks with Swaroop</div>
+          Made with ❤️ for Telugu students<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> · <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a><br>
+          <span style="font-size:10px;margin-top:4px;display:block;">Data based on AP EAMCET previous year analysis. Weightages may vary ±2-3%.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="backBtn" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="nextBtn" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+<script>
+const pages=document.querySelectorAll('.page'),total=pages.length;let current=0;
+function updateUI(){pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right');});document.getElementById('progressFill').style.width=((current+1)/total*100)+'%';document.getElementById('progressText').textContent=(current+1)+'/'+total;const bb=document.getElementById('backBtn');bb.classList.toggle('hidden',current===0);document.getElementById('nextBtn').textContent=current===total-1?'Done ✓':'Next →';const ap=pages[current];ap.scrollTop=0;}
+function goNext(){if(current===total-1){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank');return;}current++;updateUI();}
+function goBack(){if(current>0){current--;updateUI();}}
+function toggleReveal(btn){btn.classList.toggle('open');const c=btn.nextElementSibling;c.classList.toggle('open');}
+let sx=0,sy=0;document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){dx<0?goNext():goBack();}},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goNext();if(e.key==='ArrowLeft')goBack();});
+updateUI();
+</script>
+</body>
+</html>
