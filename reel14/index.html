@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Last 10 Days — Boost Your Marks | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a28;--accent:#e94560;--accent-glow:rgba(233,69,96,0.25);--green:#00b894;--yellow:#fdcb6e;--blue:#74b9ff;--orange:#e17055;--purple:#6c5ce7;--text:#e8e8e8;--text-dim:#8a8a9a;--border:#2a2a3a;}
+  *{margin:0;padding:0;box-sizing:border-box;}html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;}
+  .app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;overflow:hidden;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0;}.topbar-brand{font-size:13px;font-weight:700;color:var(--text-dim);}.topbar-brand span{color:var(--accent);}
+  .progress-wrap{display:flex;align-items:center;gap:8px;}.progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden;}.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.5s;}.progress-text{font-size:11px;color:var(--text-dim);font-weight:600;min-width:32px;text-align:right;}
+  .pages{flex:1;position:relative;overflow:hidden;}
+  .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;padding:24px 20px 100px;opacity:0;transform:translateX(60px);transition:all 0.45s cubic-bezier(0.4,0,0.2,1);pointer-events:none;-webkit-overflow-scrolling:touch;}.page.active{opacity:1;transform:translateX(0);pointer-events:auto;}.page.exit-left{opacity:0;transform:translateX(-60px);}.page.exit-right{opacity:0;transform:translateX(60px);}
+  .bottombar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0;}
+  .btn{padding:10px 22px;border-radius:50px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}.btn-back{background:transparent;color:var(--text-dim);border:1px solid var(--border);}.btn-back.hidden{opacity:0;pointer-events:none;}.btn-next{background:var(--accent);color:#fff;box-shadow:0 4px 16px var(--accent-glow);}
+  .hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}.hero-emoji{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite;}@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}.hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}.hero-title{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.hero-sub{font-size:15px;color:var(--text-dim);line-height:1.5;max-width:340px;}
+  .section-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:8px;}.section-title{font-size:24px;font-weight:900;line-height:1.2;margin-bottom:6px;}.section-desc{font-size:14px;color:var(--text-dim);line-height:1.5;margin-bottom:24px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}.card p{font-size:13px;color:var(--text-dim);line-height:1.55;margin-bottom:6px;}
+  .tip{background:linear-gradient(135deg,rgba(233,69,96,0.06),rgba(108,92,231,0.06));border:1px solid rgba(233,69,96,0.15);border-radius:14px;padding:16px;margin:16px 0;}.tip-label{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}.tip p{font-size:13px;line-height:1.55;color:var(--text);}
+  .reveal-btn{width:100%;background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:14px;color:var(--accent);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;}.reveal-btn:hover{background:var(--card-hover);border-color:var(--accent);}.reveal-btn .arrow{transition:transform 0.3s;font-size:16px;}.reveal-btn.open .arrow{transform:rotate(180deg);}.reveal-content{max-height:0;overflow:hidden;transition:max-height 0.4s;}.reveal-content.open{max-height:4000px;}
+  .community-btn{display:flex;align-items:center;gap:12px;width:100%;padding:16px 18px;border-radius:14px;text-decoration:none;font-size:15px;font-weight:700;color:#fff;margin-bottom:10px;transition:transform 0.2s;border:none;cursor:pointer;}.community-btn:hover{transform:translateY(-2px);}.community-btn.whatsapp{background:linear-gradient(135deg,#25d366,#128c7e);}.community-btn.telegram{background:linear-gradient(135deg,#2aabee,#229ed9);}.community-btn .cb-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}.community-btn .cb-text{text-align:left;}.community-btn .cb-sub{font-size:12px;font-weight:500;opacity:0.85;margin-top:2px;}
+  .cta-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:calc(100% - 100px);}.cta-footer{font-size:11px;color:var(--text-dim);margin-top:24px;line-height:1.6;}.cta-footer a{color:var(--accent);text-decoration:none;}
+  .swipe-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-dim);opacity:0.6;animation:hintPulse 2s ease-in-out infinite;}@keyframes hintPulse{0%,100%{opacity:0.4;}50%{opacity:0.8;}}
+
+  /* Day plan styles */
+  .day-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;position:relative;overflow:hidden;}
+  .day-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+  .day-card.d1::before{background:var(--accent);} .day-card.d2::before{background:var(--blue);} .day-card.d3::before{background:var(--green);} .day-card.d4::before{background:var(--yellow);} .day-card.d5::before{background:var(--purple);} .day-card.d6::before{background:var(--orange);}
+  .day-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .day-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;flex-shrink:0;}
+  .day-num.d1{background:var(--accent);} .day-num.d2{background:var(--blue);} .day-num.d3{background:var(--green);} .day-num.d4{background:var(--yellow);} .day-num.d5{background:var(--purple);} .day-num.d6{background:var(--orange);}
+  .day-head h4{font-size:14px;font-weight:800;line-height:1.2;}.day-head .day-sub{font-size:11px;color:var(--text-dim);margin-top:1px;}
+  .day-tasks{padding-left:6px;}.day-tasks li{font-size:12px;color:var(--text-dim);line-height:1.6;list-style:none;padding-left:14px;position:relative;}.day-tasks li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:800;}
+  .day-tasks li strong{color:var(--text);}
+
+  .formula-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;font-family:monospace;font-size:13px;color:var(--accent);text-align:center;letter-spacing:0.5px;}
+
+  .check-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+  .check-item:last-child{border-bottom:none;}
+  .check-box{width:20px;height:20px;border:2px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;cursor:pointer;transition:all 0.2s;margin-top:1px;}
+  .check-box.checked{background:var(--accent);border-color:var(--accent);}
+  .check-text{flex:1;line-height:1.45;}.check-text strong{color:var(--text);font-weight:700;}
+  .check-text span{color:var(--text-dim);}
+
+  .big-num{font-size:56px;font-weight:900;color:var(--accent);line-height:1;margin:8px 0;text-align:center;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand"><span>Raw Talks</span> with Swaroop</div>
+    <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText">1/8</div></div>
+  </div>
+  <div class="pages" id="pagesContainer">
+
+    <!-- PAGE 0: HERO -->
+    <div class="page active" data-page="0">
+      <div class="hero-page">
+        <div class="hero-emoji">⏰</div>
+        <div class="hero-badge">Final Push</div>
+        <div class="hero-title">Last 10 Days<br>Boost Your Marks</div>
+        <div class="hero-sub">10 days enough — if you follow the right plan. PYQs, mocks, formula revision — ikkada complete roadmap undi. No panic, just execution.</div>
+        <div style="display:flex;gap:20px;margin-top:32px;">
+          <div><div style="font-size:26px;font-weight:900;color:var(--accent);">10</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Days<br>Left</div></div>
+          <div><div style="font-size:26px;font-weight:900;color:var(--green);">+30</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Marks<br>Boost</div></div>
+          <div><div style="font-size:26px;font-weight:900;color:var(--blue);">3</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.2px;margin-top:2px;">Mocks<br>Minimum</div></div>
+        </div>
+      </div>
+      <div class="swipe-hint">← Swipe or tap Next →</div>
+    </div>
+
+    <!-- PAGE 1: COMMUNITY -->
+    <div class="page" data-page="1">
+      <div class="hero-page">
+        <div class="hero-emoji">🤝</div>
+        <div class="section-label">Step 1</div>
+        <div class="hero-title" style="font-size:26px;">Join the Community</div>
+        <div class="hero-sub" style="margin-bottom:32px;">PYQ PDFs, formula sheets, mock links — everything community lo share chesthaamu. Last minute lo crucial.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">PYQ PDFs & formula sheets</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">Mock tests & last-minute tips</div></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PAGE 2: THE 10-DAY PLAN (Days 1-5) -->
+    <div class="page" data-page="2">
+      <div class="section-label">The Battle Plan</div>
+      <div class="section-title">Days 1-5: Build</div>
+      <div class="section-desc">First 5 days = high-weightage chapters revise + PYQs solve. No new topics — only strengthen what you know.</div>
+
+      <div class="day-card d1">
+        <div class="day-head">
+          <div class="day-num d1">D1</div>
+          <div><h4>Coordinate Geometry + Formulae</h4><div class="day-sub">Target: 20+ marks from Maths</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Straight Lines</strong> — all formulae + 10 PYQs</li>
+          <li><strong>Circles</strong> — standard forms + 10 PYQs</li>
+          <li><strong>Conics</strong> — Parabola, Ellipse basic forms + 5 PYQs each</li>
+          <li>Night: Write all formulae in a <strong>separate notebook</strong></li>
+        </ul>
+      </div>
+
+      <div class="day-card d2">
+        <div class="day-head">
+          <div class="day-num d2">D2</div>
+          <div><h4>Probability + Vectors + Matrices</h4><div class="day-sub">Target: 15 marks (formulaic chapters)</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Probability</strong> — Bayes theorem, distributions + 10 PYQs</li>
+          <li><strong>Vector Algebra</strong> — dot/cross product + 8 PYQs</li>
+          <li><strong>Matrices</strong> — inverse, adjoint + 5 PYQs</li>
+        </ul>
+      </div>
+
+      <div class="day-card d3">
+        <div class="day-head">
+          <div class="day-num d3">D3</div>
+          <div><h4>Inorganic Chemistry Blitz</h4><div class="day-sub">Target: 10 marks (pure memorization)</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>p-Block</strong> — Group 13-18 properties, NCERT tables</li>
+          <li><strong>d & f Block</strong> — transition elements, properties</li>
+          <li><strong>Periodicity</strong> — trends, exceptions</li>
+          <li>Night: Biomolecules, Polymers, Everyday Chemistry (3 easy chapters = 3 marks)</li>
+        </ul>
+      </div>
+
+      <div class="day-card d4">
+        <div class="day-head">
+          <div class="day-num d4">D4</div>
+          <div><h4>Physics Gold Mines</h4><div class="day-sub">Target: 15 marks</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Units & Measurements</strong> — dimensional analysis + 5 PYQs</li>
+          <li><strong>Current Electricity</strong> — Kirchhoff's, Wheatstone + 8 PYQs</li>
+          <li><strong>Thermodynamics</strong> — laws, PV diagrams + 8 PYQs</li>
+          <li><strong>Semiconductors</strong> — p-n junction, transistor basics</li>
+        </ul>
+      </div>
+
+      <div class="day-card d5">
+        <div class="day-head">
+          <div class="day-num d5">D5</div>
+          <div><h4>Organic Chemistry + Trig</h4><div class="day-sub">Target: 12 marks</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Organic reactions</strong> — named reactions list revise + 10 PYQs</li>
+          <li><strong>GOC</strong> — mechanisms, isomerism + 5 PYQs</li>
+          <li><strong>Trigonometry</strong> — formulae sheet + 10 PYQs</li>
+          <li>Night: All Chemistry formulae in formula notebook</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PAGE 3: DAYS 6-8 -->
+    <div class="page" data-page="3">
+      <div class="section-label">The Battle Plan</div>
+      <div class="section-title">Days 6-8: Practice</div>
+      <div class="section-desc">Now switch from revision to full mock tests. This is where real improvement happens — test conditions lo practice cheyyi.</div>
+
+      <div class="day-card d6">
+        <div class="day-head">
+          <div class="day-num d6">D6</div>
+          <div><h4>Full Mock Test #1</h4><div class="day-sub">First complete attempt</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Morning:</strong> Take full 3-hour mock test in exam conditions</li>
+          <li><strong>No phone, no breaks</strong> — simulate real exam</li>
+          <li><strong>Afternoon:</strong> Analyze paper — mark wrong answers</li>
+          <li><strong>Evening:</strong> Revise only wrong topics — no new chapters</li>
+        </ul>
+      </div>
+
+      <div class="day-card d1">
+        <div class="day-head">
+          <div class="day-num d1">D7</div>
+          <div><h4>Weak Areas + PYQ Sprint</h4><div class="day-sub">Fix what broke in Mock #1</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>2 hours:</strong> Revise weak chapters identified from mock</li>
+          <li><strong>2 hours:</strong> Solve 40 PYQs from last 3 years (10P + 10C + 20M)</li>
+          <li><strong>1 hour:</strong> Formula notebook revision — all 3 subjects</li>
+          <li>Important: <strong>Don't start new topics</strong></li>
+        </ul>
+      </div>
+
+      <div class="day-card d2">
+        <div class="day-head">
+          <div class="day-num d2">D8</div>
+          <div><h4>Full Mock Test #2</h4><div class="day-sub">Should see improvement from Mock #1</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Morning:</strong> Full mock test #2 in exam conditions</li>
+          <li><strong>Compare:</strong> Score vs Mock #1 — identify improvement</li>
+          <li><strong>Afternoon:</strong> Remaining weak areas revision</li>
+          <li><strong>Evening:</strong> Integration + Differential Equations quick revision</li>
+        </ul>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Mock Test Sources</div>
+        <p>Free mocks available on: Embibe, Toppr, Vedantu, Allen Online. Or solve previous year papers (2022-2025) from official EAMCET websites. Minimum 3 full mocks before exam.</p>
+      </div>
+    </div>
+
+    <!-- PAGE 4: DAYS 9-10 -->
+    <div class="page" data-page="4">
+      <div class="section-label">The Battle Plan</div>
+      <div class="section-title">Days 9-10: Lock In</div>
+      <div class="section-desc">Last 2 days = only revision. No new topics. No heavy studying. Confidence build cheyyi.</div>
+
+      <div class="day-card d3">
+        <div class="day-head">
+          <div class="day-num d3">D9</div>
+          <div><h4>Final Mock + Formula Marathon</h4><div class="day-sub">Last full practice</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Morning:</strong> Final mock test #3 (or PYQ paper)</li>
+          <li><strong>Afternoon:</strong> ONLY formula notebook revision</li>
+          <li><strong>Evening:</strong> Quick NCERT Inorganic tables one last time</li>
+          <li>Pack exam day bag: <strong>hall ticket, pen, water, watch</strong></li>
+        </ul>
+      </div>
+
+      <div class="day-card d4">
+        <div class="day-head">
+          <div class="day-num d4">D10</div>
+          <div><h4>Exam Eve — Light Revision Only</h4><div class="day-sub">Stay calm, stay confident</div></div>
+        </div>
+        <ul class="day-tasks">
+          <li><strong>Morning:</strong> 1 hour — flip through formula notebook</li>
+          <li><strong>NO heavy studying</strong> — brain ki rest kavali</li>
+          <li><strong>Afternoon:</strong> Light walk, eat well, hydrate</li>
+          <li><strong>Night:</strong> Sleep by 10 PM — 8 hours sleep = better performance than 3 hours extra study</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color:var(--green);text-align:center;">
+        <div style="font-size:11px;color:var(--green);font-weight:800;text-transform:uppercase;letter-spacing:2px;">Expected Improvement</div>
+        <div class="big-num" style="color:var(--green);">+25-35</div>
+        <div style="font-size:13px;color:var(--text-dim);">marks improvement with disciplined 10-day plan</div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: EXAM DAY STRATEGY -->
+    <div class="page" data-page="5">
+      <div class="section-label">D-Day</div>
+      <div class="section-title">Exam Day Battle Plan</div>
+      <div class="section-desc">3 hours, 160 questions. Time management is everything. Follow this exact order.</div>
+
+      <div class="formula-box">
+        ⏱️ MATHS (90 min) → PHYSICS (45 min) → CHEMISTRY (30 min) → MOP-UP (15 min)
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--blue);">
+        <h4 style="font-size:14px;font-weight:800;color:var(--blue);margin-bottom:6px;">📐 Phase 1: Maths First (90 min)</h4>
+        <p><strong>Why first:</strong> 80 questions = 50% marks. Fresh mind lo attempt cheyyi.</p>
+        <p><strong>Order:</strong> Coordinate Geometry → Probability → Vectors → Matrices → rest</p>
+        <p><strong>Rule:</strong> 1 min per question. Stuck ayithey skip → mark for later.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--green);">
+        <h4 style="font-size:14px;font-weight:800;color:var(--green);margin-bottom:6px;">⚡ Phase 2: Physics (45 min)</h4>
+        <p><strong>Order:</strong> Units & Measurements → Current E → Thermodynamics → Mechanics</p>
+        <p><strong>Easy ones first:</strong> Theory-based questions attempt cheyyi, then numericals.</p>
+        <p><strong>Rule:</strong> No negative marking — attempt everything!</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <h4 style="font-size:14px;font-weight:800;color:var(--yellow);margin-bottom:6px;">🧪 Phase 3: Chemistry (30 min)</h4>
+        <p><strong>Order:</strong> Inorganic (memorization) → Organic (reactions) → Physical</p>
+        <p><strong>Speed focus:</strong> Inorganic questions lo 30 seconds enough — pick answer from memory.</p>
+      </div>
+
+      <div class="card" style="border-left:4px solid var(--accent);">
+        <h4 style="font-size:14px;font-weight:800;color:var(--accent);margin-bottom:6px;">🎯 Phase 4: Mop-up (15 min)</h4>
+        <p><strong>Go back:</strong> to skipped questions. Try elimination method.</p>
+        <p><strong>Guess remaining:</strong> No negative marking — NEVER leave blank!</p>
+        <p><strong>Remember:</strong> Random guess = 25% chance correct = free marks!</p>
+      </div>
+
+      <div class="tip">
+        <div class="tip-label">Critical Rule</div>
+        <p>EAMCET lo negative marking LEDU. Blank answer = 0 marks guaranteed. Random guess = 25% chance of +1. Always mark something!</p>
+      </div>
+    </div>
+
+    <!-- PAGE 6: CHECKLIST -->
+    <div class="page" data-page="6">
+      <div class="section-label">Your Checklist</div>
+      <div class="section-title">Pre-Exam Essentials</div>
+      <div class="section-desc">Tap to check off — make sure nothing is missed.</div>
+
+      <div style="font-size:12px;font-weight:800;color:var(--accent);margin-bottom:10px;text-transform:uppercase;letter-spacing:1.5px;">📝 Study Checklist</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Formula notebook ready</strong> — <span>all 3 subjects, handwritten</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>3+ mock tests completed</strong> — <span>analyzed wrong answers</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>PYQs solved (2022-2025)</strong> — <span>at least 2 previous papers</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Coordinate Geometry formulae</strong> — <span>Straight Lines, Circles, Conics</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Inorganic tables revised</strong> — <span>p-Block, d-Block from NCERT</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Organic named reactions</strong> — <span>Wurtz, Friedel-Crafts, etc.</span></div>
+      </div>
+
+      <div style="font-size:12px;font-weight:800;color:var(--green);margin:16px 0 10px;text-transform:uppercase;letter-spacing:1.5px;">🎒 Exam Day Bag</div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Hall ticket / admit card</strong> — <span>printout + phone lo backup</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>ID proof</strong> — <span>Aadhaar / School ID</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Black/blue ball pens</strong> — <span>2-3 extra pens</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Water bottle</strong> — <span>hydration = better focus</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Watch</strong> — <span>phone allowed kaadu, watch tho time track cheyyi</span></div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div class="check-text"><strong>Light snack</strong> — <span>chocolate/biscuit for energy</span></div>
+      </div>
+    </div>
+
+    <!-- PAGE 7: CTA -->
+    <div class="page" data-page="7">
+      <div class="cta-page">
+        <div class="hero-emoji">🏆</div>
+        <div class="hero-badge">You're Ready</div>
+        <div class="hero-title" style="font-size:26px;">Trust Your<br>Preparation</div>
+        <div class="hero-sub" style="margin-bottom:28px;">10 days lo 25-35 marks improve cheyochu — if you follow this plan with discipline. No shortcuts, just consistent execution. All the best!</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="community-btn whatsapp">
+          <div class="cb-icon">💬</div>
+          <div class="cb-text">Join WhatsApp Community<div class="cb-sub">Last-minute tips & support</div></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="community-btn telegram">
+          <div class="cb-icon">✈️</div>
+          <div class="cb-text">Join Telegram Group<div class="cb-sub">PYQ PDFs & formula sheets</div></div>
+        </a>
+        <div class="cta-footer">
+          <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:4px;">Raw Talks with Swaroop</div>
+          Made with ❤️ for Telugu students<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> · <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottombar">
+    <button class="btn btn-back hidden" id="backBtn" onclick="goBack()">← Back</button>
+    <button class="btn btn-next" id="nextBtn" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+<script>
+const pages=document.querySelectorAll('.page'),total=pages.length;let current=0;
+function updateUI(){pages.forEach((p,i)=>{p.classList.remove('active','exit-left','exit-right');if(i===current)p.classList.add('active');else if(i<current)p.classList.add('exit-left');else p.classList.add('exit-right');});document.getElementById('progressFill').style.width=((current+1)/total*100)+'%';document.getElementById('progressText').textContent=(current+1)+'/'+total;const bb=document.getElementById('backBtn');bb.classList.toggle('hidden',current===0);document.getElementById('nextBtn').textContent=current===total-1?'Done ✓':'Next →';const ap=pages[current];ap.scrollTop=0;}
+function goNext(){if(current===total-1){window.open('https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD','_blank');return;}current++;updateUI();}
+function goBack(){if(current>0){current--;updateUI();}}
+function toggleReveal(btn){btn.classList.toggle('open');const c=btn.nextElementSibling;c.classList.toggle('open');}
+function toggleCheck(el){el.querySelector('.check-box').classList.toggle('checked');}
+let sx=0,sy=0;document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){dx<0?goNext():goBack();}},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goNext();if(e.key==='ArrowLeft')goBack();});
+updateUI();
+</script>
+</body>
+</html>
