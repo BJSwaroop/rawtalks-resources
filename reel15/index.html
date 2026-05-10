@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EAMCET Rank Vachindhi — Ippudu Em Cheyali? | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --card-hover: #1a1a28;
+    --accent: #e94560;
+    --accent-glow: rgba(233, 69, 96, 0.25);
+    --accent2: #6c5ce7;
+    --green: #00b894;
+    --yellow: #fdcb6e;
+    --blue: #74b9ff;
+    --orange: #e17055;
+    --text: #e8e8e8;
+    --text-dim: #8a8a9a;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    flex-shrink: 0;
+  }
+  .topbar-brand { font-size: 13px; font-weight: 700; color: var(--text-dim); }
+  .topbar-brand span { color: var(--accent); }
+  .progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-bar { width: 80px; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+  .progress-text { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+
+  .pages-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  .page {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 24px 20px 80px;
+    overflow-y: auto;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.35s ease;
+    will-change: transform;
+    -webkit-overflow-scrolling: touch;
+  }
+  .page::-webkit-scrollbar { display: none; }
+  .page[data-state="active"] { transform: translateX(0); opacity: 1; }
+  .page[data-state="next"] { transform: translateX(100%); opacity: 0; }
+  .page[data-state="prev"] { transform: translateX(-100%); opacity: 0; }
+
+  .nav-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px;
+    background: linear-gradient(transparent, var(--bg) 30%);
+    z-index: 50;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-prev { background: var(--card); color: var(--text-dim); border: 1px solid var(--border); }
+  .nav-next { background: var(--accent); color: #fff; }
+  .nav-btn:active { transform: scale(0.97); }
+
+  /* ─── CONTENT STYLES ─── */
+  .hero-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+  .hero-title { font-size: 26px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; background: linear-gradient(135deg, #fff, var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 20px; }
+
+  .section-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; }
+  .section-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 2px; background: var(--border); border-radius: 2px; }
+  .tl-item { position: relative; margin-bottom: 18px; }
+  .tl-dot { position: absolute; left: -24px; top: 4px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); }
+  .tl-dot.done { background: var(--accent); }
+  .tl-dot.active { background: var(--green); border-color: var(--green); box-shadow: 0 0 8px rgba(0,184,148,0.5); }
+  .tl-label { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .tl-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .tl-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Step cards */
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900;
+    flex-shrink: 0;
+  }
+  .step-body { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .step-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Info boxes */
+  .info-box {
+    background: var(--card);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .info-box.green { border-left-color: var(--green); }
+  .info-box.yellow { border-left-color: var(--yellow); }
+  .info-box.blue { border-left-color: var(--blue); }
+  .info-box.orange { border-left-color: var(--orange); }
+  .info-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .info-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Rank table */
+  .rank-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 12px;
+  }
+  .rank-table th {
+    background: var(--card);
+    padding: 10px 8px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rank-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .rank-table tr:last-child td { border-bottom: none; }
+  .rank-table .highlight { color: var(--green); font-weight: 700; }
+
+  /* Doc checklist */
+  .doc-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .doc-item:active { background: var(--card-hover); }
+  .doc-check { width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; transition: all 0.2s; }
+  .doc-item.checked .doc-check { background: var(--green); border-color: var(--green); color: #fff; }
+  .doc-item .doc-label { flex: 1; }
+  .doc-item .doc-note { font-size: 10px; color: var(--text-dim); }
+
+  /* Warn box */
+  .warn-box {
+    background: rgba(253, 203, 110, 0.1);
+    border: 1px solid rgba(253, 203, 110, 0.3);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .warn-box .warn-title { font-size: 13px; font-weight: 700; color: var(--yellow); margin-bottom: 4px; }
+  .warn-box .warn-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  /* CTA */
+  .cta-card {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .cta-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; color: #fff; }
+  .cta-sub { font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 16px; line-height: 1.5; }
+
+  .comm-btn {
+    display: flex; align-items: center; gap: 12px;
+    width: 100%; padding: 14px 16px; border-radius: 14px;
+    text-decoration: none; font-size: 14px; font-weight: 700; color: #fff;
+    margin-bottom: 8px;
+  }
+  .comm-btn.wa { background: linear-gradient(135deg, #25d366, #128c7e); }
+  .comm-btn.tg { background: linear-gradient(135deg, #2aabee, #229ed9); }
+  .comm-btn .ci { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+
+  .foot { text-align: center; margin-top: 16px; font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+  .foot a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand">Raw Talks <span>Resources</span></div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <div class="progress-text" id="progText">1/8</div>
+    </div>
+  </div>
+
+  <div class="pages-container" id="pagesContainer">
+
+    <!-- PAGE 1: Hero -->
+    <div class="page" data-state="active">
+      <div style="padding-top: 10px;">
+        <div class="hero-badge">Result Day Guide</div>
+        <div class="hero-title">EAMCET Rank Vachindhi — Ippudu Em Cheyali?</div>
+        <div class="hero-sub">Result day nunchi college joining varaku — complete step-by-step roadmap. Panic avasaram ledu bayya.</div>
+
+        <div class="info-box green">
+          <div class="info-title">AP EAPCET 2026 Result</div>
+          <div class="info-desc">Expected: June 1, 2026 (tentative)<br>Website: cets.apsche.ap.gov.in</div>
+        </div>
+        <div class="info-box blue">
+          <div class="info-title">TS EAPCET 2026 Result</div>
+          <div class="info-desc">Expected: June first week<br>Website: eapcet.tgche.ac.in</div>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <div class="warn-box">
+            <div class="warn-title">⚠ Important Change — 2026</div>
+            <div class="warn-desc">IPE (Inter) marks ki weightage ledu ee year. Rank calculation EAMCET marks basis lo matrame. So your entrance score = your rank.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: Community -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="section-title">🔗 Join Our Community</div>
+        <div class="section-sub">Counselling doubts, cutoff updates, daily guidance — all free.</div>
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="comm-btn wa">
+          <div class="ci">💬</div>
+          <div>Join WhatsApp Community<br><span style="font-size:12px;font-weight:500;opacity:0.85;">Rank doubts, counselling help, daily updates</span></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="comm-btn tg">
+          <div class="ci">✈️</div>
+          <div>Join Telegram Group<br><span style="font-size:12px;font-weight:500;opacity:0.85;">Resources, cutoffs, exam alerts</span></div>
+        </a>
+        <div style="margin-top: 16px;">
+          <div class="info-box">
+            <div class="info-title">Why Join?</div>
+            <div class="info-desc">Counselling dates, document alerts, cutoff predictions, web options help — real-time updates from Swaroop & the community. 5000+ students already inside.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: Full Timeline -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="section-title">📅 Complete Timeline</div>
+        <div class="section-sub">Result day nunchi college joining varaku — full schedule.</div>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot done"></div>
+            <div class="tl-label">May 12-20</div>
+            <div class="tl-title">EAMCET Exam</div>
+            <div class="tl-desc">AP EAPCET exam completed</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot active"></div>
+            <div class="tl-label">June 1 (Expected)</div>
+            <div class="tl-title">Result Declaration</div>
+            <div class="tl-desc">Rank card download from official website</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">June 2-15</div>
+            <div class="tl-title">Rank Analysis Period</div>
+            <div class="tl-desc">Check cutoffs, compare colleges, make shortlist</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">July 1st Week (Expected)</div>
+            <div class="tl-title">Counselling Registration Opens</div>
+            <div class="tl-desc">Online registration + processing fee payment</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">July Week 2-3</div>
+            <div class="tl-title">Certificate Verification</div>
+            <div class="tl-desc">Online or offline at helpline centres</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">July Week 3-4</div>
+            <div class="tl-title">Web Options Entry</div>
+            <div class="tl-desc">Select colleges + branches in priority order. LOCK before deadline.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">Late July / Aug</div>
+            <div class="tl-title">Seat Allotment</div>
+            <div class="tl-desc">Accept / Slide / Reject decision</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">August</div>
+            <div class="tl-title">Self-Reporting + Fee Payment</div>
+            <div class="tl-desc">Visit allotted college, submit originals, pay fee</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-label">Sep-Oct</div>
+            <div class="tl-title">College Joining</div>
+            <div class="tl-desc">Orientation, hostel allotment, classes start</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: Marks vs Rank -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="section-title">📊 Marks vs Rank (Expected)</div>
+        <div class="section-sub">Based on AP EAMCET 2024-2025 trends. Out of 160 marks total. No IPE weightage in 2026.</div>
+
+        <table class="rank-table">
+          <tr><th>Marks</th><th>Expected Rank</th><th>What You Can Get</th></tr>
+          <tr><td>150-160</td><td class="highlight">1 – 500</td><td>Top govt colleges — JNTUK, AUCE CSE</td></tr>
+          <tr><td>140-149</td><td class="highlight">500 – 1,500</td><td>Top govt CSE/IT branches</td></tr>
+          <tr><td>130-139</td><td>1,500 – 3,000</td><td>Good govt colleges CSE</td></tr>
+          <tr><td>120-129</td><td>3,000 – 6,000</td><td>Mid govt CSE, top govt ECE/EEE</td></tr>
+          <tr><td>110-119</td><td>6,000 – 10,000</td><td>Govt colleges — all branches possible</td></tr>
+          <tr><td>100-109</td><td>10,000 – 15,000</td><td>Mid-tier govt, top private colleges</td></tr>
+          <tr><td>90-99</td><td>15,000 – 20,000</td><td>Private colleges CSE/IT</td></tr>
+          <tr><td>80-89</td><td>20,000 – 30,000</td><td>Good private colleges</td></tr>
+          <tr><td>70-79</td><td>30,000 – 45,000</td><td>Private colleges — branch dependent</td></tr>
+          <tr><td>60-69</td><td>45,000 – 65,000</td><td>Average private colleges</td></tr>
+          <tr><td>50-59</td><td>65,000 – 90,000</td><td>Select private options carefully</td></tr>
+          <tr><td>40-49</td><td>90,000 – 1,30,000</td><td>Limited options — consider alternatives</td></tr>
+        </table>
+
+        <div class="warn-box">
+          <div class="warn-title">⚠ Note</div>
+          <div class="warn-desc">These are estimates based on previous year trends. Actual ranks may vary based on difficulty level and total candidates. Official data comes after results.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 5: First 7 Days Action Plan -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="section-title">🎯 First 7 Days — Action Plan</div>
+        <div class="section-sub">Result vachina first week lo em cheyyaali — step by step.</div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(233,69,96,0.15);color:var(--accent);">1</div>
+          <div class="step-body">
+            <div class="step-title">Download Rank Card</div>
+            <div class="step-desc">Official website nunchi download cheyi. Screenshot kuda theesuko. Hall ticket number + DOB kavali login ki.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(0,184,148,0.15);color:var(--green);">2</div>
+          <div class="step-body">
+            <div class="step-title">Check Previous Year Cutoffs</div>
+            <div class="step-desc">Careers360, CollegeDekho lo nee rank range ki em colleges vachaayi last year? List banao.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(116,185,255,0.15);color:var(--blue);">3</div>
+          <div class="step-body">
+            <div class="step-title">Make a College Shortlist (15-20)</div>
+            <div class="step-desc">Top 5 dream + 5 realistic + 5-10 safe options. Branch + college both consider cheyi.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(253,203,110,0.15);color:var(--yellow);">4</div>
+          <div class="step-body">
+            <div class="step-title">Research Placements — Not Just Name</div>
+            <div class="step-desc">College website lo placement reports chudu. Average package, highest package, top recruiters — data basis lo decide cheyi.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(108,92,231,0.15);color:var(--accent2);">5</div>
+          <div class="step-body">
+            <div class="step-title">Gather Documents</div>
+            <div class="step-desc">SSC memo, Inter memo, EAMCET hall ticket, rank card, caste/income certificates — ippudu nunche collect cheyi. Last moment rush vaddhu.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(225,112,85,0.15);color:var(--orange);">6</div>
+          <div class="step-body">
+            <div class="step-title">Talk to Current Students — Not Relatives</div>
+            <div class="step-desc">College lo actual students ni contact cheyi. Seniors ki DM cheyi. Relatives opinion kaadu — data kavali.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num" style="background:rgba(233,69,96,0.15);color:var(--accent);">7</div>
+          <div class="step-body">
+            <div class="step-title">Avoid Agents & Paid Consultants</div>
+            <div class="step-desc">Counselling official process matrame follow cheyi. Seat guarantee cheppevaallani nammaku. Scam ekkuva undhi.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 6: Rank-wise Quick Guide -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="section-title">🏫 Rank-Wise Quick Guide</div>
+        <div class="section-sub">Nee rank range ki em options unnaayi — quick overview.</div>
+
+        <div class="info-box green">
+          <div class="info-title">Rank 1 – 5,000 (Top Tier)</div>
+          <div class="info-desc">JNTUK UCE, AUCE, SVUCE, GVP, RVRJC lo CSE/IT/ECE. Government colleges lo priority iyyyi. Branch + college rendu dorukuthaay.</div>
+        </div>
+
+        <div class="info-box blue">
+          <div class="info-title">Rank 5,000 – 15,000 (Strong)</div>
+          <div class="info-desc">Government colleges lo ECE/EEE/Mech. Private lo CSE possible — VIT-AP, SRM-AP, KLU consider cheyi. ROI basis lo decide cheyi.</div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-title">Rank 15,000 – 50,000 (Competitive)</div>
+          <div class="info-desc">Good private colleges lo CSE/IT vasthundi. GITAM, Vignan, BVRIT, CVR, Anurag, CBIT type colleges. Placement data chudu — name kaadu.</div>
+        </div>
+
+        <div class="info-box yellow">
+          <div class="info-title">Rank 50,000 – 1,00,000 (Options Available)</div>
+          <div class="info-desc">Government fee reimbursement unte private lo join avvu. Smaller govt colleges kuda try cheyi. Skills build cheyi 1st year nunchi — college name kaadu, skills matter.</div>
+        </div>
+
+        <div class="info-box orange">
+          <div class="info-title">Rank 1,00,000+ (Don't Panic)</div>
+          <div class="info-desc">Options unnaayi: Spot admission, lateral entry (diploma), other state exams, or alternative paths (BSc, BCA, online degree). Oka door moosthe inkoka terusthundhi.</div>
+        </div>
+
+        <div class="warn-box" style="margin-top: 12px;">
+          <div class="warn-title">💡 Key Insight</div>
+          <div class="warn-desc">Rank 50,000+ students: college name kaadu — nuvvu em chestaav college lo, adhi matter. Coding, projects, internships — ivi nee real placement weapons.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 7: Document Checklist -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="section-title">📋 Documents Checklist</div>
+        <div class="section-sub">Counselling ki kavalsina documents. Tap to check off as you collect.</div>
+
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">EAMCET 2026 Rank Card</div>
+          <div class="doc-note">Download from website</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">EAMCET 2026 Hall Ticket</div>
+          <div class="doc-note">Original + 2 photocopies</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">SSC / 10th Memorandum</div>
+          <div class="doc-note">For date of birth proof</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Inter / 12th Memorandum</div>
+          <div class="doc-note">Original marks memo</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Transfer Certificate (TC)</div>
+          <div class="doc-note">From your Inter college</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Study Certificates (7 years)</div>
+          <div class="doc-note">Classes 6-12 study proof</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Caste Certificate (if applicable)</div>
+          <div class="doc-note">BC/SC/ST — from MeeSeva</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Income Certificate</div>
+          <div class="doc-note">For fee reimbursement & EWS</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">EWS Certificate (if OC)</div>
+          <div class="doc-note">Valid 2025-26, from MeeSeva</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Residence Certificate (Non-Local)</div>
+          <div class="doc-note">Father/Mother 10-year residence from Tahsildar</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Aadhar Card</div>
+          <div class="doc-note">Student's Aadhar — original + copy</div>
+        </div>
+        <div class="doc-item" onclick="toggleDoc(this)">
+          <div class="doc-check">✓</div>
+          <div class="doc-label">Passport Size Photos (10)</div>
+          <div class="doc-note">White background, recent</div>
+        </div>
+
+        <div class="warn-box" style="margin-top: 12px;">
+          <div class="warn-title">⚠ Don't Wait!</div>
+          <div class="warn-desc">Caste, income, EWS certificates MeeSeva lo time padthundi. Ippudu nunche apply cheyi. Last minute aithe verification lo problem vasthundi.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 8: CTA -->
+    <div class="page" data-state="next">
+      <div style="padding-top: 10px;">
+        <div class="cta-card">
+          <div class="cta-title">Complete Guide — Save Cheyi!</div>
+          <div class="cta-sub">Result day nunchi college joining varaku — full roadmap nee phone lo. Share cheyi friends ki kuda.</div>
+        </div>
+
+        <div class="info-box green">
+          <div class="info-title">Coming Soon — More Resources</div>
+          <div class="info-desc">Top 10 Colleges AP, Top 10 Colleges TS, CSE vs AI/ML vs IT comparison, Counselling A-Z guide, Documents checklist — anni resources build avthunnaayi.</div>
+        </div>
+
+        <a href="https://chat.whatsapp.com/FptEOqWrVwb2ycFBE4UAbD" target="_blank" class="comm-btn wa">
+          <div class="ci">💬</div>
+          <div>Join WhatsApp Community<br><span style="font-size:12px;font-weight:500;opacity:0.85;">Daily counselling updates</span></div>
+        </a>
+        <a href="https://t.me/+CBKlC2oksD84YTU9" target="_blank" class="comm-btn tg">
+          <div class="ci">✈️</div>
+          <div>Join Telegram Group<br><span style="font-size:12px;font-weight:500;opacity:0.85;">Resources & cutoff alerts</span></div>
+        </a>
+
+        <div class="foot">
+          <div style="font-weight:700;font-size:14px;color:var(--text);margin-bottom:4px;">Raw Talks with Swaroop</div>
+          Made with ❤️ for Telugu students • June 2026<br>
+          <a href="https://www.instagram.com/raw_talks_with_swaroop/">Instagram</a> • <a href="https://www.youtube.com/@SwaroopTalks">YouTube</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn nav-prev" id="prevBtn" onclick="go(-1)">← Back</button>
+    <button class="nav-btn nav-next" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let cur = 0;
+
+function go(d) {
+  const n = cur + d;
+  if (n < 0 || n >= total) return;
+  pages[cur].dataset.state = d > 0 ? 'prev' : 'next';
+  cur = n;
+  pages[cur].dataset.state = 'active';
+  update();
+}
+
+function update() {
+  document.getElementById('progFill').style.width = ((cur + 1) / total * 100) + '%';
+  document.getElementById('progText').textContent = (cur + 1) + '/' + total;
+  document.getElementById('prevBtn').style.visibility = cur === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = cur === total - 1 ? 'Share ↗' : 'Next →';
+  if (cur === total - 1) {
+    document.getElementById('nextBtn').onclick = function() {
+      if (navigator.share) navigator.share({ title: 'EAMCET Rank Guide', url: window.location.href });
+    };
+  } else {
+    document.getElementById('nextBtn').onclick = function() { go(1); };
+  }
+}
+
+function toggleDoc(el) {
+  el.classList.toggle('checked');
+}
+
+// Swipe
+let sx = 0;
+const pc = document.getElementById('pagesContainer');
+pc.addEventListener('touchstart', e => { sx = e.touches[0].clientX; });
+pc.addEventListener('touchend', e => {
+  const diff = sx - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) go(diff > 0 ? 1 : -1);
+});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+});
+
+update();
+</script>
+</body>
+</html>

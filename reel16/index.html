@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nee Rank Ki Ye College Vasthundhi? | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --card-hover: #1a1a28;
+    --accent: #e94560;
+    --accent-glow: rgba(233, 69, 96, 0.25);
+    --accent2: #6c5ce7;
+    --green: #00b894;
+    --yellow: #fdcb6e;
+    --blue: #74b9ff;
+    --orange: #e17055;
+    --text: #e8e8e8;
+    --text-dim: #8a8a9a;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    flex-shrink: 0;
+  }
+  .topbar-brand { font-size: 13px; font-weight: 700; color: var(--text-dim); }
+  .topbar-brand span { color: var(--accent); }
+  .progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-bar { width: 80px; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+  .progress-text { font-size: 11px; color: var(--text-dim); font-weight: 600; }
+
+  .pages-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+  .page {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 24px 20px 80px;
+    overflow-y: auto;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.35s ease;
+    will-change: transform;
+    -webkit-overflow-scrolling: touch;
+  }
+  .page::-webkit-scrollbar { display: none; }
+  .page[data-state="active"] { transform: translateX(0); opacity: 1; }
+  .page[data-state="next"] { transform: translateX(100%); opacity: 0; }
+  .page[data-state="prev"] { transform: translateX(-100%); opacity: 0; }
+
+  .nav-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px;
+    background: linear-gradient(transparent, var(--bg) 30%);
+    z-index: 50;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .nav-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-prev { background: var(--card); color: var(--text-dim); border: 1px solid var(--border); }
+  .nav-next { background: var(--accent); color: #fff; }
+  .nav-btn:active { transform: scale(0.97); }
+
+  /* ─── CONTENT STYLES ─── */
+  .hero-badge { display: inline-block; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 14px; border-radius: 20px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+  .hero-title { font-size: 26px; font-weight: 900; line-height: 1.2; margin-bottom: 10px; background: linear-gradient(135deg, #fff, var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-sub { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 20px; }
+
+  .section-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; }
+  .section-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5; }
+
+  /* Rank Finder */
+  .rank-input-wrap {
+    background: var(--card);
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  .rank-input-label { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+  .rank-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .rank-input:focus { border-color: var(--accent); }
+  .rank-input::placeholder { color: var(--text-dim); font-size: 16px; font-weight: 500; }
+  .rank-find-btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .rank-find-btn:active { transform: scale(0.97); }
+
+  .result-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .result-tier {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .tier-elite { background: rgba(108,92,231,0.2); color: var(--accent2); }
+  .tier-top { background: rgba(0,184,148,0.2); color: var(--green); }
+  .tier-strong { background: rgba(116,185,255,0.2); color: var(--blue); }
+  .tier-good { background: rgba(253,203,110,0.2); color: var(--yellow); }
+  .tier-options { background: rgba(225,112,85,0.2); color: var(--orange); }
+  .tier-explore { background: rgba(233,69,96,0.15); color: var(--accent); }
+  .result-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+  .result-msg { font-size: 12px; color: var(--text-dim); line-height: 1.5; margin-bottom: 12px; }
+
+  /* College cards */
+  .college-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 8px;
+  }
+  .college-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .college-loc { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+  .college-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .college-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: rgba(233,69,96,0.12);
+    color: var(--accent);
+  }
+  .college-tag.govt { background: rgba(0,184,148,0.15); color: var(--green); }
+  .college-tag.pvt { background: rgba(116,185,255,0.12); color: var(--blue); }
+  .college-tag.uni { background: rgba(108,92,231,0.15); color: var(--accent2); }
+  .college-tag.auto { background: rgba(253,203,110,0.15); color: var(--yellow); }
+
+  /* Branch cards */
+  .branch-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .branch-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .branch-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .branch-name { font-size: 15px; font-weight: 800; }
+  .branch-scope { font-size: 11px; color: var(--text-dim); }
+  .branch-stats { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .branch-stat {
+    flex: 1;
+    min-width: 80px;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+  }
+  .stat-val { font-size: 14px; font-weight: 800; }
+  .stat-label { font-size: 9px; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* Info boxes */
+  .info-box {
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .info-box.green { background: rgba(0,184,148,0.1); border: 1px solid rgba(0,184,148,0.2); color: var(--green); }
+  .info-box.blue { background: rgba(116,185,255,0.1); border: 1px solid rgba(116,185,255,0.2); color: var(--blue); }
+  .info-box.yellow { background: rgba(253,203,110,0.1); border: 1px solid rgba(253,203,110,0.2); color: var(--yellow); }
+  .info-box.red { background: rgba(233,69,96,0.1); border: 1px solid rgba(233,69,96,0.2); color: var(--accent); }
+  .info-box b { font-weight: 700; }
+
+  /* Fee table */
+  .fee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  .fee-table th {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 8px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .fee-table th:first-child { border-radius: 10px 0 0 0; }
+  .fee-table th:last-child { border-radius: 0 10px 0 0; }
+  .fee-table td {
+    background: var(--card);
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .fee-table tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+  .fee-table tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+
+  /* Quick chips */
+  .rank-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .rank-chip {
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .rank-chip:active, .rank-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* CTA */
+  .cta-card {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .cta-title { font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+  .cta-sub { font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 16px; line-height: 1.5; }
+  .cta-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #fff;
+    color: var(--accent);
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 14px;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+  .cta-btn:active { transform: scale(0.96); }
+
+  /* Warn box */
+  .warn-box {
+    background: rgba(253,203,110,0.1);
+    border: 1px solid rgba(253,203,110,0.25);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--yellow);
+  }
+
+  /* Tab switcher */
+  .tab-bar {
+    display: flex;
+    gap: 4px;
+    background: var(--card);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 16px;
+  }
+  .tab-item {
+    flex: 1;
+    padding: 10px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+  .tab-item.active { background: var(--accent); color: #fff; }
+
+  .hidden { display: none !important; }
+
+  /* Comparison bar */
+  .comp-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .comp-label { font-size: 11px; font-weight: 600; width: 50px; flex-shrink: 0; }
+  .comp-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .comp-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .comp-val { font-size: 11px; font-weight: 700; width: 55px; text-align: right; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand">Raw Talks <span>Resources</span></div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+      <div class="progress-text" id="pText">1/7</div>
+    </div>
+  </div>
+
+  <div class="pages-container" id="pagesContainer">
+
+    <!-- PAGE 1: HERO -->
+    <div class="page" data-state="active">
+      <div class="hero-badge">College Finder</div>
+      <h1 class="hero-title">Nee Rank Ki Ye College Vasthundhi?</h1>
+      <p class="hero-sub">AP EAMCET 2026 rank tho edhi college vasthundhoo, ye branch choose cheyalo, fee entha — complete guide ee resource lo.</p>
+
+      <div class="info-box green">
+        <b>AP EAPCET 2026:</b> IPE weightage removed! Rank purely based on entrance exam marks (160 marks). Qualifying cutoff = 25% (40/160).
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Ee Resource Lo Enti?</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:6px;">🔍 <b>Interactive Rank Finder</b> — nee rank enter cheyyi, colleges list vasthundhi</div>
+          <div style="margin-bottom:6px;">🏫 <b>Top 30 Colleges</b> — rank-wise with branch cutoffs</div>
+          <div style="margin-bottom:6px;">💡 <b>Branch Guide</b> — CSE vs ECE vs AI vs EEE scope & salary</div>
+          <div style="margin-bottom:6px;">💰 <b>Fee Structure</b> — Govt vs Private, convener quota details</div>
+          <div>📋 <b>Smart Tips</b> — counselling lo mistakes avoid cheyali</div>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <b>Note:</b> Cutoff data is based on AP EAMCET 2024-2025 trends. Actual 2026 cutoffs will be released during counselling. Use this as a strong reference, not a guarantee.
+      </div>
+    </div>
+
+    <!-- PAGE 2: RANK FINDER -->
+    <div class="page" data-state="next">
+      <div class="section-title">🔍 Rank Finder</div>
+      <p class="section-sub">Nee EAMCET rank enter cheyyi — nee rank ki suitable colleges, branches, and tips instantly chupisthaamu.</p>
+
+      <div class="rank-input-wrap">
+        <div class="rank-input-label">Nee EAMCET Rank</div>
+        <input type="number" class="rank-input" id="rankInput" placeholder="e.g. 15000" min="1" max="200000">
+        <button class="rank-find-btn" onclick="findColleges()">🔍 Colleges Chupinchu!</button>
+      </div>
+
+      <div class="section-sub" style="text-align:center;margin-bottom:10px;">Or quick ga oka range select cheyyi:</div>
+      <div class="rank-chips">
+        <div class="rank-chip" onclick="setRank(500)">Top 500</div>
+        <div class="rank-chip" onclick="setRank(3000)">1K-5K</div>
+        <div class="rank-chip" onclick="setRank(8000)">5K-10K</div>
+        <div class="rank-chip" onclick="setRank(15000)">10K-20K</div>
+        <div class="rank-chip" onclick="setRank(35000)">20K-50K</div>
+        <div class="rank-chip" onclick="setRank(75000)">50K-1L</div>
+        <div class="rank-chip" onclick="setRank(120000)">1L+</div>
+      </div>
+
+      <div id="rankResult"></div>
+    </div>
+
+    <!-- PAGE 3: TOP COLLEGES TIER-WISE -->
+    <div class="page" data-state="next">
+      <div class="section-title">🏫 Top Colleges — Rank Wise</div>
+      <p class="section-sub">AP EAMCET lo rank based top engineering colleges — CSE closing ranks (General category, 2024-25 trends).</p>
+
+      <!-- Tier 1 -->
+      <div class="result-card">
+        <div class="result-tier tier-elite">TIER 1 — RANK 1 TO 1,500</div>
+        <div class="result-title">Elite Government Universities</div>
+        <div class="result-msg">Top JNTU, AU affiliations. Best placements, lowest fees.</div>
+
+        <div class="college-card">
+          <div class="college-name">JNTUK UCE, Kakinada</div>
+          <div class="college-loc">📍 Kakinada | CSE Closing: ~1,000</div>
+          <div class="college-tags"><span class="college-tag govt">Government</span><span class="college-tag uni">JNTU Affiliated</span><span class="college-tag">NAAC A++</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">AU College of Engg, Vizag</div>
+          <div class="college-loc">📍 Visakhapatnam | CSE Closing: ~1,200</div>
+          <div class="college-tags"><span class="college-tag govt">Government</span><span class="college-tag uni">Andhra University</span><span class="college-tag">NIRF Top 100</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">JNTUA CE, Anantapur</div>
+          <div class="college-loc">📍 Anantapur | CSE Closing: ~1,600</div>
+          <div class="college-tags"><span class="college-tag govt">Government</span><span class="college-tag uni">JNTU Affiliated</span></div>
+        </div>
+      </div>
+
+      <!-- Tier 2 -->
+      <div class="result-card">
+        <div class="result-tier tier-top">TIER 2 — RANK 1,500 TO 5,000</div>
+        <div class="result-title">Top Autonomous & University Colleges</div>
+        <div class="result-msg">Strong placements, good faculty, competitive cutoffs.</div>
+
+        <div class="college-card">
+          <div class="college-name">SVU CE, Tirupati</div>
+          <div class="college-loc">📍 Tirupati | CSE Closing: ~2,000</div>
+          <div class="college-tags"><span class="college-tag govt">Government</span><span class="college-tag uni">SV University</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">GVP College of Engg, Vizag</div>
+          <div class="college-loc">📍 Visakhapatnam | CSE Closing: ~3,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span><span class="college-tag">NAAC A+</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">RVR & JC CE, Guntur</div>
+          <div class="college-loc">📍 Guntur | CSE Closing: ~4,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span><span class="college-tag">NAAC A+</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">VR Siddhartha EC, Vijayawada</div>
+          <div class="college-loc">📍 Vijayawada | CSE Closing: ~4,500</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+      </div>
+
+      <!-- Tier 3 -->
+      <div class="result-card">
+        <div class="result-tier tier-strong">TIER 3 — RANK 5,000 TO 15,000</div>
+        <div class="result-title">Strong Private & Autonomous Colleges</div>
+        <div class="result-msg">Good infrastructure, decent placements for CSE/IT.</div>
+
+        <div class="college-card">
+          <div class="college-name">ANITS, Vizag</div>
+          <div class="college-loc">📍 Visakhapatnam | CSE Closing: ~6,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">SRKR Engg College, Bhimavaram</div>
+          <div class="college-loc">📍 Bhimavaram | CSE Closing: ~7,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">Vignan's IIT, Vizag</div>
+          <div class="college-loc">📍 Visakhapatnam | CSE Closing: ~8,500</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag">NAAC A+</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">GMR Institute of Tech</div>
+          <div class="college-loc">📍 Rajam | CSE Closing: ~10,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">Pragati Engg College</div>
+          <div class="college-loc">📍 Surampalem | CSE Closing: ~12,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: MORE COLLEGES (15K-1L+) -->
+    <div class="page" data-state="next">
+      <div class="section-title">🏫 Colleges — Mid to High Ranks</div>
+      <p class="section-sub">15,000 piyna rank ayina, manchanchi colleges unnaayi. Correct branch + right college = great career.</p>
+
+      <!-- Tier 4 -->
+      <div class="result-card">
+        <div class="result-tier tier-good">TIER 4 — RANK 15,000 TO 50,000</div>
+        <div class="result-title">Good Private Colleges</div>
+        <div class="result-msg">Competitive CSE/IT options available. Focus on autonomous colleges with good placements.</div>
+
+        <div class="college-card">
+          <div class="college-name">KL University (Deemed), Guntur</div>
+          <div class="college-loc">📍 Vijayawada | NIRF Rank 35 | CSE: ~15,000-25,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Deemed Univ</span><span class="college-tag">NIRF #35</span><span class="college-tag">NAAC A++</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">VIT-AP University</div>
+          <div class="college-loc">📍 Amaravati | CSE: ~18,000-30,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Deemed Univ</span><span class="college-tag">NAAC A++</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">SRM University AP</div>
+          <div class="college-loc">📍 Amaravati | CSE: ~20,000-35,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Deemed Univ</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">Vignan's Foundation (VFSTR)</div>
+          <div class="college-loc">📍 Guntur | NIRF Rank 80 | CSE: ~20,000-40,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Deemed Univ</span><span class="college-tag">NIRF #80</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">Lakireddy Bali Reddy CE</div>
+          <div class="college-loc">📍 Mylavaram | CSE: ~25,000-40,000</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+      </div>
+
+      <!-- Tier 5 -->
+      <div class="result-card">
+        <div class="result-tier tier-options">TIER 5 — RANK 50,000 TO 1,00,000</div>
+        <div class="result-title">Options Available — Choose Wisely</div>
+        <div class="result-msg">CSE/IT available in many colleges. Pick autonomous over affiliated. Check placement record.</div>
+
+        <div class="college-card">
+          <div class="college-name">Narayana Engg College, Nellore</div>
+          <div class="college-loc">📍 Nellore | Multiple branches open</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">Annamacharya IT Sciences</div>
+          <div class="college-loc">📍 Rajampet | CSE/IT: ~50K-80K</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+        <div class="college-card">
+          <div class="college-name">SVEC, Tirupati</div>
+          <div class="college-loc">📍 Tirupati | Multiple branches open</div>
+          <div class="college-tags"><span class="college-tag pvt">Private</span><span class="college-tag auto">Autonomous</span></div>
+        </div>
+      </div>
+
+      <!-- Tier 6 -->
+      <div class="result-card">
+        <div class="result-tier tier-explore">TIER 6 — RANK 1,00,000+</div>
+        <div class="result-title">Don't Panic — Options Unnaayi!</div>
+        <div class="result-msg">CSE/IT seats still available in many colleges. Focus on skills + placement cell active colleges.</div>
+
+        <div class="info-box blue">
+          <b>Smart Strategy:</b> Pick a college with active placement cell + learn DSA, full-stack development, or AI/ML online alongside. College brand matters less than your skills.
+        </div>
+      </div>
+
+      <div class="info-box green">
+        <b>Pro Tip:</b> AP lo 317 engineering colleges unnaayi — 23 government, 294 private. Convener quota (70%) lo seats counselling through vasthaay. Remaining 30% management quota.
+      </div>
+    </div>
+
+    <!-- PAGE 5: BRANCH GUIDE -->
+    <div class="page" data-state="next">
+      <div class="section-title">💡 Branch Guide — Ye Branch Best?</div>
+      <p class="section-sub">Branch selection is more important than college selection. Ee guide tho correct branch choose cheyyi.</p>
+
+      <div class="branch-card">
+        <div class="branch-header">
+          <div class="branch-icon" style="background:rgba(233,69,96,0.15);">💻</div>
+          <div>
+            <div class="branch-name">CSE (Computer Science)</div>
+            <div class="branch-scope">Highest demand, widest scope</div>
+          </div>
+        </div>
+        <div class="branch-stats">
+          <div class="branch-stat"><div class="stat-val" style="color:var(--green);">4-8 LPA</div><div class="stat-label">Avg Salary</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--blue);">50+ LPA</div><div class="stat-label">Top Package</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--yellow);">Very High</div><div class="stat-label">Demand</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Roles: Software Dev, Full-Stack, Cloud, DevOps, System Design. Evergreen branch — never goes out of demand.</div>
+      </div>
+
+      <div class="branch-card">
+        <div class="branch-header">
+          <div class="branch-icon" style="background:rgba(108,92,231,0.15);">🤖</div>
+          <div>
+            <div class="branch-name">CSE (AI & ML / Data Science)</div>
+            <div class="branch-scope">Highest starting salary, booming field</div>
+          </div>
+        </div>
+        <div class="branch-stats">
+          <div class="branch-stat"><div class="stat-val" style="color:var(--green);">6-12 LPA</div><div class="stat-label">Avg Salary</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--blue);">50+ LPA</div><div class="stat-label">Top Package</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--accent);">283% Growth</div><div class="stat-label">Demand 2025</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Roles: AI Engineer, ML Engineer, Data Scientist, NLP, CV. Fastest growing field — demand 283% up in 2025.</div>
+      </div>
+
+      <div class="branch-card">
+        <div class="branch-header">
+          <div class="branch-icon" style="background:rgba(116,185,255,0.15);">📡</div>
+          <div>
+            <div class="branch-name">ECE (Electronics & Comm)</div>
+            <div class="branch-scope">Hardware + Software, versatile</div>
+          </div>
+        </div>
+        <div class="branch-stats">
+          <div class="branch-stat"><div class="stat-val" style="color:var(--green);">5-7 LPA</div><div class="stat-label">Avg Salary</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--blue);">52 LPA</div><div class="stat-label">Top Package</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--yellow);">High</div><div class="stat-label">Demand</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Roles: VLSI, Embedded, IoT, Telecom + IT (many switch). Flexible — can enter both core & IT sector.</div>
+      </div>
+
+      <div class="branch-card">
+        <div class="branch-header">
+          <div class="branch-icon" style="background:rgba(253,203,110,0.15);">⚡</div>
+          <div>
+            <div class="branch-name">EEE (Electrical & Electronics)</div>
+            <div class="branch-scope">Power sector + IT options</div>
+          </div>
+        </div>
+        <div class="branch-stats">
+          <div class="branch-stat"><div class="stat-val" style="color:var(--green);">4-6 LPA</div><div class="stat-label">Avg Salary</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--blue);">52 LPA</div><div class="stat-label">Top Package</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--yellow);">Medium</div><div class="stat-label">Demand</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Roles: Power Systems, Renewables, Automation, PSU Jobs. Govt job aspirants ki best — GENCO, TRANSCO, NTPC openings.</div>
+      </div>
+
+      <div class="branch-card">
+        <div class="branch-header">
+          <div class="branch-icon" style="background:rgba(0,184,148,0.15);">🔧</div>
+          <div>
+            <div class="branch-name">Mechanical / Civil</div>
+            <div class="branch-scope">Core engineering, govt job focused</div>
+          </div>
+        </div>
+        <div class="branch-stats">
+          <div class="branch-stat"><div class="stat-val" style="color:var(--green);">3-5 LPA</div><div class="stat-label">Avg Salary</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--blue);">20+ LPA</div><div class="stat-label">Top Package</div></div>
+          <div class="branch-stat"><div class="stat-val" style="color:var(--orange);">Moderate</div><div class="stat-label">Demand</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:10px;line-height:1.5;">Roles: Design, Manufacturing, Construction, PSU. Declining private demand but govt/PSU jobs strong. GATE preparation recommended.</div>
+      </div>
+
+      <div class="info-box red">
+        <b>Swaroop's Take:</b> CSE rank lo vasthey CSE theesko. Rank raakpothey — ECE theesko + DSA nerchuko. College lo branch matter avthundhi, kani skills matter avthaayi more. Branch ni excuse ga vaadaku!
+      </div>
+    </div>
+
+    <!-- PAGE 6: FEE STRUCTURE -->
+    <div class="page" data-state="next">
+      <div class="section-title">💰 Fee Structure Guide</div>
+      <p class="section-sub">Government vs Private fees, convener quota, and fee reimbursement — complete breakdown.</p>
+
+      <table class="fee-table">
+        <tr>
+          <th>College Type</th>
+          <th>Annual Fee</th>
+          <th>4-Year Total</th>
+        </tr>
+        <tr>
+          <td><b>Govt University</b><br><span style="color:var(--text-dim);font-size:10px;">JNTUK, AU, SVU, JNTUA</span></td>
+          <td style="color:var(--green);font-weight:700;">~35,000-50,000</td>
+          <td style="color:var(--green);font-weight:700;">~1.5-2L</td>
+        </tr>
+        <tr>
+          <td><b>Aided Private</b><br><span style="color:var(--text-dim);font-size:10px;">Convener Quota (70%)</span></td>
+          <td style="color:var(--blue);font-weight:700;">~40,000-80,000</td>
+          <td style="color:var(--blue);font-weight:700;">~1.6-3.2L</td>
+        </tr>
+        <tr>
+          <td><b>Private Autonomous</b><br><span style="color:var(--text-dim);font-size:10px;">GVP, RVR, ANITS etc.</span></td>
+          <td style="color:var(--yellow);font-weight:700;">~1-1.5L</td>
+          <td style="color:var(--yellow);font-weight:700;">~4-6L</td>
+        </tr>
+        <tr>
+          <td><b>Deemed Universities</b><br><span style="color:var(--text-dim);font-size:10px;">KLU, VIT-AP, SRM-AP</span></td>
+          <td style="color:var(--orange);font-weight:700;">~2-3L</td>
+          <td style="color:var(--orange);font-weight:700;">~8-12L</td>
+        </tr>
+        <tr>
+          <td><b>Management Quota</b><br><span style="color:var(--text-dim);font-size:10px;">Any private college (30%)</span></td>
+          <td style="color:var(--accent);font-weight:700;">~1.5-4L</td>
+          <td style="color:var(--accent);font-weight:700;">~6-16L</td>
+        </tr>
+      </table>
+
+      <div class="info-box green">
+        <b>Fee Reimbursement:</b> AP Government provides fee reimbursement for SC, ST, BC, EBC, Minority, and economically weaker students (family income &lt; 2.5 LPA for BC, &lt; 1 LPA for EBC). Convener Quota seats only. Apply through Jnanabhumi portal.
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Convener Quota vs Management Quota</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:6px;"><b style="color:var(--green);">Convener (70%):</b> EAMCET rank based. Lower fees. Counselling through APSCHE.</div>
+          <div><b style="color:var(--orange);">Management (30%):</b> College direct admission. Higher fees. No rank needed — but EAMCET qualification required.</div>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <b>Beware:</b> Some colleges charge "development fees", "caution deposits" on top of tuition. Check total cost including hostel before committing. Get fee structure in writing!
+      </div>
+
+      <div class="info-box blue">
+        <b>Education Loans:</b> SBI, Bank of Baroda, Canara Bank offer education loans for engineering at 8-10% interest. Collateral-free up to 7.5 LPA. Vidya Lakshmi portal (vidyalakshmi.co.in) lo apply cheyyi.
+      </div>
+    </div>
+
+    <!-- PAGE 7: SMART TIPS + CTA -->
+    <div class="page" data-state="next">
+      <div class="section-title">📋 Counselling Smart Tips</div>
+      <p class="section-sub">Counselling lo ee mistakes chesthey seat potthundhi. Jagrathaga chadvuu.</p>
+
+      <div class="result-card" style="border-left:3px solid var(--accent);">
+        <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px;">Mistake #1</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">College Brand Ki Priority Ivvadam</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Big name college lo Mechanical theesko vaddu if you want IT career. Small autonomous college lo CSE > Big govt college lo Civil.</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--green);">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:6px;">Mistake #2</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Only Round 1 Lo Hope Pettadam</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Round 2, 3, and spot rounds lo better colleges vasthaayi. Every round lo options improve avthaayi — don't settle too early.</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--blue);">
+        <div style="font-size:13px;font-weight:700;color:var(--blue);margin-bottom:6px;">Mistake #3</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Location Ki Over-Importance Ivvadam</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Home dhaggara college ante comfortable — but career ki best college better. 4 years adjust chesthey 40 years benefit.</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--yellow);">
+        <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:6px;">Mistake #4</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Placement Data Check Cheyyakapovadam</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">College website lo "100% placements" ante believe cheyyaku. LinkedIn lo alumni check cheyyi — vaallaki actual ga jobs vachaayi ante that college is worth it.</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--accent2);">
+        <div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:6px;">Mistake #5</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Web Options Sariggaa Fill Cheyyakapovadam</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Maximum options fill cheyyi (colleges + branches). Minimum 30-40 options pettali. Less options = less chances of better allotment.</div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <div class="info-box green">
+          <b>Golden Rule:</b> Branch > College > Location. IT career kaavaalante CSE/IT first priority. Government college lo non-CSE theesko vaddu if private lo CSE vasthundhi for same rank.
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div class="cta-card">
+          <div class="cta-title">Complete Counselling Guide Kaavala?</div>
+          <div class="cta-sub">Documents, dates, web options, step-by-step counselling process — full resource coming soon!</div>
+          <a class="cta-btn" href="https://www.instagram.com/rawtalks_withswaroop/" target="_blank">Follow @RawTalks</a>
+        </div>
+        <div class="result-card" style="text-align:center;">
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">Built with ❤️ by</div>
+          <div style="font-size:16px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Raw Talks with Swaroop</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:6px;">Data based on AP EAMCET 2024-2025 trends</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end pages-container -->
+
+  <div class="nav-bottom">
+    <button class="nav-btn nav-prev" id="prevBtn" onclick="go(-1)">Back</button>
+    <button class="nav-btn nav-next" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let cur = 0;
+
+function go(d) {
+  const n = cur + d;
+  if (n < 0 || n >= total) return;
+  pages[cur].dataset.state = d > 0 ? 'prev' : 'next';
+  pages[cur].scrollTop = 0;
+  cur = n;
+  pages[cur].dataset.state = 'active';
+  pages[cur].scrollTop = 0;
+  document.getElementById('pFill').style.width = ((cur + 1) / total * 100) + '%';
+  document.getElementById('pText').textContent = (cur + 1) + '/' + total;
+  document.getElementById('prevBtn').style.visibility = cur === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = cur === total - 1 ? 'Done ✓' : 'Next →';
+  if (cur === total - 1) document.getElementById('nextBtn').onclick = function(){};
+  else document.getElementById('nextBtn').onclick = function(){ go(1); };
+}
+
+document.getElementById('prevBtn').style.visibility = 'hidden';
+document.getElementById('pFill').style.width = (1/total*100)+'%';
+
+// Swipe
+let sx=0, sy=0;
+const pc = document.getElementById('pagesContainer');
+pc.addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; });
+pc.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - sx;
+  const dy = e.changedTouches[0].clientY - sy;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') go(1);
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') go(-1);
+});
+
+// Rank finder data
+const rankData = [
+  {
+    max: 500,
+    tier: 'tier-elite', tierLabel: 'ELITE — TOP 500',
+    title: 'Congratulations! Top Tier!',
+    msg: 'Nuvvu AP EAMCET toppers lo unnav. Best government university colleges lo CSE guarantee.',
+    colleges: [
+      { name: 'JNTUK UCE, Kakinada', loc: 'CSE, ECE, IT — all branches open', tags: ['Government','JNTU'] },
+      { name: 'AU College of Engg, Vizag', loc: 'CSE, ECE, EEE — all open', tags: ['Government','AU'] },
+      { name: 'JNTUA CE, Anantapur', loc: 'CSE, ECE — open', tags: ['Government','JNTU'] },
+      { name: 'SVU CE, Tirupati', loc: 'All branches open', tags: ['Government','SVU'] }
+    ],
+    tip: 'Nee rank tho any branch, any top college. CSE first priority pettuko — later regret undadhu.'
+  },
+  {
+    max: 1500,
+    tier: 'tier-elite', tierLabel: 'TIER 1 — RANK 500-1,500',
+    title: 'Excellent Rank!',
+    msg: 'Top government colleges lo CSE/IT seats vasthaayi. Web options lo all top colleges include cheyyi.',
+    colleges: [
+      { name: 'JNTUK UCE, Kakinada', loc: 'CSE closing ~1000', tags: ['Government'] },
+      { name: 'AU College of Engg, Vizag', loc: 'CSE closing ~1200', tags: ['Government'] },
+      { name: 'JNTUA CE, Anantapur', loc: 'CSE closing ~1600', tags: ['Government'] }
+    ],
+    tip: 'Government college lo CSE most valuable seat. Fees just 35-50K/year — ROI unbeatable.'
+  },
+  {
+    max: 5000,
+    tier: 'tier-top', tierLabel: 'TIER 2 — RANK 1,500-5,000',
+    title: 'Very Strong Rank!',
+    msg: 'SVU CE, GVP, RVR — top autonomous colleges lo CSE vasthundhi. ECE any top college lo.',
+    colleges: [
+      { name: 'SVU CE, Tirupati', loc: 'CSE closing ~2000', tags: ['Government'] },
+      { name: 'GVP CE, Vizag', loc: 'CSE closing ~3000', tags: ['Autonomous','NAAC A+'] },
+      { name: 'RVR & JC CE, Guntur', loc: 'CSE closing ~4000', tags: ['Autonomous','NAAC A+'] },
+      { name: 'VRSEC, Vijayawada', loc: 'CSE closing ~4500', tags: ['Autonomous'] }
+    ],
+    tip: 'Ee range lo branch > college. CSE vasthey private autonomous lo theesko — govt lo ECE kaante better career.'
+  },
+  {
+    max: 10000,
+    tier: 'tier-strong', tierLabel: 'TIER 3 — RANK 5,000-10,000',
+    title: 'Good Rank — Strong Options!',
+    msg: 'Multiple strong private autonomous colleges lo CSE/IT available.',
+    colleges: [
+      { name: 'ANITS, Vizag', loc: 'CSE closing ~6000', tags: ['Autonomous'] },
+      { name: 'SRKR, Bhimavaram', loc: 'CSE closing ~7000', tags: ['Autonomous'] },
+      { name: 'Vignan\'s IIT, Vizag', loc: 'CSE closing ~8500', tags: ['Private'] },
+      { name: 'MVGR CE, Vizianagaram', loc: 'CSE closing ~9000', tags: ['Autonomous'] }
+    ],
+    tip: 'Autonomous college ki priority — syllabus industry-relevant untundhi. Affiliated colleges lo outdated syllabus risk.'
+  },
+  {
+    max: 20000,
+    tier: 'tier-good', tierLabel: 'TIER 4 — RANK 10,000-20,000',
+    title: 'Decent Rank — Smart Choices Needed',
+    msg: 'CSE/IT available but college selection important. Check placement records before choosing.',
+    colleges: [
+      { name: 'GMR Institute, Rajam', loc: 'CSE closing ~10K', tags: ['Autonomous'] },
+      { name: 'Pragati EC, Surampalem', loc: 'CSE closing ~12K', tags: ['Autonomous'] },
+      { name: 'KL University, Guntur', loc: 'NIRF #35, CSE available', tags: ['Deemed','NIRF #35'] },
+      { name: 'VIT-AP, Amaravati', loc: 'CSE available', tags: ['Deemed','NAAC A++'] }
+    ],
+    tip: 'KLU, VIT-AP lanti deemed universities consider cheyyi — higher fees but better placements & exposure.'
+  },
+  {
+    max: 50000,
+    tier: 'tier-good', tierLabel: 'TIER 4-5 — RANK 20,000-50,000',
+    title: 'Options Available — Research Well',
+    msg: 'CSE/IT seats available in many colleges. Autonomous status + placement data — ee rendu check cheyyi.',
+    colleges: [
+      { name: 'SRM University AP', loc: 'Amaravati | CSE available', tags: ['Deemed'] },
+      { name: 'Vignan\'s Foundation (VFSTR)', loc: 'NIRF #80 | CSE available', tags: ['Deemed'] },
+      { name: 'LBRCE, Mylavaram', loc: 'CSE: ~25K-40K', tags: ['Autonomous'] },
+      { name: 'Sri Vasavi EC', loc: 'Multiple branches', tags: ['Private'] }
+    ],
+    tip: 'Ee range lo self-study mandatory. College just foundation — DSA, projects, certifications nuvvu cheyyali.'
+  },
+  {
+    max: 100000,
+    tier: 'tier-options', tierLabel: 'RANK 50,000-1,00,000',
+    title: 'College Is Not Everything!',
+    msg: 'CSE/IT seats still available. Pick any college — but invest 100% in skills.',
+    colleges: [
+      { name: 'Narayana EC, Nellore', loc: 'Multiple branches open', tags: ['Private'] },
+      { name: 'Annamacharya ITS, Rajampet', loc: 'CSE/IT available', tags: ['Autonomous'] },
+      { name: 'SVEC, Tirupati', loc: 'Multiple branches', tags: ['Autonomous'] }
+    ],
+    tip: 'Swaroop himself says: "College tag antha important kaadhu — nee LinkedIn profile, GitHub, and skills matter more."'
+  },
+  {
+    max: 999999,
+    tier: 'tier-explore', tierLabel: 'RANK 1,00,000+',
+    title: 'Don\'t Give Up — Path Undhi!',
+    msg: 'Engineering seats available. CSE/IT theesko — and 4 years online lo upskill avvu.',
+    colleges: [
+      { name: 'Multiple colleges', loc: 'CSE/IT seats available through spot/final rounds', tags: ['Various'] }
+    ],
+    tip: 'Consider: ECET (diploma + lateral entry), open online degrees, or alternative paths like BCA + self-learning. Swaroop started from zero — skills matter, not rank.'
+  }
+];
+
+function setRank(v) {
+  document.getElementById('rankInput').value = v;
+  findColleges();
+  document.querySelectorAll('.rank-chip').forEach(c => c.classList.remove('active'));
+}
+
+function findColleges() {
+  const rank = parseInt(document.getElementById('rankInput').value);
+  if (!rank || rank < 1) { document.getElementById('rankResult').innerHTML = '<div class="info-box red">Please enter a valid rank (1 or above)</div>'; return; }
+
+  const data = rankData.find(d => rank <= d.max) || rankData[rankData.length-1];
+  let html = `<div class="result-card"><div class="result-tier ${data.tier}">${data.tierLabel}</div>`;
+  html += `<div class="result-title">${data.title}</div>`;
+  html += `<div class="result-msg">${data.msg}</div>`;
+
+  data.colleges.forEach(c => {
+    html += `<div class="college-card"><div class="college-name">${c.name}</div><div class="college-loc">📍 ${c.loc}</div><div class="college-tags">`;
+    c.tags.forEach(t => {
+      let cls = 'college-tag';
+      if (t === 'Government') cls += ' govt';
+      else if (t.includes('Autonomous') || t.includes('NAAC')) cls += ' auto';
+      else if (t.includes('Deemed') || t.includes('NIRF')) cls += ' uni';
+      else cls += ' pvt';
+      html += `<span class="${cls}">${t}</span>`;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `<div class="info-box yellow" style="margin-top:12px;"><b>Swaroop's Tip:</b> ${data.tip}</div>`;
+  html += `</div>`;
+
+  document.getElementById('rankResult').innerHTML = html;
+}
+</script>
+</body>
+</html>

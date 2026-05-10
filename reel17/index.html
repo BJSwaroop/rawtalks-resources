@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EAMCET Marks vs Rank — Complete Analysis | Raw Talks with Swaroop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --card-hover: #1a1a28;
+    --accent: #e94560;
+    --accent-glow: rgba(233, 69, 96, 0.25);
+    --accent2: #6c5ce7;
+    --green: #00b894;
+    --yellow: #fdcb6e;
+    --blue: #74b9ff;
+    --orange: #e17055;
+    --text: #e8e8e8;
+    --text-dim: #8a8a9a;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%; overflow: hidden;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    user-select: none; -webkit-user-select: none;
+  }
+  .app { height:100%; display:flex; flex-direction:column; max-width:520px; margin:0 auto; position:relative; overflow:hidden; }
+  .topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:rgba(10,10,15,0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid var(--border); z-index:100; flex-shrink:0; }
+  .topbar-brand { font-size:13px; font-weight:700; color:var(--text-dim); }
+  .topbar-brand span { color:var(--accent); }
+  .progress-wrap { display:flex; align-items:center; gap:8px; }
+  .progress-bar { width:80px; height:4px; background:var(--border); border-radius:4px; overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); border-radius:4px; transition:width 0.4s ease; }
+  .progress-text { font-size:11px; color:var(--text-dim); font-weight:600; }
+  .pages-container { flex:1; position:relative; overflow:hidden; touch-action:pan-y; }
+  .page { position:absolute; top:0;left:0;right:0;bottom:0; padding:24px 20px 80px; overflow-y:auto; transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),opacity 0.35s ease; will-change:transform; -webkit-overflow-scrolling:touch; }
+  .page::-webkit-scrollbar { display:none; }
+  .page[data-state="active"] { transform:translateX(0); opacity:1; }
+  .page[data-state="next"] { transform:translateX(100%); opacity:0; }
+  .page[data-state="prev"] { transform:translateX(-100%); opacity:0; }
+  .nav-bottom { position:absolute; bottom:0;left:0;right:0; display:flex; gap:10px; padding:16px 20px; background:linear-gradient(transparent,var(--bg) 30%); z-index:50; max-width:520px; margin:0 auto; }
+  .nav-btn { flex:1; padding:14px; border:none; border-radius:12px; font-family:'Inter',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+  .nav-prev { background:var(--card); color:var(--text-dim); border:1px solid var(--border); }
+  .nav-next { background:var(--accent); color:#fff; }
+  .nav-btn:active { transform:scale(0.97); }
+
+  .hero-badge { display:inline-block; background:var(--accent); color:#fff; font-size:10px; font-weight:800; padding:4px 14px; border-radius:20px; letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; }
+  .hero-title { font-size:26px; font-weight:900; line-height:1.2; margin-bottom:10px; background:linear-gradient(135deg,#fff,var(--blue)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { font-size:14px; color:var(--text-dim); line-height:1.6; margin-bottom:20px; }
+  .section-title { font-size:18px; font-weight:800; margin-bottom:14px; }
+  .section-sub { font-size:13px; color:var(--text-dim); margin-bottom:16px; line-height:1.5; }
+
+  .info-box { border-radius:12px; padding:14px; margin-bottom:10px; font-size:12px; line-height:1.6; }
+  .info-box.green { background:rgba(0,184,148,0.1); border:1px solid rgba(0,184,148,0.2); color:var(--green); }
+  .info-box.blue { background:rgba(116,185,255,0.1); border:1px solid rgba(116,185,255,0.2); color:var(--blue); }
+  .info-box.yellow { background:rgba(253,203,110,0.1); border:1px solid rgba(253,203,110,0.2); color:var(--yellow); }
+  .info-box.red { background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.2); color:var(--accent); }
+  .info-box b { font-weight:700; }
+  .warn-box { background:rgba(253,203,110,0.1); border:1px solid rgba(253,203,110,0.25); border-radius:12px; padding:14px; margin-bottom:10px; font-size:12px; line-height:1.6; color:var(--yellow); }
+
+  .result-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:10px; }
+
+  /* Rank predictor */
+  .predictor-wrap {
+    background:var(--card); border:2px solid var(--accent); border-radius:16px; padding:20px; margin-bottom:16px; text-align:center;
+  }
+  .pred-label { font-size:12px; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:10px; }
+  .pred-input {
+    width:100%; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px 16px;
+    font-family:'Inter',sans-serif; font-size:22px; font-weight:800; color:var(--text); text-align:center; outline:none;
+  }
+  .pred-input:focus { border-color:var(--accent); }
+  .pred-input::placeholder { color:var(--text-dim); font-size:16px; font-weight:500; }
+  .pred-btn {
+    width:100%; padding:14px; margin-top:12px; background:var(--accent); color:#fff; border:none; border-radius:12px;
+    font-family:'Inter',sans-serif; font-size:15px; font-weight:800; cursor:pointer;
+  }
+  .pred-btn:active { transform:scale(0.97); }
+
+  /* Marks table */
+  .marks-table { width:100%; border-collapse:collapse; margin-bottom:12px; font-size:12px; }
+  .marks-table th { background:var(--accent); color:#fff; padding:10px 6px; text-align:left; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.5px; }
+  .marks-table th:first-child { border-radius:10px 0 0 0; }
+  .marks-table th:last-child { border-radius:0 10px 0 0; }
+  .marks-table td { background:var(--card); padding:10px 6px; border-bottom:1px solid var(--border); }
+  .marks-table tr:last-child td:first-child { border-radius:0 0 0 10px; }
+  .marks-table tr:last-child td:last-child { border-radius:0 0 10px 0; }
+  .marks-table .highlight { background:rgba(233,69,96,0.08); }
+
+  /* Visual bar */
+  .vbar-wrap { margin-bottom:8px; }
+  .vbar-label { display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; }
+  .vbar-label span:first-child { font-weight:700; }
+  .vbar-label span:last-child { color:var(--text-dim); }
+  .vbar-track { height:10px; background:var(--border); border-radius:5px; overflow:hidden; }
+  .vbar-fill { height:100%; border-radius:5px; transition:width 0.6s ease; }
+
+  /* Topic weightage */
+  .topic-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:8px; display:flex; align-items:center; gap:12px; }
+  .topic-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+  .topic-info { flex:1; }
+  .topic-name { font-size:13px; font-weight:700; margin-bottom:2px; }
+  .topic-marks { font-size:11px; color:var(--text-dim); }
+  .topic-bar { width:60px; height:6px; background:var(--border); border-radius:3px; overflow:hidden; flex-shrink:0; }
+  .topic-fill { height:100%; border-radius:3px; }
+
+  .cta-card { background:linear-gradient(135deg,var(--accent),var(--accent2)); border-radius:16px; padding:24px; text-align:center; margin-bottom:10px; }
+  .cta-title { font-size:18px; font-weight:900; color:#fff; margin-bottom:8px; }
+  .cta-sub { font-size:13px; color:rgba(255,255,255,0.8); margin-bottom:16px; line-height:1.5; }
+  .cta-btn { display:inline-block; padding:12px 28px; background:#fff; color:var(--accent); border-radius:12px; font-weight:800; font-size:14px; text-decoration:none; }
+
+  .pred-result { margin-top:16px; }
+  .pred-rank-big { font-size:36px; font-weight:900; text-align:center; margin-bottom:4px; }
+  .pred-range { font-size:13px; color:var(--text-dim); text-align:center; margin-bottom:12px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-brand">Raw Talks <span>Resources</span></div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
+      <div class="progress-text" id="pText">1/6</div>
+    </div>
+  </div>
+
+  <div class="pages-container" id="pagesContainer">
+
+    <!-- PAGE 1: HERO -->
+    <div class="page" data-state="active">
+      <div class="hero-badge">Marks vs Rank</div>
+      <h1 class="hero-title">EAMCET Marks vs Rank — Complete Analysis</h1>
+      <p class="hero-sub">Nee marks ki entha rank vasthundhi? Ippudu IPE weightage ledu — pure entrance marks based ranking. Exact analysis idhigo.</p>
+
+      <div class="info-box green">
+        <b>2024 nundi Important Change:</b> IPE (Inter) weightage completely removed! Earlier: 75% EAPCET + 25% IPE. Now: 100% EAPCET marks only. Nee rank = purely nee entrance exam performance.
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Ee Resource Lo Enti?</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:6px;">🔢 <b>Rank Predictor</b> — nee marks enter cheyyi, expected rank range chupisthaamu</div>
+          <div style="margin-bottom:6px;">📊 <b>Full Marks vs Rank Table</b> — 40 marks nundi 160 marks varaku</div>
+          <div style="margin-bottom:6px;">📚 <b>Subject-wise Weightage</b> — edhi subject lo ekkuva marks vasthaayi</div>
+          <div style="margin-bottom:6px;">🎯 <b>What's a Good Score?</b> — realistic targets for different goals</div>
+          <div>💡 <b>Last-Minute Tips</b> — rank improve cheyyataniki strategies</div>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:6px;">Exam Pattern — Quick Recap</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:4px;">📝 Total: <b style="color:var(--text);">160 marks</b> (80 questions x 2 marks)</div>
+          <div style="margin-bottom:4px;">📐 Maths: <b style="color:var(--text);">80 marks</b> (40 Q)</div>
+          <div style="margin-bottom:4px;">⚗️ Physics: <b style="color:var(--text);">40 marks</b> (20 Q)</div>
+          <div style="margin-bottom:4px;">🧪 Chemistry: <b style="color:var(--text);">40 marks</b> (20 Q)</div>
+          <div>⏰ Duration: <b style="color:var(--text);">3 hours</b> | No negative marking</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: RANK PREDICTOR -->
+    <div class="page" data-state="next">
+      <div class="section-title">🔢 Rank Predictor</div>
+      <p class="section-sub">Nee expected EAMCET marks enter cheyyi — approximate rank range chupisthaamu.</p>
+
+      <div class="predictor-wrap">
+        <div class="pred-label">Nee Expected Marks (out of 160)</div>
+        <input type="number" class="pred-input" id="marksInput" placeholder="e.g. 120" min="0" max="160">
+        <button class="pred-btn" onclick="predictRank()">🎯 Rank Predict Cheyyi!</button>
+      </div>
+
+      <div id="predResult"></div>
+
+      <div class="warn-box">
+        ⚠️ <b>Disclaimer:</b> Ee predictions AP EAMCET 2024-2025 trends based. Actual 2026 ranks difficulty level, total candidates count meeda depend avthaayi. Use as approximate reference only.
+      </div>
+    </div>
+
+    <!-- PAGE 3: FULL MARKS VS RANK TABLE -->
+    <div class="page" data-state="next">
+      <div class="section-title">📊 Marks vs Rank — Full Table</div>
+      <p class="section-sub">AP EAMCET 2024-2025 data based expected rank ranges. IPE weightage removed — pure entrance marks.</p>
+
+      <table class="marks-table">
+        <tr><th>Marks</th><th>Expected Rank</th><th>Chances</th></tr>
+        <tr class="highlight"><td><b>155-160</b></td><td style="color:var(--accent);font-weight:700;">1 - 10</td><td style="color:var(--green);">State Topper</td></tr>
+        <tr><td><b>150-155</b></td><td style="color:var(--accent);font-weight:700;">10 - 100</td><td style="color:var(--green);">Top 100</td></tr>
+        <tr class="highlight"><td><b>145-150</b></td><td style="font-weight:700;">100 - 500</td><td style="color:var(--green);">Elite</td></tr>
+        <tr><td><b>140-145</b></td><td style="font-weight:700;">500 - 1,000</td><td style="color:var(--green);">Top Govt CSE</td></tr>
+        <tr class="highlight"><td><b>135-140</b></td><td style="font-weight:700;">1,000 - 2,000</td><td style="color:var(--blue);">JNTUK/AU CSE</td></tr>
+        <tr><td><b>130-135</b></td><td style="font-weight:700;">2,000 - 3,500</td><td style="color:var(--blue);">SVU/GVP CSE</td></tr>
+        <tr class="highlight"><td><b>120-130</b></td><td style="font-weight:700;">3,500 - 6,000</td><td style="color:var(--blue);">Top Private CSE</td></tr>
+        <tr><td><b>110-120</b></td><td style="font-weight:700;">6,000 - 10,000</td><td style="color:var(--yellow);">Strong Private</td></tr>
+        <tr class="highlight"><td><b>100-110</b></td><td style="font-weight:700;">10,000 - 15,000</td><td style="color:var(--yellow);">CSE Available</td></tr>
+        <tr><td><b>90-100</b></td><td style="font-weight:700;">15,000 - 25,000</td><td style="color:var(--yellow);">Deemed Univ</td></tr>
+        <tr class="highlight"><td><b>80-90</b></td><td style="font-weight:700;">25,000 - 40,000</td><td style="color:var(--orange);">Private CSE/IT</td></tr>
+        <tr><td><b>70-80</b></td><td style="font-weight:700;">40,000 - 60,000</td><td style="color:var(--orange);">Multiple options</td></tr>
+        <tr class="highlight"><td><b>60-70</b></td><td style="font-weight:700;">60,000 - 85,000</td><td>Options available</td></tr>
+        <tr><td><b>50-60</b></td><td style="font-weight:700;">85,000 - 1,10,000</td><td>Seats available</td></tr>
+        <tr class="highlight"><td><b>40-50</b></td><td style="font-weight:700;">1,10,000 - 1,50,000</td><td style="color:var(--accent);">Qualifying range</td></tr>
+        <tr><td><b>&lt; 40</b></td><td colspan="2" style="color:var(--accent);font-weight:700;">Below qualifying cutoff (25%)</td></tr>
+      </table>
+
+      <div class="info-box blue">
+        <b>No Negative Marking!</b> AP EAMCET lo negative marking ledu. So attempt all 80 questions. Guess chesina correct avvachu — skip chesthey guaranteed zero.
+      </div>
+    </div>
+
+    <!-- PAGE 4: SUBJECT WEIGHTAGE -->
+    <div class="page" data-state="next">
+      <div class="section-title">📚 Subject-wise Weightage & Strategy</div>
+      <p class="section-sub">Maths 50% of total marks — idhey game changer. Smart preparation strategy idhigo.</p>
+
+      <div class="topic-card">
+        <div class="topic-icon" style="background:rgba(233,69,96,0.15);">📐</div>
+        <div class="topic-info">
+          <div class="topic-name">Mathematics</div>
+          <div class="topic-marks">80 marks | 40 questions | 50% weightage</div>
+        </div>
+        <div class="topic-bar"><div class="topic-fill" style="width:100%;background:var(--accent);"></div></div>
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--accent);">Maths High-Scoring Topics</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Matrices & Determinants</b> — 3-4 Q, formula-based, easy marks</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Integration</b> — 4-5 Q, practice chesthe guaranteed marks</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Probability & Statistics</b> — 3-4 Q, direct formulas</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Coordinate Geometry</b> — 4-5 Q, circles & conics important</div>
+          <div>• <b style="color:var(--text);">Differential Equations</b> — 2-3 Q, standard types practice</div>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon" style="background:rgba(116,185,255,0.15);">⚗️</div>
+        <div class="topic-info">
+          <div class="topic-name">Physics</div>
+          <div class="topic-marks">40 marks | 20 questions | 25% weightage</div>
+        </div>
+        <div class="topic-bar"><div class="topic-fill" style="width:50%;background:var(--blue);"></div></div>
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--blue);">Physics High-Scoring Topics</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Current Electricity</b> — 2-3 Q, Kirchhoff's & Wheatstone</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Optics</b> — 2-3 Q, ray + wave optics</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Mechanics</b> — 3-4 Q, rotational motion important</div>
+          <div>• <b style="color:var(--text);">Semiconductors</b> — 1-2 Q, theory-based easy marks</div>
+        </div>
+      </div>
+
+      <div class="topic-card">
+        <div class="topic-icon" style="background:rgba(0,184,148,0.15);">🧪</div>
+        <div class="topic-info">
+          <div class="topic-name">Chemistry</div>
+          <div class="topic-marks">40 marks | 20 questions | 25% weightage</div>
+        </div>
+        <div class="topic-bar"><div class="topic-fill" style="width:50%;background:var(--green);"></div></div>
+      </div>
+
+      <div class="result-card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:6px;color:var(--green);">Chemistry High-Scoring Topics</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.7;">
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Organic Chemistry</b> — 6-8 Q, reactions & mechanisms</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Chemical Bonding</b> — 2-3 Q, hybridization important</div>
+          <div style="margin-bottom:3px;">• <b style="color:var(--text);">Electrochemistry</b> — 1-2 Q, Nernst equation</div>
+          <div>• <b style="color:var(--text);">p-Block Elements</b> — 2-3 Q, group properties</div>
+        </div>
+      </div>
+
+      <div class="info-box red">
+        <b>Strategy:</b> Maths lo 30+ marks guarantee cheyyi (15+ correct) = 60 marks safe. Physics + Chemistry lo 25+ each = 50 marks. Total 110+ = rank under 15K. Focus on easy topics first!
+      </div>
+    </div>
+
+    <!-- PAGE 5: WHAT'S A GOOD SCORE -->
+    <div class="page" data-state="next">
+      <div class="section-title">🎯 What's a Good Score?</div>
+      <p class="section-sub">Nee goal enti — daani ki entha marks kaavali? Realistic targets based on 2024-2025 data.</p>
+
+      <div class="result-card" style="border-left:3px solid var(--accent2);">
+        <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:4px;">GOAL: Top Government CSE</div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Target: 140+ marks</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Rank under 1,000. JNTUK, AU, JNTUA, SVU lo CSE guaranteed. Fees just 35-50K/year.</div>
+        <div class="vbar-wrap" style="margin-top:8px;">
+          <div class="vbar-track"><div class="vbar-fill" style="width:87.5%;background:var(--accent2);"></div></div>
+        </div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--green);">
+        <div style="font-size:12px;font-weight:700;color:var(--green);margin-bottom:4px;">GOAL: Top Private Autonomous CSE</div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Target: 120-140 marks</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Rank 1K-6K. GVP, RVR, VRSEC, ANITS lo CSE. Strong placements, 1-1.5L/year fees.</div>
+        <div class="vbar-wrap" style="margin-top:8px;">
+          <div class="vbar-track"><div class="vbar-fill" style="width:75%;background:var(--green);"></div></div>
+        </div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--blue);">
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;">GOAL: Any CSE Seat (Good College)</div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Target: 100-120 marks</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Rank 6K-15K. Multiple autonomous colleges lo CSE/IT. KLU, VIT-AP type deemed universities also.</div>
+        <div class="vbar-wrap" style="margin-top:8px;">
+          <div class="vbar-track"><div class="vbar-fill" style="width:62.5%;background:var(--blue);"></div></div>
+        </div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--yellow);">
+        <div style="font-size:12px;font-weight:700;color:var(--yellow);margin-bottom:4px;">GOAL: Engineering Seat (Any Branch)</div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Target: 70-100 marks</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Rank 15K-60K. CSE/IT available in many private colleges. ECE/EEE in better colleges.</div>
+        <div class="vbar-wrap" style="margin-top:8px;">
+          <div class="vbar-track"><div class="vbar-fill" style="width:43.75%;background:var(--yellow);"></div></div>
+        </div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--orange);">
+        <div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:4px;">QUALIFYING CUTOFF</div>
+        <div style="font-size:14px;font-weight:800;margin-bottom:4px;">Minimum: 40 marks (25%)</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Below 40 = not qualified. SC/ST: no minimum qualifying marks (but rank based seat availability). BC/OC: 40 marks minimum.</div>
+        <div class="vbar-wrap" style="margin-top:8px;">
+          <div class="vbar-track"><div class="vbar-fill" style="width:25%;background:var(--orange);"></div></div>
+        </div>
+      </div>
+
+      <div class="info-box green">
+        <b>Realistic Target:</b> 80% of students score between 60-110 marks. If you can push to 110-120 range, you're already in top 10% — and CSE in good colleges vasthundhi!
+      </div>
+    </div>
+
+    <!-- PAGE 6: TIPS + CTA -->
+    <div class="page" data-state="next">
+      <div class="section-title">💡 Score Improve Tips</div>
+      <p class="section-sub">Last-minute preparation lo ee strategies follow cheyyi — 10-20 marks difference vasthundhi.</p>
+
+      <div class="result-card" style="border-left:3px solid var(--accent);">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">1. No Negative Marking = Attempt Everything</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">80 questions lo even 5 guesses correct ayina = 10 marks extra. Never leave blank!</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--green);">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">2. Maths First = Maximum Impact</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">80/160 marks Maths lone. Maths lo 5 extra questions correct = rank lo 2000-3000 difference!</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--blue);">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">3. PYQ Pattern Follow Cheyyi</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Last 5 years PYQs lo 30-40% questions repeat avthaayi with slight variations. Pattern recognition = easy marks.</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--yellow);">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">4. Time Management — 2.25 min/question</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">180 min / 80 questions = 2.25 min each. First round lo easy vaati 1 min lo, tough vaati skip — second round lo attempt.</div>
+      </div>
+
+      <div class="result-card" style="border-left:3px solid var(--accent2);">
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px;">5. Chemistry Theory = Free Marks</div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">Inorganic chemistry lo 5-6 questions pure theory (p-block, d-block). One night revision = guaranteed 10-12 marks.</div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div class="info-box red">
+          <b>Remember:</b> IPE weightage ledu = nee entrance performance alone matters. Inter lo marks baaga lekapoyina, EAMCET lo baaga chesthe top rank vasthundhi. No excuse — just prepare smart.
+        </div>
+      </div>
+
+      <div style="margin-top:12px;">
+        <div class="cta-card">
+          <div class="cta-title">College Finder Resource Choodav?</div>
+          <div class="cta-sub">Nee rank ki exactly ye colleges vasthaayi — interactive finder tho chepthaam!</div>
+          <a class="cta-btn" href="../reel16/" target="_blank">College Finder Open</a>
+        </div>
+        <div class="result-card" style="text-align:center;">
+          <div style="font-size:12px;color:var(--text-dim);margin-bottom:8px;">Built with ❤️ by</div>
+          <div style="font-size:16px;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Raw Talks with Swaroop</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:6px;">Data based on AP EAMCET 2024-2025 trends</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-bottom">
+    <button class="nav-btn nav-prev" id="prevBtn" onclick="go(-1)">Back</button>
+    <button class="nav-btn nav-next" id="nextBtn" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let cur = 0;
+
+function go(d) {
+  const n = cur + d;
+  if (n < 0 || n >= total) return;
+  pages[cur].dataset.state = d > 0 ? 'prev' : 'next';
+  pages[cur].scrollTop = 0;
+  cur = n;
+  pages[cur].dataset.state = 'active';
+  pages[cur].scrollTop = 0;
+  document.getElementById('pFill').style.width = ((cur+1)/total*100)+'%';
+  document.getElementById('pText').textContent = (cur+1)+'/'+total;
+  document.getElementById('prevBtn').style.visibility = cur===0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = cur===total-1 ? 'Done ✓' : 'Next →';
+  if (cur===total-1) document.getElementById('nextBtn').onclick=function(){};
+  else document.getElementById('nextBtn').onclick=function(){go(1);};
+}
+
+document.getElementById('prevBtn').style.visibility='hidden';
+document.getElementById('pFill').style.width=(1/total*100)+'%';
+
+let sx=0,sy=0;
+const pc=document.getElementById('pagesContainer');
+pc.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;});
+pc.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50)go(dx<0?1:-1);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);
+});
+
+// Rank predictor
+const marksToRank = [
+  {min:155,max:160,rankLow:1,rankHigh:10,label:'State Topper!',color:'var(--accent)',tip:'Nuvvu AP EAMCET topper! Any college, any branch — complete freedom. Congratulations!'},
+  {min:150,max:155,rankLow:10,rankHigh:100,label:'Top 100!',color:'var(--accent)',tip:'Elite rank — JNTUK, AU lo CSE confirmed. Fees 35-50K/year. Best ROI in India.'},
+  {min:145,max:150,rankLow:100,rankHigh:500,label:'Elite Range',color:'var(--accent2)',tip:'All top government universities lo CSE. Web options lo JNTUK first preference pettuko.'},
+  {min:140,max:145,rankLow:500,rankHigh:1000,label:'Top Govt CSE!',color:'var(--green)',tip:'JNTUK/AU/JNTUA CSE vasthundhi. Government college lo CSE = best combination in AP.'},
+  {min:135,max:140,rankLow:1000,rankHigh:2000,label:'Very Strong',color:'var(--green)',tip:'SVU CE CSE + all govt ECE. Private top colleges lo CSE guaranteed.'},
+  {min:130,max:135,rankLow:2000,rankHigh:3500,label:'Strong',color:'var(--blue)',tip:'GVP, RVR type top private colleges lo CSE vasthundhi. Great placements!'},
+  {min:120,max:130,rankLow:3500,rankHigh:6000,label:'Good Range',color:'var(--blue)',tip:'Multiple strong autonomous colleges lo CSE. Branch > College — CSE priority.'},
+  {min:110,max:120,rankLow:6000,rankHigh:10000,label:'Decent',color:'var(--yellow)',tip:'ANITS, SRKR type colleges lo CSE. Autonomous college choose cheyyi.'},
+  {min:100,max:110,rankLow:10000,rankHigh:15000,label:'Options Open',color:'var(--yellow)',tip:'CSE available in many colleges. KLU, VIT-AP lanti deemed universities also consider cheyyi.'},
+  {min:90,max:100,rankLow:15000,rankHigh:25000,label:'CSE Possible',color:'var(--orange)',tip:'Deemed universities (KLU NIRF #35, VIT-AP) lo CSE better than small college CSE.'},
+  {min:80,max:90,rankLow:25000,rankHigh:40000,label:'Private CSE/IT',color:'var(--orange)',tip:'Private colleges lo CSE/IT available. Autonomous status + placement data check cheyyi.'},
+  {min:70,max:80,rankLow:40000,rankHigh:60000,label:'Multiple Options',color:'var(--orange)',tip:'CSE/IT seats available. Self-study mandatory — DSA, projects nuvvu cheyyali.'},
+  {min:60,max:70,rankLow:60000,rankHigh:85000,label:'Seats Available',color:'var(--text-dim)',tip:'Engineering seat vasthundhi. CSE/IT try cheyyi — ECE also good option ee range lo.'},
+  {min:50,max:60,rankLow:85000,rankHigh:110000,label:'Qualifying+',color:'var(--text-dim)',tip:'Seats available through all rounds. Pick best available college + upskill online.'},
+  {min:40,max:50,rankLow:110000,rankHigh:150000,label:'Just Qualifying',color:'var(--accent)',tip:'Qualifying mark lo unnav. Spot/final round lo seats vasthaayi. ECET (diploma lateral) also consider.'},
+  {min:0,max:40,rankLow:0,rankHigh:0,label:'Below Cutoff',color:'var(--accent)',tip:'Below qualifying marks (25%). Options: re-attempt, diploma + ECET lateral entry, BCA, or alternative paths.'}
+];
+
+function predictRank() {
+  const marks = parseInt(document.getElementById('marksInput').value);
+  if (isNaN(marks) || marks < 0 || marks > 160) {
+    document.getElementById('predResult').innerHTML = '<div class="info-box red">Please enter marks between 0 and 160</div>';
+    return;
+  }
+  const data = marksToRank.find(d => marks >= d.min && marks <= d.max) || marksToRank[marksToRank.length-1];
+  let html = '<div class="pred-result">';
+  html += '<div class="result-card" style="text-align:center;">';
+  if (data.rankLow > 0) {
+    html += `<div class="pred-rank-big" style="color:${data.color};">${data.rankLow.toLocaleString()} - ${data.rankHigh.toLocaleString()}</div>`;
+    html += `<div class="pred-range">Expected Rank Range for ${marks}/160 marks</div>`;
+  } else {
+    html += `<div class="pred-rank-big" style="color:var(--accent);">Not Qualified</div>`;
+    html += `<div class="pred-range">Below 25% qualifying cutoff (40/160)</div>`;
+  }
+  html += `<div style="display:inline-block;padding:4px 12px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(233,69,96,0.15);color:${data.color};margin-bottom:12px;">${data.label}</div>`;
+  html += '</div>';
+
+  // Visual bar
+  html += '<div class="result-card">';
+  html += '<div style="font-size:12px;font-weight:700;margin-bottom:8px;">Nee Score Position</div>';
+  html += '<div class="vbar-wrap">';
+  html += `<div class="vbar-label"><span>${marks}/160</span><span>${Math.round(marks/160*100)}%</span></div>`;
+  html += `<div class="vbar-track"><div class="vbar-fill" style="width:${marks/160*100}%;background:${data.color};"></div></div>`;
+  html += '</div></div>';
+
+  // Tip
+  html += `<div class="info-box yellow"><b>Swaroop's Tip:</b> ${data.tip}</div>`;
+  html += '</div>';
+
+  document.getElementById('predResult').innerHTML = html;
+}
+</script>
+</body>
+</html>
