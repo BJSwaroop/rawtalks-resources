@@ -27,15 +27,13 @@
   .res-title { font-size:14px; font-weight:700; margin-bottom:2px; }
   .res-sub { font-size:12px; color:var(--dim); }
   .res-arrow { color:var(--accent); font-size:18px; }
-  .coming { opacity:0.4; pointer-events:none; }
-  .coming .res-arrow { display:none; }
-  .coming::after { content:'Coming Soon'; font-size:10px; color:var(--dim); font-weight:600; white-space:nowrap; padding-left:4px; }
   .comm { margin-top:24px; }
   .comm-btn { display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; border-radius:14px; text-decoration:none; font-size:14px; font-weight:700; color:#fff; margin-bottom:8px; }
   .comm-btn.wa { background:linear-gradient(135deg,#25d366,#128c7e); }
   .comm-btn.tg { background:linear-gradient(135deg,#2aabee,#229ed9); }
   .comm-btn .ci { width:36px; height:36px; border-radius:10px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
   .comm-btn .ct { font-size:12px; font-weight:500; opacity:0.85; }
+  .phase-label { font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px; margin-top:28px; }
   .foot { text-align:center; margin-top:32px; font-size:11px; color:var(--dim); line-height:1.6; }
   .foot a { color:var(--accent); text-decoration:none; }
 </style>
@@ -59,101 +57,138 @@
     </a>
   </div>
 
-  <div style="margin-top:28px;">
-    <div style="font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">All Guides</div>
-    <div class="grid">
-      <a href="reel01/" class="res-card">
-        <div class="res-num">01</div>
-        <div class="res-info"><div class="res-title">JEE Rank → College Guide</div><div class="res-sub">Free predictors, NIT cutoffs, JoSAA counselling</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel02/" class="res-card">
-        <div class="res-num">02</div>
-        <div class="res-info"><div class="res-title">Govt & Private Colleges You're Missing</div><div class="res-sub">127 JoSAA institutes + hidden gems</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel03/" class="res-card">
-        <div class="res-num">03</div>
-        <div class="res-info"><div class="res-title">Drop or Not? Decision Framework</div><div class="res-sub">Data-backed analysis + alternative paths</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel04/" class="res-card">
-        <div class="res-num">04</div>
-        <div class="res-info"><div class="res-title">Other Options After JEE</div><div class="res-sub">10+ exams still open with dates</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel05/" class="res-card">
-        <div class="res-num">05</div>
-        <div class="res-info"><div class="res-title">EAMCET 6464 Rank Story & Strategy</div><div class="res-sub">Swaroop's 2-day prep plan</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel06/" class="res-card">
-        <div class="res-num">06</div>
-        <div class="res-info"><div class="res-title">Scholarships for Engineering</div><div class="res-sub">IIT waivers, CSSS, private college schemes</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel07/" class="res-card">
-        <div class="res-num">07</div>
-        <div class="res-info"><div class="res-title">100-Mark Target Strategy</div><div class="res-sub">50M + 25P + 25C = Under 5K rank</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel08/" class="res-card">
-        <div class="res-num">08</div>
-        <div class="res-info"><div class="res-title">EAMCET Cheat Codes</div><div class="res-sub">5 tricks for 10-15 extra marks</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel09/" class="res-card">
-        <div class="res-num">09</div>
-        <div class="res-info"><div class="res-title">Important Chapters + Paper Strategy</div><div class="res-sub">Category 1/2/3 + attempt order</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel10/" class="res-card">
-        <div class="res-num">10</div>
-        <div class="res-info"><div class="res-title">Easy & High Weightage Chapters</div><div class="res-sub">Maximum marks per hour studied</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel11/" class="res-card">
-        <div class="res-num">11</div>
-        <div class="res-info"><div class="res-title">EAMCET Motivation</div><div class="res-sub">Your JEE prep is not wasted</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel12/" class="res-card">
-        <div class="res-num">12</div>
-        <div class="res-info"><div class="res-title">Best Entrance Exams After JEE</div><div class="res-sub">Full exam calendar + registration links</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel13/" class="res-card">
-        <div class="res-num">13</div>
-        <div class="res-info"><div class="res-title">Chapter-wise Weightage Breakdown</div><div class="res-sub">Complete data for all 3 subjects</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel14/" class="res-card">
-        <div class="res-num">14</div>
-        <div class="res-info"><div class="res-title">Last 10 Days — Boost Your Marks</div><div class="res-sub">PYQs, mocks, formula sheets</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-    </div>
+  <!-- Pre-EAMCET Guides -->
+  <div class="phase-label">Pre-EAMCET Guides</div>
+  <div class="grid">
+    <a href="reel01/" class="res-card"><div class="res-num">01</div><div class="res-info"><div class="res-title">JEE Rank → College Guide</div><div class="res-sub">Free predictors, NIT cutoffs, JoSAA counselling</div></div><div class="res-arrow">→</div></a>
+    <a href="reel02/" class="res-card"><div class="res-num">02</div><div class="res-info"><div class="res-title">Govt & Private Colleges You're Missing</div><div class="res-sub">127 JoSAA institutes + hidden gems</div></div><div class="res-arrow">→</div></a>
+    <a href="reel03/" class="res-card"><div class="res-num">03</div><div class="res-info"><div class="res-title">Drop or Not? Decision Framework</div><div class="res-sub">Data-backed analysis + alternative paths</div></div><div class="res-arrow">→</div></a>
+    <a href="reel04/" class="res-card"><div class="res-num">04</div><div class="res-info"><div class="res-title">Other Options After JEE</div><div class="res-sub">10+ exams still open with dates</div></div><div class="res-arrow">→</div></a>
+    <a href="reel05/" class="res-card"><div class="res-num">05</div><div class="res-info"><div class="res-title">EAMCET 6464 Rank Story & Strategy</div><div class="res-sub">Swaroop's 2-day prep plan</div></div><div class="res-arrow">→</div></a>
+    <a href="reel06/" class="res-card"><div class="res-num">06</div><div class="res-info"><div class="res-title">Scholarships for Engineering</div><div class="res-sub">IIT waivers, CSSS, private college schemes</div></div><div class="res-arrow">→</div></a>
+    <a href="reel07/" class="res-card"><div class="res-num">07</div><div class="res-info"><div class="res-title">100-Mark Target Strategy</div><div class="res-sub">50M + 25P + 25C = Under 5K rank</div></div><div class="res-arrow">→</div></a>
+    <a href="reel08/" class="res-card"><div class="res-num">08</div><div class="res-info"><div class="res-title">EAMCET Cheat Codes</div><div class="res-sub">5 tricks for 10-15 extra marks</div></div><div class="res-arrow">→</div></a>
+    <a href="reel09/" class="res-card"><div class="res-num">09</div><div class="res-info"><div class="res-title">Important Chapters + Paper Strategy</div><div class="res-sub">Category 1/2/3 + attempt order</div></div><div class="res-arrow">→</div></a>
+    <a href="reel10/" class="res-card"><div class="res-num">10</div><div class="res-info"><div class="res-title">Easy & High Weightage Chapters</div><div class="res-sub">Maximum marks per hour studied</div></div><div class="res-arrow">→</div></a>
+    <a href="reel11/" class="res-card"><div class="res-num">11</div><div class="res-info"><div class="res-title">EAMCET Motivation</div><div class="res-sub">Your JEE prep is not wasted</div></div><div class="res-arrow">→</div></a>
+    <a href="reel12/" class="res-card"><div class="res-num">12</div><div class="res-info"><div class="res-title">Best Entrance Exams After JEE</div><div class="res-sub">Full exam calendar + registration links</div></div><div class="res-arrow">→</div></a>
+    <a href="reel13/" class="res-card"><div class="res-num">13</div><div class="res-info"><div class="res-title">Chapter-wise Weightage Breakdown</div><div class="res-sub">Complete data for all 3 subjects</div></div><div class="res-arrow">→</div></a>
+    <a href="reel14/" class="res-card"><div class="res-num">14</div><div class="res-info"><div class="res-title">Last 10 Days — Boost Your Marks</div><div class="res-sub">PYQs, mocks, formula sheets</div></div><div class="res-arrow">→</div></a>
   </div>
 
-  <div style="margin-top:28px;">
-    <div style="font-size:10px; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:2px; margin-bottom:12px;">Post-EAMCET Guides</div>
-    <div class="grid">
-      <a href="reel15/" class="res-card">
-        <div class="res-num">15</div>
-        <div class="res-info"><div class="res-title">Rank Vachindhi — Ippudu Em Cheyali?</div><div class="res-sub">First 7 days action plan + documents checklist</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel16/" class="res-card">
-        <div class="res-num">16</div>
-        <div class="res-info"><div class="res-title">Nee Rank Ki Ye College?</div><div class="res-sub">Interactive rank finder + branch guide + fees</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-      <a href="reel17/" class="res-card">
-        <div class="res-num">17</div>
-        <div class="res-info"><div class="res-title">Marks vs Rank Analysis</div><div class="res-sub">Rank predictor + subject strategy + score targets</div></div>
-        <div class="res-arrow">→</div>
-      </a>
-    </div>
+  <!-- Phase 1: Result Day -->
+  <div class="phase-label">Phase 1 — Result Day</div>
+  <div class="grid">
+    <a href="reel15/" class="res-card"><div class="res-num">15</div><div class="res-info"><div class="res-title">Rank Vachindhi — Ippudu Em Cheyali?</div><div class="res-sub">First 7 days action plan + documents checklist</div></div><div class="res-arrow">→</div></a>
+    <a href="reel16/" class="res-card"><div class="res-num">16</div><div class="res-info"><div class="res-title">Nee Rank Ki Ye College?</div><div class="res-sub">Interactive rank finder + branch guide + fees</div></div><div class="res-arrow">→</div></a>
+    <a href="reel17/" class="res-card"><div class="res-num">17</div><div class="res-info"><div class="res-title">Marks vs Rank Analysis</div><div class="res-sub">Rank predictor + subject strategy + score targets</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 2: Top Colleges Deep Dive -->
+  <div class="phase-label">Phase 2 — Top Colleges Deep Dive</div>
+  <div class="grid">
+    <a href="reel18/" class="res-card"><div class="res-num">18</div><div class="res-info"><div class="res-title">Top 10 Government Colleges</div><div class="res-sub">Cutoffs, fees, placements — complete ranking</div></div><div class="res-arrow">→</div></a>
+    <a href="reel19/" class="res-card"><div class="res-num">19</div><div class="res-info"><div class="res-title">Top 10 Private Colleges</div><div class="res-sub">KLU, GITAM, GVP + comparison table</div></div><div class="res-arrow">→</div></a>
+    <a href="reel20/" class="res-card"><div class="res-num">20</div><div class="res-info"><div class="res-title">JNTUK vs AU vs SVU</div><div class="res-sub">Head-to-head comparison of top 3 govt unis</div></div><div class="res-arrow">→</div></a>
+    <a href="reel21/" class="res-card"><div class="res-num">21</div><div class="res-info"><div class="res-title">KLU vs VIT-AP vs SRM-AP</div><div class="res-sub">Deemed university showdown + ROI</div></div><div class="res-arrow">→</div></a>
+    <a href="reel22/" class="res-card"><div class="res-num">22</div><div class="res-info"><div class="res-title">Region-Wise Best Colleges</div><div class="res-sub">Vizag, Vijayawada, Guntur, Tirupati & more</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 3: Branch Selection -->
+  <div class="phase-label">Phase 3 — Branch Selection</div>
+  <div class="grid">
+    <a href="reel23/" class="res-card"><div class="res-num">23</div><div class="res-info"><div class="res-title">CSE vs ECE vs EEE</div><div class="res-sub">Salary, demand, career paths compared</div></div><div class="res-arrow">→</div></a>
+    <a href="reel24/" class="res-card"><div class="res-num">24</div><div class="res-info"><div class="res-title">CSE vs AI/ML vs Data Science</div><div class="res-sub">Which specialization pays more?</div></div><div class="res-arrow">→</div></a>
+    <a href="reel25/" class="res-card"><div class="res-num">25</div><div class="res-info"><div class="res-title">Mechanical/Civil Scope 2026</div><div class="res-sub">Private market vs GATE PSU route</div></div><div class="res-arrow">→</div></a>
+    <a href="reel26/" class="res-card"><div class="res-num">26</div><div class="res-info"><div class="res-title">Branch Change After 1st Year</div><div class="res-sub">Success rate, conditions & alternatives</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 4: Counselling -->
+  <div class="phase-label">Phase 4 — Counselling Guide</div>
+  <div class="grid">
+    <a href="reel27/" class="res-card"><div class="res-num">27</div><div class="res-info"><div class="res-title">Counselling Process Step-by-Step</div><div class="res-sub">Registration to reporting — complete roadmap</div></div><div class="res-arrow">→</div></a>
+    <a href="reel28/" class="res-card"><div class="res-num">28</div><div class="res-info"><div class="res-title">Web Options Strategy</div><div class="res-sub">5 golden rules for smart options filling</div></div><div class="res-arrow">→</div></a>
+    <a href="reel29/" class="res-card"><div class="res-num">29</div><div class="res-info"><div class="res-title">Documents Checklist</div><div class="res-sub">12 essential documents — miss one, lose seat!</div></div><div class="res-arrow">→</div></a>
+    <a href="reel30/" class="res-card"><div class="res-num">30</div><div class="res-info"><div class="res-title">Convener vs Management Quota</div><div class="res-sub">70% vs 30% — fees, eligibility & ROI</div></div><div class="res-arrow">→</div></a>
+    <a href="reel31/" class="res-card"><div class="res-num">31</div><div class="res-info"><div class="res-title">7 Counselling Mistakes</div><div class="res-sub">Avoid these or lose your dream college!</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 5: Fees & Scholarships -->
+  <div class="phase-label">Phase 5 — Fees & Scholarships</div>
+  <div class="grid">
+    <a href="reel32/" class="res-card"><div class="res-num">32</div><div class="res-info"><div class="res-title">Fee Breakdown — Govt vs Private</div><div class="res-sub">Annual fees, total cost + hidden charges</div></div><div class="res-arrow">→</div></a>
+    <a href="reel33/" class="res-card"><div class="res-num">33</div><div class="res-info"><div class="res-title">Fee Reimbursement Guide</div><div class="res-sub">SC/ST/BC/EBC — full tuition from AP govt</div></div><div class="res-arrow">→</div></a>
+    <a href="reel34/" class="res-card"><div class="res-num">34</div><div class="res-info"><div class="res-title">Education Loan Guide</div><div class="res-sub">Banks, interest rates, Vidya Lakshmi portal</div></div><div class="res-arrow">→</div></a>
+    <a href="reel35/" class="res-card"><div class="res-num">35</div><div class="res-info"><div class="res-title">Top 5 Scholarships</div><div class="res-sub">AICTE Pragati, INSPIRE, NSP + more</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 6: Placements & Career -->
+  <div class="phase-label">Phase 6 — Placements & Career</div>
+  <div class="grid">
+    <a href="reel36/" class="res-card"><div class="res-num">36</div><div class="res-info"><div class="res-title">Placement Reality Check</div><div class="res-sub">Fake promises vs real data + LinkedIn verify</div></div><div class="res-arrow">→</div></a>
+    <a href="reel37/" class="res-card"><div class="res-num">37</div><div class="res-info"><div class="res-title">Highest Package Colleges</div><div class="res-sub">KLU 58L, GITAM 62L + ROI analysis</div></div><div class="res-arrow">→</div></a>
+    <a href="reel38/" class="res-card"><div class="res-num">38</div><div class="res-info"><div class="res-title">GATE vs CAT vs GRE</div><div class="res-sub">After engineering — which exam to target?</div></div><div class="res-arrow">→</div></a>
+    <a href="reel39/" class="res-card"><div class="res-num">39</div><div class="res-info"><div class="res-title">Side Hustle in Engineering</div><div class="res-sub">Freelancing, content, tutoring from Year 2</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 7: Alternative Paths -->
+  <div class="phase-label">Phase 7 — Alternative Paths</div>
+  <div class="grid">
+    <a href="reel40/" class="res-card"><div class="res-num">40</div><div class="res-info"><div class="res-title">Alternatives If No EAMCET Rank</div><div class="res-sub">Diploma, BCA, online degrees + more</div></div><div class="res-arrow">→</div></a>
+    <a href="reel41/" class="res-card"><div class="res-num">41</div><div class="res-info"><div class="res-title">Diploma + ECET Path</div><div class="res-sub">Lateral entry to BTech 2nd year</div></div><div class="res-arrow">→</div></a>
+    <a href="reel42/" class="res-card"><div class="res-num">42</div><div class="res-info"><div class="res-title">BCA vs BTech</div><div class="res-sub">IT career comparison + BCA+MCA combo</div></div><div class="res-arrow">→</div></a>
+    <a href="reel43/" class="res-card"><div class="res-num">43</div><div class="res-info"><div class="res-title">Coding Without Degree</div><div class="res-sub">Self-taught developer roadmap</div></div><div class="res-arrow">→</div></a>
+    <a href="reel44/" class="res-card"><div class="res-num">44</div><div class="res-info"><div class="res-title">Re-attempt or Move On?</div><div class="res-sub">Dropper strategy + honest analysis</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 8: Reservation & Quota -->
+  <div class="phase-label">Phase 8 — Reservation & Quota</div>
+  <div class="grid">
+    <a href="reel45/" class="res-card"><div class="res-num">45</div><div class="res-info"><div class="res-title">SC/ST/BC/EWS Reservation</div><div class="res-sub">Complete breakdown + fee benefits</div></div><div class="res-arrow">→</div></a>
+    <a href="reel46/" class="res-card"><div class="res-num">46</div><div class="res-info"><div class="res-title">NRI/Sports/PH Quota</div><div class="res-sub">Special categories guide</div></div><div class="res-arrow">→</div></a>
+    <a href="reel47/" class="res-card"><div class="res-num">47</div><div class="res-info"><div class="res-title">EWS Certificate Process</div><div class="res-sub">Step-by-step MeeSeva application</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 9: Inter-State Options -->
+  <div class="phase-label">Phase 9 — Inter-State Options</div>
+  <div class="grid">
+    <a href="reel48/" class="res-card"><div class="res-num">48</div><div class="res-info"><div class="res-title">TS + AP Both EAMCET</div><div class="res-sub">Double chances + Hyderabad colleges</div></div><div class="res-arrow">→</div></a>
+    <a href="reel49/" class="res-card"><div class="res-num">49</div><div class="res-info"><div class="res-title">Karnataka & TN Options</div><div class="res-sub">COMEDK, TNEA + IT hub advantage</div></div><div class="res-arrow">→</div></a>
+    <a href="reel50/" class="res-card"><div class="res-num">50</div><div class="res-info"><div class="res-title">NITs via JEE Mains</div><div class="res-sub">31 NITs, 25 IIITs + preparation strategy</div></div><div class="res-arrow">→</div></a>
+    <a href="reel51/" class="res-card"><div class="res-num">51</div><div class="res-info"><div class="res-title">VIT vs SRM vs Manipal</div><div class="res-sub">All-India deemed university showdown</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 10: Skills Before College -->
+  <div class="phase-label">Phase 10 — Skills Before College</div>
+  <div class="grid">
+    <a href="reel52/" class="res-card"><div class="res-num">52</div><div class="res-info"><div class="res-title">3 Summer Skills to Learn</div><div class="res-sub">Python, typing, GitHub — get ahead</div></div><div class="res-arrow">→</div></a>
+    <a href="reel53/" class="res-card"><div class="res-num">53</div><div class="res-info"><div class="res-title">Free Online Courses</div><div class="res-sub">CS50, freeCodeCamp, NPTEL + more</div></div><div class="res-arrow">→</div></a>
+    <a href="reel54/" class="res-card"><div class="res-num">54</div><div class="res-info"><div class="res-title">Laptop Buying Guide 2026</div><div class="res-sub">Branch-wise specs + budget recommendations</div></div><div class="res-arrow">→</div></a>
+    <a href="reel55/" class="res-card"><div class="res-num">55</div><div class="res-info"><div class="res-title">GitHub Profile Setup</div><div class="res-sub">Day 1 portfolio building</div></div><div class="res-arrow">→</div></a>
+    <a href="reel56/" class="res-card"><div class="res-num">56</div><div class="res-info"><div class="res-title">DSA Roadmap Day 1</div><div class="res-sub">4-year plan to crack placements</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 11: Girls in Engineering -->
+  <div class="phase-label">Phase 11 — Girls in Engineering</div>
+  <div class="grid">
+    <a href="reel57/" class="res-card"><div class="res-num">57</div><div class="res-info"><div class="res-title">Best Colleges for Girls</div><div class="res-sub">Hostel, safety, placements focus</div></div><div class="res-arrow">→</div></a>
+    <a href="reel58/" class="res-card"><div class="res-num">58</div><div class="res-info"><div class="res-title">Women in Tech Scholarships</div><div class="res-sub">AICTE Pragati, Google, Adobe + more</div></div><div class="res-arrow">→</div></a>
+    <a href="reel59/" class="res-card"><div class="res-num">59</div><div class="res-info"><div class="res-title">Women Coding Communities</div><div class="res-sub">Women Who Code, GirlScript + more</div></div><div class="res-arrow">→</div></a>
+    <a href="reel60/" class="res-card"><div class="res-num">60</div><div class="res-info"><div class="res-title">Engineering Heroine Stories</div><div class="res-sub">AP success stories — skills > starting point</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 12: College Prep -->
+  <div class="phase-label">Phase 12 — College Preparation</div>
+  <div class="grid">
+    <a href="reel61/" class="res-card"><div class="res-num">61</div><div class="res-info"><div class="res-title">First Day of Engineering</div><div class="res-sub">What to expect + do's and don'ts</div></div><div class="res-arrow">→</div></a>
+    <a href="reel62/" class="res-card"><div class="res-num">62</div><div class="res-info"><div class="res-title">Hostel Survival Guide</div><div class="res-sub">Packing, food, study, money management</div></div><div class="res-arrow">→</div></a>
+    <a href="reel63/" class="res-card"><div class="res-num">63</div><div class="res-info"><div class="res-title">Ragging — Know Your Rights</div><div class="res-sub">Laws, helplines + zero tolerance</div></div><div class="res-arrow">→</div></a>
+  </div>
+
+  <!-- Phase 13: First Semester -->
+  <div class="phase-label">Phase 13 — First Semester Strategy</div>
+  <div class="grid">
+    <a href="reel64/" class="res-card"><div class="res-num">64</div><div class="res-info"><div class="res-title">First Semester Strategy</div><div class="res-sub">CGPA + skills + clubs + internship plan</div></div><div class="res-arrow">→</div></a>
   </div>
 
   <div class="foot">

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>7 Counselling Mistakes to Avoid | Raw Talks with Swaroop</title>
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+:root{--bg:#0a0a0f;--card:#12121a;--card-hover:#1a1a28;--accent:#e94560;--accent-glow:rgba(233,69,96,0.25);--accent2:#6c5ce7;--green:#00b894;--yellow:#fdcb6e;--blue:#74b9ff;--orange:#e17055;--text:#e8e8e8;--text-dim:#8a8a9a;--border:#2a2a3a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none}
+.app{height:100%;display:flex;flex-direction:column;max-width:520px;margin:0 auto;position:relative;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:100;flex-shrink:0}
+.topbar-brand{font-size:13px;font-weight:700;color:var(--text-dim)}.topbar-brand span{color:var(--accent)}
+.progress-wrap{display:flex;align-items:center;gap:8px}.progress-bar{width:80px;height:4px;background:var(--border);border-radius:4px;overflow:hidden}.progress-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.4s ease}.progress-text{font-size:11px;color:var(--text-dim);font-weight:600}
+.pages-container{flex:1;position:relative;overflow:hidden;touch-action:pan-y}
+.page{position:absolute;top:0;left:0;right:0;bottom:0;padding:24px 20px 80px;overflow-y:auto;transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94),opacity 0.35s ease;will-change:transform}
+.page.active{transform:translateX(0);opacity:1}.page.left{transform:translateX(-100%);opacity:0}.page.right{transform:translateX(100%);opacity:0}
+.nav-bar{position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);z-index:100;flex-shrink:0}
+.nav-btn{padding:10px 28px;border-radius:12px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all 0.2s}
+.nav-prev{background:var(--card);color:var(--text);border:1px solid var(--border)}.nav-prev:hover{border-color:var(--accent)}
+.nav-next{background:var(--accent);color:#fff}.nav-next:hover{transform:scale(1.05)}
+.nav-btn:disabled{opacity:0.3;cursor:default;transform:none}
+.hero-page{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:100%}
+.hero-badge{display:inline-block;background:rgba(233,69,96,0.15);color:var(--accent);font-size:10px;font-weight:800;padding:6px 16px;border-radius:20px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.hero-title{font-size:26px;font-weight:900;background:linear-gradient(135deg,#fff,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.3;margin-bottom:10px}
+.hero-sub{font-size:14px;color:var(--text-dim);line-height:1.6;max-width:340px}
+.section-tag{font-size:10px;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px}
+.section-title{font-size:20px;font-weight:800;margin-bottom:16px;line-height:1.3}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px}
+.info-card h3{font-size:14px;font-weight:800;margin-bottom:6px}.info-card p,.info-card li{font-size:13px;color:var(--text-dim);line-height:1.5}
+.info-card ul{list-style:none;padding:0}.info-card li{padding:4px 0}.info-card li::before{content:'→ ';color:var(--accent);font-weight:700}
+.stat-row{display:flex;gap:8px;margin-bottom:8px}.stat-box{flex:1;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.stat-num{font-size:20px;font-weight:900;color:var(--accent)}.stat-label{font-size:10px;color:var(--text-dim);margin-top:2px;font-weight:600}
+.tip-card{background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.2);border-radius:14px;padding:16px;margin-bottom:10px}
+.tip-card .tip-icon{font-size:16px;margin-bottom:6px}.tip-card h4{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px}.tip-card p{font-size:12px;color:var(--text-dim);line-height:1.5}
+.cta-card{background:linear-gradient(135deg,rgba(233,69,96,0.15),rgba(108,92,231,0.15));border:1px solid rgba(233,69,96,0.3);border-radius:16px;padding:20px;text-align:center;margin-bottom:12px}
+.cta-card h3{font-size:16px;font-weight:800;margin-bottom:8px}.cta-card p{font-size:12px;color:var(--text-dim);line-height:1.5}
+.cta-btn{display:inline-block;background:var(--accent);color:#fff;padding:10px 24px;border-radius:10px;text-decoration:none;font-size:13px;font-weight:700;margin-top:10px}
+.table-wrap{overflow-x:auto;margin-bottom:10px}.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:var(--card-hover);color:var(--accent);padding:10px 8px;text-align:left;font-weight:700;border-bottom:2px solid var(--accent);white-space:nowrap}
+.data-table td{padding:8px;border-bottom:1px solid var(--border);color:var(--text-dim)}.data-table tr:hover td{background:var(--card)}
+.compare-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;position:relative;overflow:hidden}
+.compare-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent)}
+.compare-card.green::before{background:var(--green)}.compare-card.blue::before{background:var(--blue)}.compare-card.yellow::before{background:var(--yellow)}.compare-card.orange::before{background:var(--orange)}
+.compare-card h3{font-size:14px;font-weight:800;margin-bottom:4px;padding-left:8px}.compare-card p,.compare-card li{font-size:12px;color:var(--text-dim);line-height:1.5;padding-left:8px}</style>
+</head>
+<body>
+<div class="app">
+<div class="topbar">
+<div class="topbar-brand">Raw Talks <span>Resources</span></div>
+<div class="progress-wrap"><div class="progress-bar"><div class="progress-fill"></div></div><div class="progress-text">1/1</div></div>
+</div>
+<div class="pages-container">
+<div class="page right"><div class="hero-page">
+<div class="hero-badge">Phase 4 • Guide 17</div>
+<h1 class="hero-title">7 Counselling<br>Mistakes to Avoid</h1>
+<p class="hero-sub">These mistakes will cost you your dream college!</p>
+</div></div><div class="page right"><div class="section-tag">Mistakes 1-4</div>
+<div class="section-title">Don't Make These!</div>
+<div class="compare-card"><h3>❌ 1. Too Few Web Options</h3><p>Filling only 5-10 options. System can't find good match → bad allotment. Fill 30-40 minimum!</p></div>
+<div class="compare-card"><h3>❌ 2. Chasing College Name</h3><p>Big name college Mechanical > Small college CSE? WRONG! Branch > College always.</p></div>
+<div class="compare-card"><h3>❌ 3. Settling in Round 1</h3><p>Round 2 & 3 often bring better options. Use slide-up! Patience = better seat.</p></div>
+<div class="compare-card"><h3>❌ 4. Location Over-Priority</h3><p>Home convenience vs career growth? 4 years adjust = 40 years benefit.</p></div></div><div class="page right"><div class="section-tag">Mistakes 5-7</div>
+<div class="section-title">Critical Errors</div>
+<div class="compare-card"><h3>❌ 5. Not Verifying Placements</h3><p>College brochure says "100% placement" — verify on LinkedIn! Check where alumni actually work.</p></div>
+<div class="compare-card"><h3>❌ 6. Late Document Prep</h3><p>Income, caste certificates take 7-15 days at MeeSeva. Last minute = crowds + delays.</p></div>
+<div class="compare-card"><h3>❌ 7. Missing Counselling Dates</h3><p>One day late = seat gone forever! Set reminders. Check portal daily.</p></div>
+<div class="tip-card"><div class="tip-icon">✅</div><h4>Do This Instead</h4><p>Fill 30-40 options. Branch first. Be patient across rounds. LinkedIn verify. Prepare docs NOW. Set calendar reminders.</p></div></div><div class="page right"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%;text-align:center">
+<div class="cta-card">
+<h3>Save This Resource!</h3>
+<p>Bookmark this page. Share with friends who need it. Follow for more free guides.</p>
+<a href="https://www.instagram.com/raw_talks_with_swaroop/" target="_blank" class="cta-btn">Follow @RawTalks</a>
+</div>
+
+<div style="margin-top:16px;font-size:11px;color:var(--text-dim)">Made with ❤️ for Telugu students • Raw Talks with Swaroop</div>
+</div></div>
+</div>
+<div class="nav-bar">
+<button class="nav-btn nav-prev" id="prevBtn" onclick="prev()">← Back</button>
+<button class="nav-btn nav-next" id="nextBtn" onclick="next()">Next →</button>
+</div>
+</div>
+<script>
+let currentPage=0;const pages=document.querySelectorAll('.page');const totalPages=pages.length;
+function showPage(n){pages.forEach((p,i)=>{p.classList.remove('active','left','right');if(i<n)p.classList.add('left');else if(i>n)p.classList.add('right');else p.classList.add('active')});document.getElementById('prevBtn').disabled=n===0;document.getElementById('nextBtn').disabled=n===totalPages-1;document.getElementById('nextBtn').textContent=n===totalPages-1?'Done →':'Next →';document.querySelector('.progress-fill').style.width=((n+1)/totalPages*100)+'%';document.querySelector('.progress-text').textContent=(n+1)+'/'+totalPages;currentPage=n}
+function next(){if(currentPage<totalPages-1)showPage(currentPage+1)}
+function prev(){if(currentPage>0)showPage(currentPage-1)}
+let sx=0;document.querySelector('.pages-container').addEventListener('touchstart',e=>{sx=e.touches[0].clientX});document.querySelector('.pages-container').addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50){if(d<0)next();else prev()}});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')next();if(e.key==='ArrowLeft')prev()});
+showPage(0);</script>
+</body>
+</html>
